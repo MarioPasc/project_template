@@ -1,6 +1,6 @@
 %% BioMed_Central_Bib_Style_v1.01
 
-\begin{thebibliography}{15}
+\begin{thebibliography}{28}
 % BibTex style file: bmc-mathphys.bst (version 2.1), 2014-07-24
 \ifx \bisbn   \undefined \def \bisbn  #1{ISBN #1}\fi
 \ifx \binits  \undefined \def \binits#1{#1}\fi
@@ -100,6 +100,72 @@ Institut d’Assistència Sanitària, Girona.
 \endbibitem
 
 %%% 5
+\bibitem{snowden2002frontotemporal}
+\begin{barticle}
+\bauthor{\bsnm{Snowden}, \binits{J.S.}},
+\bauthor{\bsnm{Neary}, \binits{D.}},
+\bauthor{\bsnm{Mann}, \binits{D.M.}}:
+\batitle{Frontotemporal dementia}.
+\bjtitle{The British journal of psychiatry}
+\bvolume{180}(\bissue{2}),
+\bfpage{140}--\blpage{143}
+(\byear{2002})
+\end{barticle}
+\endbibitem
+
+%%% 6
+\bibitem{ratnavalli2002prevalence}
+\begin{barticle}
+\bauthor{\bsnm{Ratnavalli}, \binits{E.}},
+\bauthor{\bsnm{Brayne}, \binits{C.}},
+\bauthor{\bsnm{Dawson}, \binits{K.}},
+\bauthor{\bsnm{Hodges}, \binits{J.}}:
+\batitle{The prevalence of frontotemporal dementia}.
+\bjtitle{Neurology}
+\bvolume{58}(\bissue{11}),
+\bfpage{1615}--\blpage{1621}
+(\byear{2002})
+\end{barticle}
+\endbibitem
+
+%%% 7
+\bibitem{piguet2011behavioural}
+\begin{barticle}
+\bauthor{\bsnm{Piguet}, \binits{O.}},
+\bauthor{\bsnm{Hornberger}, \binits{M.}},
+\bauthor{\bsnm{Mioshi}, \binits{E.}},
+\bauthor{\bsnm{Hodges}, \binits{J.R.}}:
+\batitle{Behavioural-variant frontotemporal dementia: diagnosis, clinical
+  staging, and management}.
+\bjtitle{The Lancet Neurology}
+\bvolume{10}(\bissue{2}),
+\bfpage{162}--\blpage{172}
+(\byear{2011})
+\end{barticle}
+\endbibitem
+
+%%% 8
+\bibitem{gorno2011classification}
+\begin{barticle}
+\bauthor{\bsnm{Gorno-Tempini}, \binits{M.L.}},
+\bauthor{\bsnm{Hillis}, \binits{A.E.}},
+\bauthor{\bsnm{Weintraub}, \binits{S.}},
+\bauthor{\bsnm{Kertesz}, \binits{A.}},
+\bauthor{\bsnm{Mendez}, \binits{M.}},
+\bauthor{\bsnm{Cappa}, \binits{S.F.}},
+\bauthor{\bsnm{Ogar}, \binits{J.M.}},
+\bauthor{\bsnm{Rohrer}, \binits{J.D.}},
+\bauthor{\bsnm{Black}, \binits{S.}},
+\bauthor{\bsnm{Boeve}, \binits{B.F.}}, \betal:
+\batitle{Classification of primary progressive aphasia and its variants}.
+\bjtitle{Neurology}
+\bvolume{76}(\bissue{11}),
+\bfpage{1006}--\blpage{1014}
+(\byear{2011})
+\end{barticle}
+\endbibitem
+
+%%% 9
 \bibitem{fneur.2024.1399600}
 \begin{botherref}
 \oauthor{\bsnm{Chen}, \binits{X.}},
@@ -115,7 +181,67 @@ doi:\doiurl{10.3389/fneur.2024.1399600}
 \end{botherref}
 \endbibitem
 
-%%% 6
+%%% 10
+\bibitem{neary1998frontotemporal}
+\begin{barticle}
+\bauthor{\bsnm{Freedman}, \binits{M.}},
+\bauthor{\bsnm{Robert}, \binits{P.}}, \betal:
+\batitle{Frontotemporal lobar degeneration: a consensus on clinical diagnostic
+  criteria}.
+\bjtitle{Neurology}
+\bvolume{51}(\bissue{6}),
+\bfpage{1546}--\blpage{1554}
+(\byear{1998})
+\end{barticle}
+\endbibitem
+
+%%% 11
+\bibitem{mackenzie2010tau}
+\begin{barticle}
+\bauthor{\bsnm{Mackenzie}, \binits{I.R.}},
+\bauthor{\bsnm{Rademakers}, \binits{R.}},
+\bauthor{\bsnm{Neumann}, \binits{M.}}:
+\batitle{Tdp-43 and fus in amyotrophic lateral sclerosis and frontotemporal
+  dementia}.
+\bjtitle{The Lancet Neurology}
+\bvolume{9}(\bissue{10}),
+\bfpage{995}--\blpage{1007}
+(\byear{2010})
+\end{barticle}
+\endbibitem
+
+%%% 12
+\bibitem{mackenzie2008atypical}
+\begin{barticle}
+\bauthor{\bsnm{Mackenzie}, \binits{I.R.}},
+\bauthor{\bsnm{Foti}, \binits{D.}},
+\bauthor{\bsnm{Woulfe}, \binits{J.}},
+\bauthor{\bsnm{Hurwitz}, \binits{T.A.}}:
+\batitle{Atypical frontotemporal lobar degeneration with ubiquitin-positive,
+  tdp-43-negative neuronal inclusions}.
+\bjtitle{Brain}
+\bvolume{131}(\bissue{5}),
+\bfpage{1282}--\blpage{1293}
+(\byear{2008})
+\end{barticle}
+\endbibitem
+
+%%% 13
+\bibitem{mackenzie2010tdp}
+\begin{barticle}
+\bauthor{\bsnm{Mackenzie}, \binits{I.R.}},
+\bauthor{\bsnm{Rademakers}, \binits{R.}},
+\bauthor{\bsnm{Neumann}, \binits{M.}}:
+\batitle{Tdp-43 and fus in amyotrophic lateral sclerosis and frontotemporal
+  dementia}.
+\bjtitle{The Lancet Neurology}
+\bvolume{9}(\bissue{10}),
+\bfpage{995}--\blpage{1007}
+(\byear{2010})
+\end{barticle}
+\endbibitem
+
+%%% 14
 \bibitem{NHS_MND}
 \begin{botherref}
 \oauthor{\bsnm{{NHS Inform}}}:
@@ -126,7 +252,7 @@ Accessed: 2024-10-04
 \end{botherref}
 \endbibitem
 
-%%% 7
+%%% 15
 \bibitem{10.1093/brain/awr195}
 \begin{barticle}
 \bauthor{\bsnm{Burrell}, \binits{J.R.}},
@@ -143,7 +269,7 @@ doi:\doiurl{10.1093/brain/awr195}.
 \end{barticle}
 \endbibitem
 
-%%% 8
+%%% 16
 \bibitem{DeJesusHernandez2011}
 \begin{barticle}
 \bauthor{\bsnm{DeJesus-Hernandez}, \binits{M.}},
@@ -184,7 +310,7 @@ doi:\doiurl{10.1016/J.NEURON.2011.09.011/ATTACHMENT/095EB372-EA80-49C0-886D-9102
 \end{barticle}
 \endbibitem
 
-%%% 9
+%%% 17
 \bibitem{Arai2006}
 \begin{barticle}
 \bauthor{\bsnm{Arai}, \binits{T.}},
@@ -209,7 +335,7 @@ doi:\doiurl{10.1016/j.bbrc.2006.10.093}
 \end{barticle}
 \endbibitem
 
-%%% 10
+%%% 18
 \bibitem{Bussi2018}
 \begin{botherref}
 \oauthor{\bsnm{Bussi}, \binits{C.}},
@@ -233,7 +359,7 @@ doi:\doiurl{10.1242/JCS.226241/VIDEO-13}
 \end{botherref}
 \endbibitem
 
-%%% 11
+%%% 19
 \bibitem{Balendra2018}
 \begin{barticle}
 \bauthor{\bsnm{Balendra}, \binits{R.}},
@@ -247,7 +373,7 @@ doi:\doiurl{10.1038/s41582-018-0047-2}
 \end{barticle}
 \endbibitem
 
-%%% 12
+%%% 20
 \bibitem{Casterton2020}
 \begin{barticle}
 \bauthor{\bsnm{Casterton}, \binits{R.L.}},
@@ -264,7 +390,7 @@ doi:\doiurl{10.1016/j.jmb.2020.02.018}
 \end{barticle}
 \endbibitem
 
-%%% 13
+%%% 21
 \bibitem{Devenney2015}
 \begin{barticle}
 \bauthor{\bsnm{Devenney}, \binits{E.}},
@@ -280,7 +406,7 @@ doi:\doiurl{10.1586/14737175.2015.1034108}
 \end{barticle}
 \endbibitem
 
-%%% 14
+%%% 22
 \bibitem{Devenney2019}
 \begin{barticle}
 \bauthor{\bsnm{Devenney}, \binits{E.M.}},
@@ -295,16 +421,107 @@ doi:\doiurl{10.1016/B978-0-12-804766-8.00015-7}
 \end{barticle}
 \endbibitem
 
-%%% 15
+%%% 23
 \bibitem{Orphanet_MND}
 \begin{botherref}
 \oauthor{\bsnm{{Orphanet}}}:
 Enfermedad neurológica poco frecuente.
 Accessed: 2024-10-04
-(n.d.).
-\url{https://www.orpha.net/es/disease/detail/454887#:\texttildelow
-  :text=Es%20una%20enfermedad%20neurol%C3%B3gica%20poco,las%20extremidades%20y%20disfunci%C3%B3n%20visoespacial.}
+(n.d.)
 \end{botherref}
+\endbibitem
+
+%%% 24
+\bibitem{varma2002spect}
+\begin{barticle}
+\bauthor{\bsnm{Varma}, \binits{A.}},
+\bauthor{\bsnm{Adams}, \binits{W.}},
+\bauthor{\bsnm{Lloyd}, \binits{J.}},
+\bauthor{\bsnm{Carson}, \binits{K.}},
+\bauthor{\bsnm{Snowden}, \binits{J.}},
+\bauthor{\bsnm{Testa}, \binits{H.}},
+\bauthor{\bsnm{Jackson}, \binits{A.}},
+\bauthor{\bsnm{Neary}, \binits{D.}}:
+\batitle{Diagnostic patterns of regional atrophy on mri and regional cerebral
+  blood flow change on spect in young onset patients with alzheimer's disease,
+  frontotemporal dementia and vascular dementia}.
+\bjtitle{Acta neurologica scandinavica}
+\bvolume{105}(\bissue{4}),
+\bfpage{261}--\blpage{269}
+(\byear{2002})
+\end{barticle}
+\endbibitem
+
+%%% 25
+\bibitem{kanda2008fdgpet}
+\begin{barticle}
+\bauthor{\bsnm{Kanda}, \binits{T.}},
+\bauthor{\bsnm{Ishii}, \binits{K.}},
+\bauthor{\bsnm{Uemura}, \binits{T.}},
+\bauthor{\bsnm{Miyamoto}, \binits{N.}},
+\bauthor{\bsnm{Yoshikawa}, \binits{T.}},
+\bauthor{\bsnm{Kono}, \binits{A.K.}},
+\bauthor{\bsnm{Mori}, \binits{E.}}:
+\batitle{Comparison of grey matter and metabolic reductions in frontotemporal
+  dementia using fdg-pet and voxel-based morphometric mr studies}.
+\bjtitle{European journal of nuclear medicine and molecular imaging}
+\bvolume{35},
+\bfpage{2227}--\blpage{2234}
+(\byear{2008})
+\end{barticle}
+\endbibitem
+
+%%% 26
+\bibitem{rowe2007imagingamiloid}
+\begin{barticle}
+\bauthor{\bsnm{Rowe}, \binits{C.C.}},
+\bauthor{\bsnm{Ng}, \binits{S.}},
+\bauthor{\bsnm{Ackermann}, \binits{U.}},
+\bauthor{\bsnm{Gong}, \binits{S.J.}},
+\bauthor{\bsnm{Pike}, \binits{K.}},
+\bauthor{\bsnm{Savage}, \binits{G.}},
+\bauthor{\bsnm{Cowie}, \binits{T.F.}},
+\bauthor{\bsnm{Dickinson}, \binits{K.L.}},
+\bauthor{\bsnm{Maruff}, \binits{P.}},
+\bauthor{\bsnm{Darby}, \binits{D.}}, \betal:
+\batitle{Imaging $\beta$-amyloid burden in aging and dementia}.
+\bjtitle{Neurology}
+\bvolume{68}(\bissue{20}),
+\bfpage{1718}--\blpage{1725}
+(\byear{2007})
+\end{barticle}
+\endbibitem
+
+%%% 27
+\bibitem{sirkis2019recentgenes}
+\begin{barticle}
+\bauthor{\bsnm{Sirkis}, \binits{D.W.}},
+\bauthor{\bsnm{Geier}, \binits{E.G.}},
+\bauthor{\bsnm{Bonham}, \binits{L.W.}},
+\bauthor{\bsnm{Karch}, \binits{C.M.}},
+\bauthor{\bsnm{Yokoyama}, \binits{J.S.}}:
+\batitle{Recent advances in the genetics of frontotemporal dementia}.
+\bjtitle{Current genetic medicine reports}
+\bvolume{7},
+\bfpage{41}--\blpage{52}
+(\byear{2019})
+\end{barticle}
+\endbibitem
+
+%%% 28
+\bibitem{peet2021neuroimaging}
+\begin{barticle}
+\bauthor{\bsnm{Peet}, \binits{B.T.}},
+\bauthor{\bsnm{Spina}, \binits{S.}},
+\bauthor{\bsnm{Mundada}, \binits{N.}},
+\bauthor{\bsnm{La~Joie}, \binits{R.}}:
+\batitle{Neuroimaging in frontotemporal dementia: heterogeneity and
+  relationships with underlying neuropathology}.
+\bjtitle{Neurotherapeutics}
+\bvolume{18}(\bissue{2}),
+\bfpage{728}--\blpage{752}
+(\byear{2021})
+\end{barticle}
 \endbibitem
 
 \end{thebibliography}
@@ -374,6 +591,82 @@ Accessed: 2024-10-04
 </bibl>
 
 <bibl id="B5">
+  <title><p>Frontotemporal dementia</p></title>
+  <aug>
+    <au><snm>Snowden</snm><fnm>JS</fnm></au>
+    <au><snm>Neary</snm><fnm>D</fnm></au>
+    <au><snm>Mann</snm><fnm>DM</fnm></au>
+  </aug>
+  <source>The British journal of psychiatry</source>
+  <publisher>Cambridge University Press</publisher>
+  <pubdate>2002</pubdate>
+  <volume>180</volume>
+  <issue>2</issue>
+  <fpage>140</fpage>
+  <lpage>-143</lpage>
+</bibl>
+
+<bibl id="B6">
+  <title><p>The prevalence of frontotemporal dementia</p></title>
+  <aug>
+    <au><snm>Ratnavalli</snm><fnm>E</fnm></au>
+    <au><snm>Brayne</snm><fnm>C</fnm></au>
+    <au><snm>Dawson</snm><fnm>K</fnm></au>
+    <au><snm>Hodges</snm><fnm>JR</fnm></au>
+  </aug>
+  <source>Neurology</source>
+  <publisher>AAN Enterprises</publisher>
+  <pubdate>2002</pubdate>
+  <volume>58</volume>
+  <issue>11</issue>
+  <fpage>1615</fpage>
+  <lpage>-1621</lpage>
+</bibl>
+
+<bibl id="B7">
+  <title><p>Behavioural-variant frontotemporal dementia: diagnosis, clinical
+  staging, and management</p></title>
+  <aug>
+    <au><snm>Piguet</snm><fnm>O</fnm></au>
+    <au><snm>Hornberger</snm><fnm>M</fnm></au>
+    <au><snm>Mioshi</snm><fnm>E</fnm></au>
+    <au><snm>Hodges</snm><fnm>JR</fnm></au>
+  </aug>
+  <source>The Lancet Neurology</source>
+  <publisher>Elsevier</publisher>
+  <pubdate>2011</pubdate>
+  <volume>10</volume>
+  <issue>2</issue>
+  <fpage>162</fpage>
+  <lpage>-172</lpage>
+</bibl>
+
+<bibl id="B8">
+  <title><p>Classification of primary progressive aphasia and its
+  variants</p></title>
+  <aug>
+    <au><snm>Gorno Tempini</snm><fnm>ML</fnm></au>
+    <au><snm>Hillis</snm><fnm>AE</fnm></au>
+    <au><snm>Weintraub</snm><fnm>S</fnm></au>
+    <au><snm>Kertesz</snm><fnm>A</fnm></au>
+    <au><snm>Mendez</snm><fnm>M</fnm></au>
+    <au><snm>Cappa</snm><fnm>SF</fnm></au>
+    <au><snm>Ogar</snm><fnm>JM</fnm></au>
+    <au><snm>Rohrer</snm><fnm>JD</fnm></au>
+    <au><snm>Black</snm><fnm>S</fnm></au>
+    <au><snm>Boeve</snm><fnm>BF</fnm></au>
+    <au><cnm>others</cnm></au>
+  </aug>
+  <source>Neurology</source>
+  <publisher>AAN Enterprises</publisher>
+  <pubdate>2011</pubdate>
+  <volume>76</volume>
+  <issue>11</issue>
+  <fpage>1006</fpage>
+  <lpage>-1014</lpage>
+</bibl>
+
+<bibl id="B9">
   <title><p>Research trends and hotspots for frontotemporal dementia from 2000
   to 2022: a bibliometric analysis</p></title>
   <aug>
@@ -388,7 +681,76 @@ Accessed: 2024-10-04
   <url>https://www.frontiersin.org/journals/neurology/articles/10.3389/fneur.2024.1399600</url>
 </bibl>
 
-<bibl id="B6">
+<bibl id="B10">
+  <title><p>Frontotemporal lobar degeneration: a consensus on clinical
+  diagnostic criteria</p></title>
+  <aug>
+    <au><snm>Freedman</snm><fnm>M</fnm></au>
+    <au><snm>Robert</snm><fnm>PH</fnm></au>
+    <au><cnm>others</cnm></au>
+  </aug>
+  <source>Neurology</source>
+  <publisher>AAN Enterprises</publisher>
+  <pubdate>1998</pubdate>
+  <volume>51</volume>
+  <issue>6</issue>
+  <fpage>1546</fpage>
+  <lpage>-1554</lpage>
+</bibl>
+
+<bibl id="B11">
+  <title><p>TDP-43 and FUS in amyotrophic lateral sclerosis and frontotemporal
+  dementia</p></title>
+  <aug>
+    <au><snm>Mackenzie</snm><fnm>IR</fnm></au>
+    <au><snm>Rademakers</snm><fnm>R</fnm></au>
+    <au><snm>Neumann</snm><fnm>M</fnm></au>
+  </aug>
+  <source>The Lancet Neurology</source>
+  <publisher>Elsevier</publisher>
+  <pubdate>2010</pubdate>
+  <volume>9</volume>
+  <issue>10</issue>
+  <fpage>995</fpage>
+  <lpage>-1007</lpage>
+</bibl>
+
+<bibl id="B12">
+  <title><p>Atypical frontotemporal lobar degeneration with ubiquitin-positive,
+  TDP-43-negative neuronal inclusions</p></title>
+  <aug>
+    <au><snm>Mackenzie</snm><fnm>IR</fnm></au>
+    <au><snm>Foti</snm><fnm>D</fnm></au>
+    <au><snm>Woulfe</snm><fnm>J</fnm></au>
+    <au><snm>Hurwitz</snm><fnm>TA</fnm></au>
+  </aug>
+  <source>Brain</source>
+  <publisher>Oxford University Press</publisher>
+  <pubdate>2008</pubdate>
+  <volume>131</volume>
+  <issue>5</issue>
+  <fpage>1282</fpage>
+  <lpage>-1293</lpage>
+</bibl>
+
+<bibl id="B13">
+  <title><p>TDP-43 and FUS in amyotrophic lateral sclerosis and frontotemporal
+  dementia</p></title>
+  <aug>
+    <au><snm>Mackenzie</snm><fnm>IR</fnm></au>
+    <au><snm>Rademakers</snm><fnm>R</fnm></au>
+    <au><snm>Neumann</snm><fnm>M</fnm></au>
+  </aug>
+  <source>The Lancet Neurology</source>
+  <publisher>Elsevier</publisher>
+  <pubdate>2010</pubdate>
+  <volume>9</volume>
+  <issue>10</issue>
+  <fpage>995</fpage>
+  <lpage>-1007</lpage>
+</bibl>
+
+<bibl id="B14">
   <title><p>Motor Neurone Disease (MND)</p></title>
   <aug>
     <au><cnm>{NHS Inform}</cnm></au>
@@ -398,7 +760,7 @@ Accessed: 2024-10-04
   <note>Accessed: 2024-10-04</note>
 </bibl>
 
-<bibl id="B7">
+<bibl id="B15">
   <title><p>{Motor Neuron dysfunction in frontotemporal dementia}</p></title>
   <aug>
     <au><snm>Burrell</snm><fnm>JR</fnm></au>
@@ -415,7 +777,7 @@ Accessed: 2024-10-04
   <url>https://doi.org/10.1093/brain/awr195</url>
 </bibl>
 
-<bibl id="B8">
+<bibl id="B16">
   <title><p>Expanded GGGGCC Hexanucleotide Repeat in Noncoding Region of
   C9ORF72 Causes Chromosome 9p-Linked FTD and ALS</p></title>
   <aug>
@@ -459,7 +821,7 @@ Accessed: 2024-10-04
   https://www.cell.com/neuron/abstract/S0896-6273(11)00828-2</url>
 </bibl>
 
-<bibl id="B9">
+<bibl id="B17">
   <title><p>TDP-43 is a component of ubiquitin-positive tau-negative inclusions
   in frontotemporal lobar degeneration and amyotrophic lateral
   sclerosis</p></title>
@@ -484,7 +846,7 @@ Accessed: 2024-10-04
   <lpage>611</lpage>
 </bibl>
 
-<bibl id="B10">
+<bibl id="B18">
   <title><p>Alpha-synuclein fibrils recruit TBK1 and OPTN to lysosomal damage
   sites and induce autophagy in microglial cells</p></title>
   <aug>
@@ -509,7 +871,7 @@ Accessed: 2024-10-04
   https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6518333/</url>
 </bibl>
 
-<bibl id="B11">
+<bibl id="B19">
   <title><p>C9orf72-mediated ALS and FTD: multiple pathways to
   disease</p></title>
   <aug>
@@ -525,7 +887,7 @@ Accessed: 2024-10-04
   <url>https://www.nature.com/articles/s41582-018-0047-2</url>
 </bibl>
 
-<bibl id="B12">
+<bibl id="B20">
   <title><p>Pathomechanism Heterogeneity in the Amyotrophic Lateral Sclerosis
   and Frontotemporal Dementia Disease Spectrum: Providing Focus Through the
   Lens of Autophagy</p></title>
@@ -541,7 +903,7 @@ Accessed: 2024-10-04
   <lpage>2713</lpage>
 </bibl>
 
-<bibl id="B13">
+<bibl id="B21">
   <title><p>Motor neuron disease-frontotemporal dementia: a clinical
   continuum</p></title>
   <aug>
@@ -559,7 +921,7 @@ Accessed: 2024-10-04
   <url>https://www.tandfonline.com/doi/abs/10.1586/14737175.2015.1034108</url>
 </bibl>
 
-<bibl id="B14">
+<bibl id="B22">
   <title><p>Frontotemporal dementia</p></title>
   <aug>
     <au><snm>Devenney</snm><fnm>EM</fnm></au>
@@ -574,14 +936,117 @@ Accessed: 2024-10-04
   <lpage>299</lpage>
 </bibl>
 
-<bibl id="B15">
+<bibl id="B23">
   <title><p>Enfermedad neurológica poco frecuente</p></title>
   <aug>
     <au><cnm>{Orphanet}</cnm></au>
   </aug>
   <pubdate>n.d.</pubdate>
-  <url>https://www.orpha.net/es/disease/detail/454887#:~:text=Es%20una%20enfermedad%20neurol%C3%B3gica%20poco,las%20extremidades%20y%20disfunci%C3%B3n%20visoespacial.</url>
   <note>Accessed: 2024-10-04</note>
+</bibl>
+
+<bibl id="B24">
+  <title><p>Diagnostic patterns of regional atrophy on MRI and regional
+  cerebral blood flow change on SPECT in young onset patients with Alzheimer's
+  disease, frontotemporal dementia and vascular dementia</p></title>
+  <aug>
+    <au><snm>Varma</snm><fnm>AR</fnm></au>
+    <au><snm>Adams</snm><fnm>W</fnm></au>
+    <au><snm>Lloyd</snm><fnm>JJ</fnm></au>
+    <au><snm>Carson</snm><fnm>KJ</fnm></au>
+    <au><snm>Snowden</snm><fnm>JS</fnm></au>
+    <au><snm>Testa</snm><fnm>HJ</fnm></au>
+    <au><snm>Jackson</snm><fnm>A</fnm></au>
+    <au><snm>Neary</snm><fnm>D</fnm></au>
+  </aug>
+  <source>Acta neurologica scandinavica</source>
+  <publisher>Wiley Online Library</publisher>
+  <pubdate>2002</pubdate>
+  <volume>105</volume>
+  <issue>4</issue>
+  <fpage>261</fpage>
+  <lpage>-269</lpage>
+</bibl>
+
+<bibl id="B25">
+  <title><p>Comparison of grey matter and metabolic reductions in
+  frontotemporal dementia using FDG-PET and voxel-based morphometric MR
+  studies</p></title>
+  <aug>
+    <au><snm>Kanda</snm><fnm>T</fnm></au>
+    <au><snm>Ishii</snm><fnm>K</fnm></au>
+    <au><snm>Uemura</snm><fnm>T</fnm></au>
+    <au><snm>Miyamoto</snm><fnm>N</fnm></au>
+    <au><snm>Yoshikawa</snm><fnm>T</fnm></au>
+    <au><snm>Kono</snm><fnm>AK</fnm></au>
+    <au><snm>Mori</snm><fnm>E</fnm></au>
+  </aug>
+  <source>European journal of nuclear medicine and molecular imaging</source>
+  <publisher>Springer</publisher>
+  <pubdate>2008</pubdate>
+  <volume>35</volume>
+  <fpage>2227</fpage>
+  <lpage>-2234</lpage>
+</bibl>
+
+<bibl id="B26">
+  <title><p>Imaging $\beta$-amyloid burden in aging and dementia</p></title>
+  <aug>
+    <au><snm>Rowe</snm><fnm>CC</fnm></au>
+    <au><snm>Ng</snm><fnm>S</fnm></au>
+    <au><snm>Ackermann</snm><fnm>U</fnm></au>
+    <au><snm>Gong</snm><fnm>SJ</fnm></au>
+    <au><snm>Pike</snm><fnm>K</fnm></au>
+    <au><snm>Savage</snm><fnm>G</fnm></au>
+    <au><snm>Cowie</snm><fnm>TF</fnm></au>
+    <au><snm>Dickinson</snm><fnm>KL</fnm></au>
+    <au><snm>Maruff</snm><fnm>P</fnm></au>
+    <au><snm>Darby</snm><fnm>D</fnm></au>
+    <au><cnm>others</cnm></au>
+  </aug>
+  <source>Neurology</source>
+  <publisher>AAN Enterprises</publisher>
+  <pubdate>2007</pubdate>
+  <volume>68</volume>
+  <issue>20</issue>
+  <fpage>1718</fpage>
+  <lpage>-1725</lpage>
+</bibl>
+
+<bibl id="B27">
+  <title><p>Recent advances in the genetics of frontotemporal
+  dementia</p></title>
+  <aug>
+    <au><snm>Sirkis</snm><fnm>DW</fnm></au>
+    <au><snm>Geier</snm><fnm>EG</fnm></au>
+    <au><snm>Bonham</snm><fnm>LW</fnm></au>
+    <au><snm>Karch</snm><fnm>CM</fnm></au>
+    <au><snm>Yokoyama</snm><fnm>JS</fnm></au>
+  </aug>
+  <source>Current genetic medicine reports</source>
+  <publisher>Springer</publisher>
+  <pubdate>2019</pubdate>
+  <volume>7</volume>
+  <fpage>41</fpage>
+  <lpage>-52</lpage>
+</bibl>
+
+<bibl id="B28">
+  <title><p>Neuroimaging in frontotemporal dementia: heterogeneity and
+  relationships with underlying neuropathology</p></title>
+  <aug>
+    <au><snm>Peet</snm><fnm>BT</fnm></au>
+    <au><snm>Spina</snm><fnm>S</fnm></au>
+    <au><snm>Mundada</snm><fnm>N</fnm></au>
+    <au><snm>La Joie</snm><fnm>R</fnm></au>
+  </aug>
+  <source>Neurotherapeutics</source>
+  <publisher>Elsevier</publisher>
+  <pubdate>2021</pubdate>
+  <volume>18</volume>
+  <issue>2</issue>
+  <fpage>728</fpage>
+  <lpage>-752</lpage>
 </bibl>
 
 </refgrp>
