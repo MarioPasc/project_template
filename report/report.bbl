@@ -1,0 +1,588 @@
+%% BioMed_Central_Bib_Style_v1.01
+
+\begin{thebibliography}{15}
+% BibTex style file: bmc-mathphys.bst (version 2.1), 2014-07-24
+\ifx \bisbn   \undefined \def \bisbn  #1{ISBN #1}\fi
+\ifx \binits  \undefined \def \binits#1{#1}\fi
+\ifx \bauthor  \undefined \def \bauthor#1{#1}\fi
+\ifx \batitle  \undefined \def \batitle#1{#1}\fi
+\ifx \bjtitle  \undefined \def \bjtitle#1{#1}\fi
+\ifx \bvolume  \undefined \def \bvolume#1{\textbf{#1}}\fi
+\ifx \byear  \undefined \def \byear#1{#1}\fi
+\ifx \bissue  \undefined \def \bissue#1{#1}\fi
+\ifx \bfpage  \undefined \def \bfpage#1{#1}\fi
+\ifx \blpage  \undefined \def \blpage #1{#1}\fi
+\ifx \burl  \undefined \def \burl#1{\textsf{#1}}\fi
+\ifx \doiurl  \undefined \def \doiurl#1{\textsf{#1}}\fi
+\ifx \betal  \undefined \def \betal{\textit{et al.}}\fi
+\ifx \binstitute  \undefined \def \binstitute#1{#1}\fi
+\ifx \binstitutionaled  \undefined \def \binstitutionaled#1{#1}\fi
+\ifx \bctitle  \undefined \def \bctitle#1{#1}\fi
+\ifx \beditor  \undefined \def \beditor#1{#1}\fi
+\ifx \bpublisher  \undefined \def \bpublisher#1{#1}\fi
+\ifx \bbtitle  \undefined \def \bbtitle#1{#1}\fi
+\ifx \bedition  \undefined \def \bedition#1{#1}\fi
+\ifx \bseriesno  \undefined \def \bseriesno#1{#1}\fi
+\ifx \blocation  \undefined \def \blocation#1{#1}\fi
+\ifx \bsertitle  \undefined \def \bsertitle#1{#1}\fi
+\ifx \bsnm \undefined \def \bsnm#1{#1}\fi
+\ifx \bsuffix \undefined \def \bsuffix#1{#1}\fi
+\ifx \bparticle \undefined \def \bparticle#1{#1}\fi
+\ifx \barticle \undefined \def \barticle#1{#1}\fi
+\ifx \bconfdate \undefined \def \bconfdate #1{#1}\fi
+\ifx \botherref \undefined \def \botherref #1{#1}\fi
+\ifx \url \undefined \def \url#1{\textsf{#1}}\fi
+\ifx \bchapter \undefined \def \bchapter#1{#1}\fi
+\ifx \bbook \undefined \def \bbook#1{#1}\fi
+\ifx \bcomment \undefined \def \bcomment#1{#1}\fi
+\ifx \oauthor \undefined \def \oauthor#1{#1}\fi
+\ifx \citeauthoryear \undefined \def \citeauthoryear#1{#1}\fi
+\ifx \endbibitem  \undefined \def \endbibitem {}\fi
+\ifx \bconflocation  \undefined \def \bconflocation#1{#1}\fi
+\ifx \arxivurl  \undefined \def \arxivurl#1{\textsf{#1}}\fi
+\csname PreBibitemsHook\endcsname
+
+%%% 1
+\bibitem{Formiga2009}
+\begin{barticle}
+\bauthor{\bsnm{Formiga}, \binits{F.}},
+\bauthor{\bsnm{Robles}, \binits{M.J.}},
+\bauthor{\bsnm{Fort}, \binits{I.}}:
+\batitle{Demencia, una enfermedad evolutiva: demencia severa. identificación
+  de demencia terminal}.
+\bjtitle{Revista Española de Geriatría y Gerontología}
+\bvolume{44},
+\bfpage{2}--\blpage{8}
+(\byear{2009}).
+doi:\doiurl{10.1016/j.regg.2009.05.009}
+\end{barticle}
+\endbibitem
+
+%%% 2
+\bibitem{Long2023}
+\begin{botherref}
+\oauthor{\bsnm{Long}, \binits{S.}},
+\oauthor{\bsnm{Benoist}, \binits{C.}},
+\oauthor{\bsnm{Weidner}, \binits{W.}}:
+World Alzheimer Report 2023: Reducing Dementia Risk: Never Too Early, Never Too
+  Late.
+Published by Alzheimer’s Disease International (ADI), London.
+\end{botherref}
+\endbibitem
+
+%%% 3
+\bibitem{GOODMAN201728}
+\begin{barticle}
+\bauthor{\bsnm{Goodman}, \binits{R.A.}},
+\bauthor{\bsnm{Lochner}, \binits{K.A.}},
+\bauthor{\bsnm{Thambisetty}, \binits{M.}},
+\bauthor{\bsnm{Wingo}, \binits{T.S.}},
+\bauthor{\bsnm{Posner}, \binits{S.F.}},
+\bauthor{\bsnm{Ling}, \binits{S.M.}}:
+\batitle{Prevalence of dementia subtypes in united states medicare
+  fee-for-service beneficiaries, 2011–2013}.
+\bjtitle{Alzheimer's \& Dementia}
+\bvolume{13}(\bissue{1}),
+\bfpage{28}--\blpage{37}
+(\byear{2017}).
+doi:\doiurl{10.1016/j.jalz.2016.04.002}
+\end{barticle}
+\endbibitem
+
+%%% 4
+\bibitem{GarreOlmo2016}
+\begin{botherref}
+\oauthor{\bsnm{Garre-Olmo}, \binits{J.}}, et al.:
+Memòria D’activitat del Registre de Demències de Girona 2016.
+Institut d’Assistència Sanitària, Girona.
+\url{https://www.ias.cat/adjunts/files/MemoriaReDeGi2016.pdf}
+\end{botherref}
+\endbibitem
+
+%%% 5
+\bibitem{fneur.2024.1399600}
+\begin{botherref}
+\oauthor{\bsnm{Chen}, \binits{X.}},
+\oauthor{\bsnm{Chen}, \binits{Y.}},
+\oauthor{\bsnm{Ni}, \binits{B.}},
+\oauthor{\bsnm{Huang}, \binits{C.}}:
+Research trends and hotspots for frontotemporal dementia from 2000 to 2022: a
+  bibliometric analysis.
+Frontiers in Neurology
+\textbf{15}
+(2024).
+doi:\doiurl{10.3389/fneur.2024.1399600}
+\end{botherref}
+\endbibitem
+
+%%% 6
+\bibitem{NHS_MND}
+\begin{botherref}
+\oauthor{\bsnm{{NHS Inform}}}:
+Motor Neurone Disease (MND).
+Accessed: 2024-10-04
+(n.d.).
+\url{https://www.nhsinform.scot/illnesses-and-conditions/brain-nerves-and-spinal-cord/motor-neurone-disease-mnd/}
+\end{botherref}
+\endbibitem
+
+%%% 7
+\bibitem{10.1093/brain/awr195}
+\begin{barticle}
+\bauthor{\bsnm{Burrell}, \binits{J.R.}},
+\bauthor{\bsnm{Kiernan}, \binits{M.C.}},
+\bauthor{\bsnm{Vucic}, \binits{S.}},
+\bauthor{\bsnm{Hodges}, \binits{J.R.}}:
+\batitle{{Motor Neuron dysfunction in frontotemporal dementia}}.
+\bjtitle{Brain}
+\bvolume{134}(\bissue{9}),
+\bfpage{2582}--\blpage{2594}
+(\byear{2011}).
+doi:\doiurl{10.1093/brain/awr195}.
+\arxivurl{https://academic.oup.com/brain/article-pdf/134/9/2582/17869835/awr195.pdf}
+\end{barticle}
+\endbibitem
+
+%%% 8
+\bibitem{DeJesusHernandez2011}
+\begin{barticle}
+\bauthor{\bsnm{DeJesus-Hernandez}, \binits{M.}},
+\bauthor{\bsnm{Mackenzie}, \binits{I.R.}},
+\bauthor{\bsnm{Boeve}, \binits{B.F.}},
+\bauthor{\bsnm{Boxer}, \binits{A.L.}},
+\bauthor{\bsnm{Baker}, \binits{M.}},
+\bauthor{\bsnm{Rutherford}, \binits{N.J.}},
+\bauthor{\bsnm{Nicholson}, \binits{A.M.}},
+\bauthor{\bsnm{Finch}, \binits{N.C.A.}},
+\bauthor{\bsnm{Flynn}, \binits{H.}},
+\bauthor{\bsnm{Adamson}, \binits{J.}},
+\bauthor{\bsnm{Kouri}, \binits{N.}},
+\bauthor{\bsnm{Wojtas}, \binits{A.}},
+\bauthor{\bsnm{Sengdy}, \binits{P.}},
+\bauthor{\bsnm{Hsiung}, \binits{G.Y.R.}},
+\bauthor{\bsnm{Karydas}, \binits{A.}},
+\bauthor{\bsnm{Seeley}, \binits{W.W.}},
+\bauthor{\bsnm{Josephs}, \binits{K.A.}},
+\bauthor{\bsnm{Coppola}, \binits{G.}},
+\bauthor{\bsnm{Geschwind}, \binits{D.H.}},
+\bauthor{\bsnm{Wszolek}, \binits{Z.K.}},
+\bauthor{\bsnm{Feldman}, \binits{H.}},
+\bauthor{\bsnm{Knopman}, \binits{D.S.}},
+\bauthor{\bsnm{Petersen}, \binits{R.C.}},
+\bauthor{\bsnm{Miller}, \binits{B.L.}},
+\bauthor{\bsnm{Dickson}, \binits{D.W.}},
+\bauthor{\bsnm{Boylan}, \binits{K.B.}},
+\bauthor{\bsnm{Graff-Radford}, \binits{N.R.}},
+\bauthor{\bsnm{Rademakers}, \binits{R.}}:
+\batitle{Expanded ggggcc hexanucleotide repeat in noncoding region of c9orf72
+  causes chromosome 9p-linked ftd and als}.
+\bjtitle{Neuron}
+\bvolume{72},
+\bfpage{245}--\blpage{256}
+(\byear{2011}).
+doi:\doiurl{10.1016/J.NEURON.2011.09.011/ATTACHMENT/095EB372-EA80-49C0-886D-91026D6299DE/MMC1.PDF}
+\end{barticle}
+\endbibitem
+
+%%% 9
+\bibitem{Arai2006}
+\begin{barticle}
+\bauthor{\bsnm{Arai}, \binits{T.}},
+\bauthor{\bsnm{Hasegawa}, \binits{M.}},
+\bauthor{\bsnm{Akiyama}, \binits{H.}},
+\bauthor{\bsnm{Ikeda}, \binits{K.}},
+\bauthor{\bsnm{Nonaka}, \binits{T.}},
+\bauthor{\bsnm{Mori}, \binits{H.}},
+\bauthor{\bsnm{Mann}, \binits{D.}},
+\bauthor{\bsnm{Tsuchiya}, \binits{K.}},
+\bauthor{\bsnm{Yoshida}, \binits{M.}},
+\bauthor{\bsnm{Hashizume}, \binits{Y.}},
+\bauthor{\bsnm{Hashizume}, \binits{Y.}},
+\bauthor{\bsnm{Oda}, \binits{T.}}:
+\batitle{Tdp-43 is a component of ubiquitin-positive tau-negative inclusions in
+  frontotemporal lobar degeneration and amyotrophic lateral sclerosis}.
+\bjtitle{Biochemical and Biophysical Research Communications}
+\bvolume{351},
+\bfpage{602}--\blpage{611}
+(\byear{2006}).
+doi:\doiurl{10.1016/j.bbrc.2006.10.093}
+\end{barticle}
+\endbibitem
+
+%%% 10
+\bibitem{Bussi2018}
+\begin{botherref}
+\oauthor{\bsnm{Bussi}, \binits{C.}},
+\oauthor{\bsnm{Ramos}, \binits{J.M.P.}},
+\oauthor{\bsnm{Arroyo}, \binits{D.S.}},
+\oauthor{\bsnm{Gallea}, \binits{J.I.}},
+\oauthor{\bsnm{Ronchi}, \binits{P.}},
+\oauthor{\bsnm{Kolovou}, \binits{A.}},
+\oauthor{\bsnm{Wang}, \binits{J.M.}},
+\oauthor{\bsnm{Florey}, \binits{O.}},
+\oauthor{\bsnm{Celej}, \binits{M.S.}},
+\oauthor{\bsnm{Schwab}, \binits{Y.}},
+\oauthor{\bsnm{Ktistakis}, \binits{N.T.}},
+\oauthor{\bsnm{Iribarren}, \binits{P.}}:
+Alpha-synuclein fibrils recruit tbk1 and optn to lysosomal damage sites and
+  induce autophagy in microglial cells.
+Journal of Cell Science
+\textbf{131}
+(2018).
+doi:\doiurl{10.1242/JCS.226241/VIDEO-13}
+\end{botherref}
+\endbibitem
+
+%%% 11
+\bibitem{Balendra2018}
+\begin{barticle}
+\bauthor{\bsnm{Balendra}, \binits{R.}},
+\bauthor{\bsnm{Isaacs}, \binits{A.M.}}:
+\batitle{C9orf72-mediated als and ftd: multiple pathways to disease}.
+\bjtitle{Nature Reviews Neurology 2018 14:9}
+\bvolume{14},
+\bfpage{544}--\blpage{558}
+(\byear{2018}).
+doi:\doiurl{10.1038/s41582-018-0047-2}
+\end{barticle}
+\endbibitem
+
+%%% 12
+\bibitem{Casterton2020}
+\begin{barticle}
+\bauthor{\bsnm{Casterton}, \binits{R.L.}},
+\bauthor{\bsnm{Hunt}, \binits{R.J.}},
+\bauthor{\bsnm{Fanto}, \binits{M.}}:
+\batitle{Pathomechanism heterogeneity in the amyotrophic lateral sclerosis and
+  frontotemporal dementia disease spectrum: Providing focus through the lens of
+  autophagy}.
+\bjtitle{Journal of Molecular Biology}
+\bvolume{432},
+\bfpage{2692}--\blpage{2713}
+(\byear{2020}).
+doi:\doiurl{10.1016/j.jmb.2020.02.018}
+\end{barticle}
+\endbibitem
+
+%%% 13
+\bibitem{Devenney2015}
+\begin{barticle}
+\bauthor{\bsnm{Devenney}, \binits{E.}},
+\bauthor{\bsnm{Vucic}, \binits{S.}},
+\bauthor{\bsnm{Hodges}, \binits{J.R.}},
+\bauthor{\bsnm{Kiernan}, \binits{M.C.}}:
+\batitle{Motor neuron disease-frontotemporal dementia: a clinical continuum}.
+\bjtitle{Expert Review of Neurotherapeutics}
+\bvolume{15},
+\bfpage{509}--\blpage{522}
+(\byear{2015}).
+doi:\doiurl{10.1586/14737175.2015.1034108}
+\end{barticle}
+\endbibitem
+
+%%% 14
+\bibitem{Devenney2019}
+\begin{barticle}
+\bauthor{\bsnm{Devenney}, \binits{E.M.}},
+\bauthor{\bsnm{Ahmed}, \binits{R.M.}},
+\bauthor{\bsnm{Hodges}, \binits{J.R.}}:
+\batitle{Frontotemporal dementia}.
+\bjtitle{Handbook of Clinical Neurology}
+\bvolume{167},
+\bfpage{279}--\blpage{299}
+(\byear{2019}).
+doi:\doiurl{10.1016/B978-0-12-804766-8.00015-7}
+\end{barticle}
+\endbibitem
+
+%%% 15
+\bibitem{Orphanet_MND}
+\begin{botherref}
+\oauthor{\bsnm{{Orphanet}}}:
+Enfermedad neurológica poco frecuente.
+Accessed: 2024-10-04
+(n.d.).
+\url{https://www.orpha.net/es/disease/detail/454887#:\texttildelow
+  :text=Es%20una%20enfermedad%20neurol%C3%B3gica%20poco,las%20extremidades%20y%20disfunci%C3%B3n%20visoespacial.}
+\end{botherref}
+\endbibitem
+
+\end{thebibliography}
+
+\newcommand{\BMCxmlcomment}[1]{}
+
+\BMCxmlcomment{
+
+<refgrp>
+
+<bibl id="B1">
+  <title><p>Demencia, una enfermedad evolutiva: demencia severa.
+  Identificación de demencia terminal</p></title>
+  <aug>
+    <au><snm>Formiga</snm><fnm>F</fnm></au>
+    <au><snm>Robles</snm><fnm>MJ</fnm></au>
+    <au><snm>Fort</snm><fnm>I</fnm></au>
+  </aug>
+  <source>Revista Española de Geriatría y Gerontología</source>
+  <pubdate>2009</pubdate>
+  <volume>44</volume>
+  <fpage>2</fpage>
+  <lpage>-8</lpage>
+</bibl>
+
+<bibl id="B2">
+  <title><p>World Alzheimer Report 2023: Reducing dementia risk: never too
+  early, never too late</p></title>
+  <aug>
+    <au><snm>Long</snm><fnm>S</fnm></au>
+    <au><snm>Benoist</snm><fnm>C</fnm></au>
+    <au><snm>Weidner</snm><fnm>W</fnm></au>
+  </aug>
+  <pubdate>2023</pubdate>
+  <note>Published by Alzheimer’s Disease International (ADI), London.</note>
+</bibl>
+
+<bibl id="B3">
+  <title><p>Prevalence of dementia subtypes in United States Medicare
+  fee-for-service beneficiaries, 2011–2013</p></title>
+  <aug>
+    <au><snm>Goodman</snm><fnm>RA</fnm></au>
+    <au><snm>Lochner</snm><fnm>KA</fnm></au>
+    <au><snm>Thambisetty</snm><fnm>M</fnm></au>
+    <au><snm>Wingo</snm><fnm>TS</fnm></au>
+    <au><snm>Posner</snm><fnm>SF</fnm></au>
+    <au><snm>Ling</snm><fnm>SM</fnm></au>
+  </aug>
+  <source>Alzheimer's \& Dementia</source>
+  <pubdate>2017</pubdate>
+  <volume>13</volume>
+  <issue>1</issue>
+  <fpage>28</fpage>
+  <lpage>37</lpage>
+</bibl>
+
+<bibl id="B4">
+  <title><p>Memòria d’activitat del Registre de Demències de Girona
+  2016</p></title>
+  <aug>
+    <au><snm>Garre Olmo</snm><fnm>J</fnm></au>
+    <au><cnm>others</cnm></au>
+  </aug>
+  <pubdate>2016</pubdate>
+  <url>https://www.ias.cat/adjunts/files/MemoriaReDeGi2016.pdf</url>
+  <note>Institut d’Assistència Sanitària, Girona</note>
+</bibl>
+
+<bibl id="B5">
+  <title><p>Research trends and hotspots for frontotemporal dementia from 2000
+  to 2022: a bibliometric analysis</p></title>
+  <aug>
+    <au><snm>Chen</snm><fnm>X</fnm></au>
+    <au><snm>Chen</snm><fnm>Y</fnm></au>
+    <au><snm>Ni</snm><fnm>B</fnm></au>
+    <au><snm>Huang</snm><fnm>C</fnm></au>
+  </aug>
+  <source>Frontiers in Neurology</source>
+  <pubdate>2024</pubdate>
+  <volume>15</volume>
+  <url>https://www.frontiersin.org/journals/neurology/articles/10.3389/fneur.2024.1399600</url>
+</bibl>
+
+<bibl id="B6">
+  <title><p>Motor Neurone Disease (MND)</p></title>
+  <aug>
+    <au><cnm>{NHS Inform}</cnm></au>
+  </aug>
+  <pubdate>n.d.</pubdate>
+  <url>https://www.nhsinform.scot/illnesses-and-conditions/brain-nerves-and-spinal-cord/motor-neurone-disease-mnd/</url>
+  <note>Accessed: 2024-10-04</note>
+</bibl>
+
+<bibl id="B7">
+  <title><p>{Motor Neuron dysfunction in frontotemporal dementia}</p></title>
+  <aug>
+    <au><snm>Burrell</snm><fnm>JR</fnm></au>
+    <au><snm>Kiernan</snm><fnm>MC</fnm></au>
+    <au><snm>Vucic</snm><fnm>S</fnm></au>
+    <au><snm>Hodges</snm><fnm>JR</fnm></au>
+  </aug>
+  <source>Brain</source>
+  <pubdate>2011</pubdate>
+  <volume>134</volume>
+  <issue>9</issue>
+  <fpage>2582</fpage>
+  <lpage>2594</lpage>
+  <url>https://doi.org/10.1093/brain/awr195</url>
+</bibl>
+
+<bibl id="B8">
+  <title><p>Expanded GGGGCC Hexanucleotide Repeat in Noncoding Region of
+  C9ORF72 Causes Chromosome 9p-Linked FTD and ALS</p></title>
+  <aug>
+    <au><snm>DeJesus Hernandez</snm><fnm>M</fnm></au>
+    <au><snm>Mackenzie</snm><fnm>IR</fnm></au>
+    <au><snm>Boeve</snm><fnm>BF</fnm></au>
+    <au><snm>Boxer</snm><fnm>AL</fnm></au>
+    <au><snm>Baker</snm><fnm>M</fnm></au>
+    <au><snm>Rutherford</snm><fnm>NJ</fnm></au>
+    <au><snm>Nicholson</snm><fnm>AM</fnm></au>
+    <au><snm>Finch</snm><fnm>NCA</fnm></au>
+    <au><snm>Flynn</snm><fnm>H</fnm></au>
+    <au><snm>Adamson</snm><fnm>J</fnm></au>
+    <au><snm>Kouri</snm><fnm>N</fnm></au>
+    <au><snm>Wojtas</snm><fnm>A</fnm></au>
+    <au><snm>Sengdy</snm><fnm>P</fnm></au>
+    <au><snm>Hsiung</snm><fnm>GYR</fnm></au>
+    <au><snm>Karydas</snm><fnm>A</fnm></au>
+    <au><snm>Seeley</snm><fnm>WW</fnm></au>
+    <au><snm>Josephs</snm><fnm>KA</fnm></au>
+    <au><snm>Coppola</snm><fnm>G</fnm></au>
+    <au><snm>Geschwind</snm><fnm>DH</fnm></au>
+    <au><snm>Wszolek</snm><fnm>ZK</fnm></au>
+    <au><snm>Feldman</snm><fnm>H</fnm></au>
+    <au><snm>Knopman</snm><fnm>DS</fnm></au>
+    <au><snm>Petersen</snm><fnm>RC</fnm></au>
+    <au><snm>Miller</snm><fnm>BL</fnm></au>
+    <au><snm>Dickson</snm><fnm>DW</fnm></au>
+    <au><snm>Boylan</snm><fnm>KB</fnm></au>
+    <au><snm>Graff Radford</snm><fnm>NR</fnm></au>
+    <au><snm>Rademakers</snm><fnm>R</fnm></au>
+  </aug>
+  <source>Neuron</source>
+  <publisher>Elsevier</publisher>
+  <pubdate>2011</pubdate>
+  <volume>72</volume>
+  <fpage>245</fpage>
+  <lpage>256</lpage>
+  <url>http://www.cell.com/article/S0896627311008282/fulltext
+  http://www.cell.com/article/S0896627311008282/abstract
+  https://www.cell.com/neuron/abstract/S0896-6273(11)00828-2</url>
+</bibl>
+
+<bibl id="B9">
+  <title><p>TDP-43 is a component of ubiquitin-positive tau-negative inclusions
+  in frontotemporal lobar degeneration and amyotrophic lateral
+  sclerosis</p></title>
+  <aug>
+    <au><snm>Arai</snm><fnm>T.</fnm></au>
+    <au><snm>Hasegawa</snm><fnm>M.</fnm></au>
+    <au><snm>Akiyama</snm><fnm>H.</fnm></au>
+    <au><snm>Ikeda</snm><fnm>K.</fnm></au>
+    <au><snm>Nonaka</snm><fnm>T.</fnm></au>
+    <au><snm>Mori</snm><fnm>H.</fnm></au>
+    <au><snm>Mann</snm><fnm>D.</fnm></au>
+    <au><snm>Tsuchiya</snm><fnm>K.</fnm></au>
+    <au><snm>Yoshida</snm><fnm>M.</fnm></au>
+    <au><snm>Hashizume</snm><fnm>Y.</fnm></au>
+    <au><snm>Hashizume</snm><fnm>Y.</fnm></au>
+    <au><snm>Oda</snm><fnm>T.</fnm></au>
+  </aug>
+  <source>Biochemical and Biophysical Research Communications</source>
+  <pubdate>2006</pubdate>
+  <volume>351</volume>
+  <fpage>602</fpage>
+  <lpage>611</lpage>
+</bibl>
+
+<bibl id="B10">
+  <title><p>Alpha-synuclein fibrils recruit TBK1 and OPTN to lysosomal damage
+  sites and induce autophagy in microglial cells</p></title>
+  <aug>
+    <au><snm>Bussi</snm><fnm>C</fnm></au>
+    <au><snm>Ramos</snm><fnm>JMP</fnm></au>
+    <au><snm>Arroyo</snm><fnm>DS</fnm></au>
+    <au><snm>Gallea</snm><fnm>JI</fnm></au>
+    <au><snm>Ronchi</snm><fnm>P</fnm></au>
+    <au><snm>Kolovou</snm><fnm>A</fnm></au>
+    <au><snm>Wang</snm><fnm>JM</fnm></au>
+    <au><snm>Florey</snm><fnm>O</fnm></au>
+    <au><snm>Celej</snm><fnm>MS</fnm></au>
+    <au><snm>Schwab</snm><fnm>Y</fnm></au>
+    <au><snm>Ktistakis</snm><fnm>NT</fnm></au>
+    <au><snm>Iribarren</snm><fnm>P</fnm></au>
+  </aug>
+  <source>Journal of Cell Science</source>
+  <publisher>Company of Biologists Ltd</publisher>
+  <pubdate>2018</pubdate>
+  <volume>131</volume>
+  <url>/pmc/articles/PMC6518333/ /pmc/articles/PMC6518333/?report=abstract
+  https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6518333/</url>
+</bibl>
+
+<bibl id="B11">
+  <title><p>C9orf72-mediated ALS and FTD: multiple pathways to
+  disease</p></title>
+  <aug>
+    <au><snm>Balendra</snm><fnm>R</fnm></au>
+    <au><snm>Isaacs</snm><fnm>AM</fnm></au>
+  </aug>
+  <source>Nature Reviews Neurology 2018 14:9</source>
+  <publisher>Nature Publishing Group</publisher>
+  <pubdate>2018</pubdate>
+  <volume>14</volume>
+  <fpage>544</fpage>
+  <lpage>558</lpage>
+  <url>https://www.nature.com/articles/s41582-018-0047-2</url>
+</bibl>
+
+<bibl id="B12">
+  <title><p>Pathomechanism Heterogeneity in the Amyotrophic Lateral Sclerosis
+  and Frontotemporal Dementia Disease Spectrum: Providing Focus Through the
+  Lens of Autophagy</p></title>
+  <aug>
+    <au><snm>Casterton</snm><fnm>R.L.</fnm></au>
+    <au><snm>Hunt</snm><fnm>R.J.</fnm></au>
+    <au><snm>Fanto</snm><fnm>M.</fnm></au>
+  </aug>
+  <source>Journal of Molecular Biology</source>
+  <pubdate>2020</pubdate>
+  <volume>432</volume>
+  <fpage>2692</fpage>
+  <lpage>2713</lpage>
+</bibl>
+
+<bibl id="B13">
+  <title><p>Motor neuron disease-frontotemporal dementia: a clinical
+  continuum</p></title>
+  <aug>
+    <au><snm>Devenney</snm><fnm>E</fnm></au>
+    <au><snm>Vucic</snm><fnm>S</fnm></au>
+    <au><snm>Hodges</snm><fnm>JR</fnm></au>
+    <au><snm>Kiernan</snm><fnm>MC</fnm></au>
+  </aug>
+  <source>Expert Review of Neurotherapeutics</source>
+  <publisher>Informa Healthcare</publisher>
+  <pubdate>2015</pubdate>
+  <volume>15</volume>
+  <fpage>509</fpage>
+  <lpage>522</lpage>
+  <url>https://www.tandfonline.com/doi/abs/10.1586/14737175.2015.1034108</url>
+</bibl>
+
+<bibl id="B14">
+  <title><p>Frontotemporal dementia</p></title>
+  <aug>
+    <au><snm>Devenney</snm><fnm>EM</fnm></au>
+    <au><snm>Ahmed</snm><fnm>RM</fnm></au>
+    <au><snm>Hodges</snm><fnm>JR</fnm></au>
+  </aug>
+  <source>Handbook of Clinical Neurology</source>
+  <publisher>Elsevier</publisher>
+  <pubdate>2019</pubdate>
+  <volume>167</volume>
+  <fpage>279</fpage>
+  <lpage>299</lpage>
+</bibl>
+
+<bibl id="B15">
+  <title><p>Enfermedad neurológica poco frecuente</p></title>
+  <aug>
+    <au><cnm>{Orphanet}</cnm></au>
+  </aug>
+  <pubdate>n.d.</pubdate>
+  <url>https://www.orpha.net/es/disease/detail/454887#:~:text=Es%20una%20enfermedad%20neurol%C3%B3gica%20poco,las%20extremidades%20y%20disfunci%C3%B3n%20visoespacial.</url>
+  <note>Accessed: 2024-10-04</note>
+</bibl>
+
+</refgrp>
+} % end of \BMCxmlcomment

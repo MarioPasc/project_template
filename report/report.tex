@@ -40,15 +40,19 @@
 			%% POR PERSONA                              %%
 			%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 			
-			\author[
-			  addressref={aff1},                   % ESTA LINEA SE COPIA IGUAL PARA CADA AUTOR
-			  corref={aff1},                       % ESTA LINEA SOLO DEBE TENERLA EL COORDINADOR DEL GRUPO
-			  email={jane.e.doe@cambridge.co.uk}   % VUESTRO CORREO ACTIVO
-			]{\inits{J.E.}\fnm{Jane E.} \snm{Doe}} % inits: INICIALES DE AUTOR, fnm: NOMBRE DE AUTOR, snm: APELLIDOS DE AUTOR
+		%	\author[
+		%	  addressref={aff1},                   % ESTA LINEA SE COPIA IGUAL PARA CADA AUTOR
+		%	  corref={aff1},                       % ESTA LINEA SOLO DEBE TENERLA EL COORDINADOR DEL GRUPO
+		%	  email={jane.e.doe@cambridge.co.uk}   % VUESTRO CORREO ACTIVO
+		%	]{\inits{J.E.}\fnm{Jane E.} \snm{Doe}} % inits: INICIALES DE AUTOR, fnm: NOMBRE DE AUTOR, snm: APELLIDOS DE AUTOR
 			\author[
 			  addressref={aff1},
 			  email={ainhoasb@uma.es}
 			]{\inits{A.N.S.B.}\fnm{Ainhoa Nerea} \snm{Santana Bastante}}
+			\author[
+				addressref={aff1},
+				email={0610901647@uma.es},
+			]{\inits{C.R.G.}\fnm{Carmen}\snm{ Rodríguez González}}
 			
 			%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 			%% AFILIACION. NO TOCAR                     %%
@@ -78,9 +82,9 @@
 			%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 			
 			\begin{keyword}
-			\kwd{sample}
-			\kwd{article}
-			\kwd{author}
+			\kwd{HPO}
+			\kwd{demencia frontotemporal}
+			\kwd{biología de sistemas}
 			\end{keyword}
 		
 		
@@ -106,10 +110,14 @@
 	\begin{backmatter}
 	
 		\section*{Abreviaciones}%% if any
-			Indicar lista de abreviaciones mostrando cada acrónimo a que corresponde
+			FTD $\rightarrow$ Demencia Frontotemporal
+			
+			EA $\rightarrow$ Enfermedad de Alzheimer
+			
+			ELA $\rightarrow$ Esclerosis Lateral Amiotrófica
 		
 		\section*{Disponibilidad de datos y materiales}%% if any
-			Debéis indicar aquí un enlace a vuestro repositorio de github.
+			https://github.com/MarioPasc/project\_template.git
 		
 		\section*{Contribución de los autores}
 			Usando las iniciales que habéis definido al comienzo del documento, debeis indicar la contribución al proyecto en el estilo:
