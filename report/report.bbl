@@ -1,6 +1,6 @@
 %% BioMed_Central_Bib_Style_v1.01
 
-\begin{thebibliography}{37}
+\begin{thebibliography}{42}
 % BibTex style file: bmc-mathphys.bst (version 2.1), 2014-07-24
 \ifx \bisbn   \undefined \def \bisbn  #1{ISBN #1}\fi
 \ifx \binits  \undefined \def \binits#1{#1}\fi
@@ -655,6 +655,67 @@ Accessed: 2024-10-04
 \endbibitem
 
 %%% 37
+\bibitem{Hodges2003}
+\begin{barticle}
+\bauthor{\bsnm{Hodges}, \binits{J.R.}},
+\bauthor{\bsnm{Davies}, \binits{R.}},
+\bauthor{\bsnm{Xuereb}, \binits{J.}},
+\bauthor{\bsnm{Casey}, \binits{B.}},
+\bauthor{\bsnm{Broe}, \binits{M.}},
+\bauthor{\bsnm{Bak}, \binits{T.}},
+\bauthor{\bsnm{Kril}, \binits{J.}},
+\bauthor{\bsnm{Halliday}, \binits{G.}}:
+\batitle{Survival in frontotemporal dementia}.
+\bjtitle{Neurology}
+\bvolume{61}(\bissue{3}),
+\bfpage{349}--\blpage{354}
+(\byear{2003})
+\end{barticle}
+\endbibitem
+
+%%% 38
+\bibitem{SpringerLink2023}
+\begin{botherref}
+\oauthor{\bsnm{Neurotherapeutics}}:
+New approaches to the treatment of frontotemporal dementia.
+SpringerLink
+(2023)
+\end{botherref}
+\endbibitem
+
+%%% 39
+\bibitem{PassageBio2023}
+\begin{botherref}
+\oauthor{\bsnm{Bio}, \binits{P.}}:
+upliFT-D: A Clinical Trial for Frontotemporal Dementia with Progranulin Gene
+  Mutations
+(2023).
+\url{https://passagebioclinicaltrials.com/Frontotemporal-Dementia/en/about-this-trial}
+\end{botherref}
+\endbibitem
+
+%%% 40
+\bibitem{MayoClinic2023}
+\begin{botherref}
+\oauthor{\bsnm{Clinic}, \binits{M.}}:
+Frontotemporal Dementia Clinical Trials - Mayo Clinic Research
+(2023).
+\url{https://www.mayo.edu/research/clinical-trials/diseases-conditions/frontotemporal-dementia}
+\end{botherref}
+\endbibitem
+
+%%% 41
+\bibitem{NINDS2023}
+\begin{botherref}
+\oauthor{\bparticle{of} \bsnm{Neurological~Disorders}, \binits{N.I.}},
+\oauthor{\bsnm{(NINDS)}, \binits{S.}}:
+Treatment Study of Frontotemporal Dementia
+(2023).
+\url{https://www.ninds.nih.gov/health-information/clinical-trials/treatment-study-frontotemporal-dementia}
+\end{botherref}
+\endbibitem
+
+%%% 42
 \bibitem{peet2021neuroimaging}
 \begin{barticle}
 \bauthor{\bsnm{Peet}, \binits{B.T.}},
@@ -1344,6 +1405,69 @@ Accessed: 2024-10-04
 </bibl>
 
 <bibl id="B37">
+  <title><p>Survival in frontotemporal dementia</p></title>
+  <aug>
+    <au><snm>Hodges</snm><fnm>JR</fnm></au>
+    <au><snm>Davies</snm><fnm>R</fnm></au>
+    <au><snm>Xuereb</snm><fnm>J</fnm></au>
+    <au><snm>Casey</snm><fnm>B</fnm></au>
+    <au><snm>Broe</snm><fnm>M</fnm></au>
+    <au><snm>Bak</snm><fnm>T</fnm></au>
+    <au><snm>Kril</snm><fnm>J</fnm></au>
+    <au><snm>Halliday</snm><fnm>G</fnm></au>
+  </aug>
+  <source>Neurology</source>
+  <publisher>Wolters Kluwer</publisher>
+  <pubdate>2003</pubdate>
+  <volume>61</volume>
+  <issue>3</issue>
+  <fpage>349</fpage>
+  <lpage>-354</lpage>
+  <url>https://pubmed.ncbi.nlm.nih.gov/12913196/</url>
+</bibl>
+
+<bibl id="B38">
+  <title><p>New Approaches to the Treatment of Frontotemporal
+  Dementia</p></title>
+  <aug>
+    <au><cnm>Neurotherapeutics</cnm></au>
+  </aug>
+  <source>SpringerLink</source>
+  <pubdate>2023</pubdate>
+  <url>https://link.springer.com/article/10.1007/s13311-023-01380-6</url>
+</bibl>
+
+<bibl id="B39">
+  <title><p>upliFT-D: A Clinical Trial for Frontotemporal Dementia with
+  Progranulin Gene Mutations</p></title>
+  <aug>
+    <au><snm>Bio</snm><fnm>P</fnm></au>
+  </aug>
+  <pubdate>2023</pubdate>
+  <url>https://passagebioclinicaltrials.com/Frontotemporal-Dementia/en/about-this-trial</url>
+</bibl>
+
+<bibl id="B40">
+  <title><p>Frontotemporal Dementia Clinical Trials - Mayo Clinic
+  Research</p></title>
+  <aug>
+    <au><snm>Clinic</snm><fnm>M</fnm></au>
+  </aug>
+  <pubdate>2023</pubdate>
+  <url>https://www.mayo.edu/research/clinical-trials/diseases-conditions/frontotemporal-dementia</url>
+</bibl>
+
+<bibl id="B41">
+  <title><p>Treatment Study of Frontotemporal Dementia</p></title>
+  <aug>
+    <au><snm>Neurological Disorders</snm><fnm>NI</fnm></au>
+    <au><snm>(NINDS)</snm><fnm>S</fnm></au>
+  </aug>
+  <pubdate>2023</pubdate>
+  <url>https://www.ninds.nih.gov/health-information/clinical-trials/treatment-study-frontotemporal-dementia</url>
+</bibl>
+
+<bibl id="B42">
   <title><p>Neuroimaging in frontotemporal dementia: heterogeneity and
   relationships with underlying neuropathology</p></title>
   <aug>
