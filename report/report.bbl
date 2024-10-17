@@ -1,6 +1,6 @@
 %% BioMed_Central_Bib_Style_v1.01
 
-\begin{thebibliography}{28}
+\begin{thebibliography}{37}
 % BibTex style file: bmc-mathphys.bst (version 2.1), 2014-07-24
 \ifx \bisbn   \undefined \def \bisbn  #1{ISBN #1}\fi
 \ifx \binits  \undefined \def \binits#1{#1}\fi
@@ -509,6 +509,152 @@ Accessed: 2024-10-04
 \endbibitem
 
 %%% 28
+\bibitem{pan2013clinic}
+\begin{barticle}
+\bauthor{\bsnm{Pan}, \binits{X.-d.}},
+\bauthor{\bsnm{Chen}, \binits{X.-c.}}:
+\batitle{Clinic, neuropathology and molecular genetics of frontotemporal
+  dementia: a mini-review}.
+\bjtitle{Translational neurodegeneration}
+\bvolume{2},
+\bfpage{1}--\blpage{9}
+(\byear{2013})
+\end{barticle}
+\endbibitem
+
+%%% 29
+\bibitem{caillet2015regulation}
+\begin{barticle}
+\bauthor{\bsnm{Caillet-Boudin}, \binits{M.-L.}},
+\bauthor{\bsnm{Bu{\'e}e}, \binits{L.}},
+\bauthor{\bsnm{Sergeant}, \binits{N.}},
+\bauthor{\bsnm{Lefebvre}, \binits{B.}}:
+\batitle{Regulation of human mapt gene expression}.
+\bjtitle{Molecular neurodegeneration}
+\bvolume{10},
+\bfpage{1}--\blpage{14}
+(\byear{2015})
+\end{barticle}
+\endbibitem
+
+%%% 30
+\bibitem{bateman2009granulin}
+\begin{barticle}
+\bauthor{\bsnm{Bateman}, \binits{A.}},
+\bauthor{\bsnm{Bennett}, \binits{H.P.}}:
+\batitle{The granulin gene family: from cancer to dementia}.
+\bjtitle{Bioessays}
+\bvolume{31}(\bissue{11}),
+\bfpage{1245}--\blpage{1254}
+(\byear{2009})
+\end{barticle}
+\endbibitem
+
+%%% 31
+\bibitem{mackenzie2014neuropathology}
+\begin{barticle}
+\bauthor{\bsnm{Mackenzie}, \binits{I.R.}},
+\bauthor{\bsnm{Frick}, \binits{P.}},
+\bauthor{\bsnm{Neumann}, \binits{M.}}:
+\batitle{The neuropathology associated with repeat expansions in the c9orf72
+  gene}.
+\bjtitle{Acta neuropathologica}
+\bvolume{127},
+\bfpage{347}--\blpage{357}
+(\byear{2014})
+\end{barticle}
+\endbibitem
+
+%%% 32
+\bibitem{borroni2010tardbp}
+\begin{barticle}
+\bauthor{\bsnm{Borroni}, \binits{B.}},
+\bauthor{\bsnm{Archetti}, \binits{S.}},
+\bauthor{\bsnm{Del~Bo}, \binits{R.}},
+\bauthor{\bsnm{Papetti}, \binits{A.}},
+\bauthor{\bsnm{Buratti}, \binits{E.}},
+\bauthor{\bsnm{Bonvicini}, \binits{C.}},
+\bauthor{\bsnm{Agosti}, \binits{C.}},
+\bauthor{\bsnm{Cosseddu}, \binits{M.}},
+\bauthor{\bsnm{Turla}, \binits{M.}},
+\bauthor{\bsnm{Di~Lorenzo}, \binits{D.}}, \betal:
+\batitle{Tardbp mutations in frontotemporal lobar degeneration: frequency,
+  clinical features, and disease course}.
+\bjtitle{Rejuvenation research}
+\bvolume{13}(\bissue{5}),
+\bfpage{509}--\blpage{517}
+(\byear{2010})
+\end{barticle}
+\endbibitem
+
+%%% 33
+\bibitem{wong2018three}
+\begin{barticle}
+\bauthor{\bsnm{Wong}, \binits{T.H.}},
+\bauthor{\bsnm{Pottier}, \binits{C.}},
+\bauthor{\bsnm{Hondius}, \binits{D.C.}},
+\bauthor{\bsnm{Meeter}, \binits{L.H.}},
+\bauthor{\bsnm{Van~Rooij}, \binits{J.G.}},
+\bauthor{\bsnm{Melhem}, \binits{S.}},
+\bauthor{\bsnm{bank}, \binits{N.B.}},
+\bauthor{\bparticle{van} \bsnm{Minkelen}, \binits{R.}},
+\bauthor{\bparticle{van} \bsnm{Duijn}, \binits{C.M.}},
+\bauthor{\bsnm{Rozemuller}, \binits{A.J.}}, \betal:
+\batitle{Three vcp mutations in patients with frontotemporal dementia}.
+\bjtitle{Journal of Alzheimer’s Disease}
+\bvolume{65}(\bissue{4}),
+\bfpage{1139}--\blpage{1146}
+(\byear{2018})
+\end{barticle}
+\endbibitem
+
+%%% 34
+\bibitem{m2011frontotemporal}
+\begin{barticle}
+\bauthor{\bsnm{M~Isaacs}, \binits{A.}},
+\bauthor{\bsnm{Johannsen}, \binits{P.}},
+\bauthor{\bsnm{Holm}, \binits{I.}},
+\bauthor{\bsnm{E~Nielsen}, \binits{J.}}, \betal:
+\batitle{Frontotemporal dementia caused by chmp2b mutations}.
+\bjtitle{Current Alzheimer Research}
+\bvolume{8}(\bissue{3}),
+\bfpage{246}--\blpage{251}
+(\byear{2011})
+\end{barticle}
+\endbibitem
+
+%%% 35
+\bibitem{granadillo2008genetica}
+\begin{barticle}
+\bauthor{\bparticle{Granadillo~de} \bsnm{Luque}, \binits{J.L.}},
+\bauthor{\bsnm{Zarante}, \binits{I.}}:
+\batitle{Gen{\'e}tica de la demencia frontotemporal}.
+\bjtitle{Revista colombiana de psiquiatr{\'\i}a}
+\bvolume{37}(\bissue{1}),
+\bfpage{94}--\blpage{112}
+(\byear{2008})
+\end{barticle}
+\endbibitem
+
+%%% 36
+\bibitem{rosso2003medical}
+\begin{barticle}
+\bauthor{\bsnm{Rosso}, \binits{S.}},
+\bauthor{\bsnm{Landweer}, \binits{E.}},
+\bauthor{\bsnm{Houterman}, \binits{M.}},
+\bauthor{\bsnm{Kaat}, \binits{L.D.}},
+\bauthor{\bsnm{Van~Duijn}, \binits{C.}},
+\bauthor{\bsnm{Van~Swieten}, \binits{J.}}:
+\batitle{Medical and environmental risk factors for sporadic frontotemporal
+  dementia: a retrospective case--control study}.
+\bjtitle{Journal of Neurology, Neurosurgery \& Psychiatry}
+\bvolume{74}(\bissue{11}),
+\bfpage{1574}--\blpage{1576}
+(\byear{2003})
+\end{barticle}
+\endbibitem
+
+%%% 37
 \bibitem{peet2021neuroimaging}
 \begin{barticle}
 \bauthor{\bsnm{Peet}, \binits{B.T.}},
@@ -1032,6 +1178,172 @@ Accessed: 2024-10-04
 </bibl>
 
 <bibl id="B28">
+  <title><p>Clinic, neuropathology and molecular genetics of frontotemporal
+  dementia: a mini-review</p></title>
+  <aug>
+    <au><snm>Pan</snm><fnm>Xd</fnm></au>
+    <au><snm>Chen</snm><fnm>Xc</fnm></au>
+  </aug>
+  <source>Translational neurodegeneration</source>
+  <publisher>Springer</publisher>
+  <pubdate>2013</pubdate>
+  <volume>2</volume>
+  <fpage>1</fpage>
+  <lpage>-9</lpage>
+</bibl>
+
+<bibl id="B29">
+  <title><p>Regulation of human MAPT gene expression</p></title>
+  <aug>
+    <au><snm>Caillet Boudin</snm><fnm>ML</fnm></au>
+    <au><snm>Bu{\'e}e</snm><fnm>L</fnm></au>
+    <au><snm>Sergeant</snm><fnm>N</fnm></au>
+    <au><snm>Lefebvre</snm><fnm>B</fnm></au>
+  </aug>
+  <source>Molecular neurodegeneration</source>
+  <publisher>Springer</publisher>
+  <pubdate>2015</pubdate>
+  <volume>10</volume>
+  <fpage>1</fpage>
+  <lpage>-14</lpage>
+</bibl>
+
+<bibl id="B30">
+  <title><p>The granulin gene family: from cancer to dementia</p></title>
+  <aug>
+    <au><snm>Bateman</snm><fnm>A</fnm></au>
+    <au><snm>Bennett</snm><fnm>HP</fnm></au>
+  </aug>
+  <source>Bioessays</source>
+  <publisher>Wiley Online Library</publisher>
+  <pubdate>2009</pubdate>
+  <volume>31</volume>
+  <issue>11</issue>
+  <fpage>1245</fpage>
+  <lpage>-1254</lpage>
+</bibl>
+
+<bibl id="B31">
+  <title><p>The neuropathology associated with repeat expansions in the C9ORF72
+  gene</p></title>
+  <aug>
+    <au><snm>Mackenzie</snm><fnm>IR</fnm></au>
+    <au><snm>Frick</snm><fnm>P</fnm></au>
+    <au><snm>Neumann</snm><fnm>M</fnm></au>
+  </aug>
+  <source>Acta neuropathologica</source>
+  <publisher>Springer</publisher>
+  <pubdate>2014</pubdate>
+  <volume>127</volume>
+  <fpage>347</fpage>
+  <lpage>-357</lpage>
+</bibl>
+
+<bibl id="B32">
+  <title><p>TARDBP mutations in frontotemporal lobar degeneration: frequency,
+  clinical features, and disease course</p></title>
+  <aug>
+    <au><snm>Borroni</snm><fnm>B</fnm></au>
+    <au><snm>Archetti</snm><fnm>S</fnm></au>
+    <au><snm>Del Bo</snm><fnm>R</fnm></au>
+    <au><snm>Papetti</snm><fnm>A</fnm></au>
+    <au><snm>Buratti</snm><fnm>E</fnm></au>
+    <au><snm>Bonvicini</snm><fnm>C</fnm></au>
+    <au><snm>Agosti</snm><fnm>C</fnm></au>
+    <au><snm>Cosseddu</snm><fnm>M</fnm></au>
+    <au><snm>Turla</snm><fnm>M</fnm></au>
+    <au><snm>Di Lorenzo</snm><fnm>D</fnm></au>
+    <au><cnm>others</cnm></au>
+  </aug>
+  <source>Rejuvenation research</source>
+  <publisher>Mary Ann Liebert, Inc. 140 Huguenot Street, 3rd Floor New
+  Rochelle, NY 10801 USA</publisher>
+  <pubdate>2010</pubdate>
+  <volume>13</volume>
+  <issue>5</issue>
+  <fpage>509</fpage>
+  <lpage>-517</lpage>
+</bibl>
+
+<bibl id="B33">
+  <title><p>Three VCP mutations in patients with frontotemporal
+  dementia</p></title>
+  <aug>
+    <au><snm>Wong</snm><fnm>TH</fnm></au>
+    <au><snm>Pottier</snm><fnm>C</fnm></au>
+    <au><snm>Hondius</snm><fnm>DC</fnm></au>
+    <au><snm>Meeter</snm><fnm>LH</fnm></au>
+    <au><snm>Van Rooij</snm><fnm>JG</fnm></au>
+    <au><snm>Melhem</snm><fnm>S</fnm></au>
+    <au><snm>bank</snm><fnm>NB</fnm></au>
+    <au><snm>Minkelen</snm><fnm>R</fnm></au>
+    <au><snm>Duijn</snm><fnm>CM</fnm></au>
+    <au><snm>Rozemuller</snm><fnm>AJ</fnm></au>
+    <au><cnm>others</cnm></au>
+  </aug>
+  <source>Journal of Alzheimer’s Disease</source>
+  <publisher>SAGE Publications Sage UK: London, England</publisher>
+  <pubdate>2018</pubdate>
+  <volume>65</volume>
+  <issue>4</issue>
+  <fpage>1139</fpage>
+  <lpage>-1146</lpage>
+</bibl>
+
+<bibl id="B34">
+  <title><p>Frontotemporal dementia caused by CHMP2B mutations</p></title>
+  <aug>
+    <au><snm>M Isaacs</snm><fnm>A</fnm></au>
+    <au><snm>Johannsen</snm><fnm>P</fnm></au>
+    <au><snm>Holm</snm><fnm>I</fnm></au>
+    <au><snm>E Nielsen</snm><fnm>J</fnm></au>
+    <au><cnm>others</cnm></au>
+  </aug>
+  <source>Current Alzheimer Research</source>
+  <publisher>Bentham Science Publishers</publisher>
+  <pubdate>2011</pubdate>
+  <volume>8</volume>
+  <issue>3</issue>
+  <fpage>246</fpage>
+  <lpage>-251</lpage>
+</bibl>
+
+<bibl id="B35">
+  <title><p>Gen{\'e}tica de la demencia frontotemporal</p></title>
+  <aug>
+    <au><snm>Luque</snm><fnm>JL</fnm></au>
+    <au><snm>Zarante</snm><fnm>I</fnm></au>
+  </aug>
+  <source>Revista colombiana de psiquiatr{\'\i}a</source>
+  <publisher>Asociacion Colombiana de Psiquiatria</publisher>
+  <pubdate>2008</pubdate>
+  <volume>37</volume>
+  <issue>1</issue>
+  <fpage>94</fpage>
+  <lpage>-112</lpage>
+</bibl>
+
+<bibl id="B36">
+  <title><p>Medical and environmental risk factors for sporadic frontotemporal
+  dementia: a retrospective case--control study</p></title>
+  <aug>
+    <au><snm>Rosso</snm><fnm>SM</fnm></au>
+    <au><snm>Landweer</snm><fnm>EJ</fnm></au>
+    <au><snm>Houterman</snm><fnm>M</fnm></au>
+    <au><snm>Kaat</snm><fnm>LD</fnm></au>
+    <au><snm>Van Duijn</snm><fnm>CM</fnm></au>
+    <au><snm>Van Swieten</snm><fnm>JC</fnm></au>
+  </aug>
+  <source>Journal of Neurology, Neurosurgery \& Psychiatry</source>
+  <publisher>BMJ Publishing Group Ltd</publisher>
+  <pubdate>2003</pubdate>
+  <volume>74</volume>
+  <issue>11</issue>
+  <fpage>1574</fpage>
+  <lpage>-1576</lpage>
+</bibl>
+
+<bibl id="B37">
   <title><p>Neuroimaging in frontotemporal dementia: heterogeneity and
   relationships with underlying neuropathology</p></title>
   <aug>
