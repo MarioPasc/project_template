@@ -32,7 +32,18 @@ Para el análisis funcional y la construcción de redes genéticas en este estud
 	\item \textbf{ClusterProfiler (versión 4.15.0)}: Paquete para análisis de enriquecimiento funcional en términos GO, KEGG y Reactome, con opciones de ajuste \cite{clusterprofiler}.
 \end{itemize}
 
-\subsection{Análisis Funcional}
+\subsection{Análisis de enriquecimiento de vías biológicas}
+
+El análisis de enriquecimiento permite identificar vías biológicas o pathways que están significativamente representados en una lista de genes de interés, por medio de prubas estadísticas. Un pathway es un conjunto de genes que trabajan en conjunto para llevar a cabo un proceso biológico específico.\cite{Reimand2019}
+
+Se realizó un análisis de enriquecimiento mediante la API de STRINGdb. Mediante el mapeo de las anotaciones funcionales de los genes en ontologías como Gene Ontology (GO), UniProt, Reactome y KEGG y comparando la distribución de estos términos en el conjunto de genes de interés con su distribución en un conjunto de referencia, se identificaron estadísticamente los términos sobrerrepresentados en la lista de genes asociados a la enfermedad. \cite{Tipney2010}
+
+STRINGdb, por tanto, permite analizar diversas categorías de anotaciones funcionales, incluyendo los términos de Gene Ontology (procesos biológicos, funciones moleculares y componentes celulares), rutas de KEGG y Reactome \cite{Szklarczyk2023}. Se realizó un filtrado según el tipo de término para obtener los diferentes enriquecimientos funcionales de interés.
+
+Para calcular el enriquecimiento, STRINGdb utiliza un test hipergeométrico que evalúa si la representación de cada término funcional en el conjunto de genes de interés es mayor que la esperada por azar. Para controlar el error debido a comparaciones múltiples, se aplica la corrección de Benjamini-Hochberg para ajustar la tasa de descubrimiento falso (FDR) \cite{Szklarczyk2023}.
+
+El análisis de enriquecimiento se realizó tanto en el conjunto completo de genes asociados a la enfermedad, extraído de términos de HPO, como en los genes agrupados en clústeres. 
+
 
 \subsection{Clustering}
 
