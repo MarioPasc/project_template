@@ -36,9 +36,41 @@ Para el análisis funcional y la construcción de redes genéticas en este estud
 
 \subsection{Clustering}
 
+Al aplicar algoritmos de clustering, nuestro objetivo es descubrir comunidades funcionales dentro de la red de genes asociada a la demencia frontotemporal. Estas comunidades, módulos, o \textit{clusters} funcionales pueden representar procesos biológicos específicos, vías celulares, o mecanismos asociados al fenotipo FTD. Encontrar estos clusters podría revelar posibles dianas terapéuticas o grupos de biomarcadores dentro del conjunto de genes, lo cual podría abrir las puertas a nuevos tratamientos para los pacientes de FTD.
+
 \subsubsection*{Red}
 
+En la red de interacción proteína-proteína (PPI) obtenida mediante la API de STRINGdb, cada nodo representa un gen y cada arista representa una interacción entre genes, ponderada por un puntaje de confianza otorgado por STRINGdb \cite{szklarczyk2023stringdb}. Para enfocarnos en interacciones más sólidas y confiables, se aplicó un umbral mínimo de confianza en las aristas, lo que permitió refinar la red y mejorar la relevancia de los clústeres detectados 
+
+% (\textbf{NOTA:} Se debe ahondar en esto si al final se hace: ¿Por qué ese umbral? ¿Y si fueran otros umbrales?).
+
 \subsubsection*{Algoritmos}
+
+A continuación, se detallan los tres algoritmos de clustering, proporcionados por la librería \textit{iGraph}, elegidos para este estudio, los cuales pretenden cubrir diferentes enfoques teóricos en la detección de comunidades funcionales \cite{igraph}.  
+
+\textit{Walktrap}: Algoritmo de clustering jerárquico aglomerativo que detecta comunidades basándose en la probabilidad de que recorridos aleatorios dentro de la red permanezcan dentro de clústeres cohesivos \cite{pons2005walktrap}. El algoritmo aplica recorridos aleatorios para capturar la proximidad de los nodos, asumiendo que los nodos que pertenecen a la misma comunidad tienen mayores probabilidades de estar conectados mediante recorridos cortos. Comienza con cada nodo como su propio clúster, fusionando sucesivamente los clústeres cercanos hasta alcanzar una partición óptima. Se ajustó la longitud de los pasos (\textit{steps}).
+
+\textit{Algoritmo de Leiden}: Se basa en optimizar el Constant Potts Model (CPM) de la red \cite{traag2019leiden,constantplottsmodel}. Esta función, mostrada en la Ecuación \ref{eq:cpm}, evalúa la calidad de una partición en comunidades considerando un balance entre la densidad interna de cada clúster y el parámetro de resolución \(\gamma\), que controla el tamaño preferido de las comunidades finales. El término \(n_c\) se refiere al número de nodos, mientras que \(e_c\) es el número de aristas internas, ambos referidos a la comunidad \(c\).
+
+\begin{equation}
+	\label{eq:cpm}
+	\mathcal{H} = \sum_{c} \left[ e_c - \gamma \left( \frac{n_c (n_c - 1)}{2} \right) \right]
+\end{equation}
+
+\noindent Se ajustó el parámetro \(\gamma\), así como el número de iteraciones del algoritmo, permitiendo que el Leiden refinara iterativamente la partición. El resto de parámetros se fijaron a su valor por defecto. 
+
+% (\textbf{NOTA:} Hay un parámetro intersante, \textit{initial\_membership} el cual son nodos 'semilla' que se pasan como argumento, y el algoritmo intenta mejorar las comunidades alrededor de estos nodos. Podríamos usar genes del análisis funcional como semilla y ver qué pasa.)
+
+\textit{Algoritmo de Louvain}: Este algoritmo optimiza la modularidad de la red, una métrica que mide la calidad de una partición en comunidades al comparar la densidad de conexiones internas con la densidad esperada si las conexiones fueran aleatorias \cite{Blondel2008Louvain}. La modularidad \( Q \), definida en la Ecuación \ref{eq:modularity}, es un valor escalar entre \(-1\) y \(1\) que representa la diferencia entre la densidad de aristas dentro de las comunidades y la densidad de aristas esperada. El algoritmo Louvain maximiza esta modularidad en dos fases, cuyo resultado es la formación una nueva red sobre la cual se repite el proceso hasta que la modularidad no mejore más. En redes ponderadas, los autores del algoritmo expresaron la modularidad a optimizar como:
+
+\begin{equation}
+	\label{eq:modularity}
+	Q = \frac{1}{2m} \sum_{i,j} \left[ A_{ij} - \frac{k_i k_j}{2m} \right] \delta(c_i, c_j),
+\end{equation}
+
+\noindent donde \( A_{ij} \) es el peso de la arista entre los nodos \( i \) y \( j \), \( k_i \) y \( k_j \) son las sumas de los pesos de las aristas conectadas a los nodos \( i \) y \( j \), \( c_i \) y \( c_j \) representan las comunidades a las que pertenecen los nodos \( i \) y \( j \), y \( \delta(c_i, c_j) \) es una función delta de Kronecker que es 1 si \( c_i = c_j \) y 0 en caso contrario. El término \( m \) es la suma total de los pesos de las aristas en la red.
+
+\noindent Se ajustó el parámetro de resolución, que controla el tamaño final de las comunidades. El resto de parámetros se dejaron con sus valores por defecto.
 
 \subsubsection*{Medidas de Rendimiento}
 
