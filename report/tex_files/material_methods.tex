@@ -1,1 +1,31 @@
 \section{Materiales y métodos}
+	
+Para el análisis funcional y la construcción de redes genéticas en este estudio, se seleccionaron herramientas especializadas que permiten tanto la exploración bioinformática como la visualización de datos complejos. Dado que el objetivo principal es investigar la interacción entre genes y módulos específicos asociados a la demencia frontotemporal, se ha optado por una combinación de paquetes en Python y R que ofrecen un balance entre precisión analítica y capacidades visuales avanzadas.
+
+\subsection*{Paquetes de Python para el análisis funcional y otras funciones}
+
+\begin{itemize}
+	\item \textbf{Pandas (versión 2.2.3)}: Estructura de datos flexible para manipulación de datos; ideal para manejar resultados de enriquecimiento \cite{pandas}.
+	\item \textbf{Matplotlib (versión 3.8.1)}: Librería de visualización de datos, utilizada para crear gráficos en 2D como líneas, barras y dispersión \cite{matplotlib}.
+	\item \textbf{Scienceplots (versión 2.1.1)}: Paquete que proporciona estilos de gráficos preconfigurados para facilitar la creación de visualizaciones con estética científica y de alta calidad \cite{scienceplots}.
+	\item \textbf{Requests (versión 2.31.0)}: Biblioteca para realizar solicitudes HTTP, utilizada para conectar con la API de STRINGdb \cite{requests}.
+	\item \textbf{GOATOOLS (versión 1.2.3)}: Paquete para realizar análisis de enriquecimiento funcional de términos Gene Ontology (GO) \cite{goatools}.
+	\item \textbf{G:Profiler (versión 1.4.0)}: Herramienta para análisis de enriquecimiento que abarca GO, KEGG y Reactome, entre otras bases de datos \cite{gprofiler}.
+	\item \textbf{Statsmodels (versión 0.14.0)}: Biblioteca de estadísticas para aplicar ajustes de p-valor (como Benjamini-Hochberg) en los resultados \cite{statsmodels}.
+\end{itemize}
+
+\vspace{1cm}
+
+\subsection*{Paquetes de R para clustering y visualización de redes}
+
+\begin{itemize}
+	\item \textbf{Cluster (versión 2.1.5)}: Proporciona algoritmos clásicos de clustering como k-means y clustering jerárquico \cite{cluster}.
+	\item \textbf{Factoextra (versión 1.0.8)}: Extensión para la visualización de resultados de clustering de manera intuitiva y clara \cite{factoextra}.
+	\item \textbf{WGCNA (versión 1.71)}: Utilizado para identificar módulos de genes coexpresados, especialmente en estudios de expresión génica \cite{wgcna}.
+	\item \textbf{Igraph (versión 1.5.0)}: Paquete para construir, analizar y visualizar redes genéticas y módulos de coexpresión \cite{igraph}.
+	\item \textbf{STRINGdb (versión 2.10.0)}: Conector para la base de datos STRING, permite realizar enriquecimiento funcional y visualizar redes \cite{stringdb}.
+	\item \textbf{Pathview (versión 1.36.0)}: Herramienta para representar gráficamente rutas de KEGG con datos de expresión génica \cite{pathview}.
+	\item \textbf{ClusterProfiler (versión 4.15.0)}: Paquete para análisis de enriquecimiento funcional en términos GO, KEGG y Reactome, con opciones de ajuste \cite{clusterprofiler}.
+\end{itemize}
+
+

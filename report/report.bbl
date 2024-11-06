@@ -1,6 +1,6 @@
 %% BioMed_Central_Bib_Style_v1.01
 
-\begin{thebibliography}{42}
+\begin{thebibliography}{56}
 % BibTex style file: bmc-mathphys.bst (version 2.1), 2014-07-24
 \ifx \bisbn   \undefined \def \bisbn  #1{ISBN #1}\fi
 \ifx \binits  \undefined \def \binits#1{#1}\fi
@@ -729,6 +729,174 @@ Treatment Study of Frontotemporal Dementia
 \bfpage{728}--\blpage{752}
 (\byear{2021})
 \end{barticle}
+\endbibitem
+
+%%% 43
+\bibitem{pandas}
+\begin{botherref}
+\oauthor{\bparticle{pandas~development} \bsnm{team}, \binits{T.}}:
+pandas: Powerful data structures for data analysis in Python.
+Versión 2.2.3
+(2024).
+\url{https://pandas.pydata.org}
+\end{botherref}
+\endbibitem
+
+%%% 44
+\bibitem{matplotlib}
+\begin{botherref}
+\oauthor{\bsnm{Hunter}, \binits{J.D.}}:
+Matplotlib: A 2D Graphics Environment.
+Versión 3.8.1
+(2007).
+\url{https://matplotlib.org}
+\end{botherref}
+\endbibitem
+
+%%% 45
+\bibitem{scienceplots}
+\begin{botherref}
+\oauthor{\bsnm{Nelson}, \binits{G.L.}}:
+SciencePlots: Matplotlib styles for scientific figures.
+Versión 2.1.1
+(2021).
+\url{https://github.com/garrettj403/SciencePlots}
+\end{botherref}
+\endbibitem
+
+%%% 46
+\bibitem{requests}
+\begin{botherref}
+\oauthor{\bsnm{Reitz}, \binits{K.}},
+\oauthor{\bparticle{colaboradores~de} \bsnm{Requests}}:
+Requests: HTTP for Humans.
+Versión 2.31.0
+(2024).
+\url{https://docs.python-requests.org}
+\end{botherref}
+\endbibitem
+
+%%% 47
+\bibitem{goatools}
+\begin{botherref}
+\oauthor{\bsnm{Klopfenstein}, \binits{D.V.}},
+\oauthor{\bsnm{Dangl}, \binits{L.}},
+\oauthor{\bsnm{Wilfert}, \binits{A.}},
+\oauthor{\bsnm{Lombardot}, \binits{E.}},
+\oauthor{\bsnm{Mariadassou}, \binits{H.S.}},
+\oauthor{\bsnm{Goetz}, \binits{W.}}:
+GOATOOLS: A Python library for Gene Ontology analyses.
+Versión 1.2.3
+(2018).
+\url{https://github.com/tanghaibao/goatools}
+\end{botherref}
+\endbibitem
+
+%%% 48
+\bibitem{gprofiler}
+\begin{botherref}
+\oauthor{\bsnm{Räty}, \binits{R.}},
+\oauthor{\bparticle{y} \bsnm{otros}, \binits{T.L.}}:
+gProfiler: A web server for functional enrichment analysis and conversions of
+  gene lists.
+Versión 1.4.0
+(2019).
+\url{https://github.com/biit/gprofiler}
+\end{botherref}
+\endbibitem
+
+%%% 49
+\bibitem{statsmodels}
+\begin{botherref}
+\oauthor{\bparticle{y} \bsnm{Josef~Perktold}, \binits{S.S.}}:
+Statsmodels: Econometric and statistical modeling with Python.
+Versión 0.15.0
+(2010).
+\url{https://www.statsmodels.org}
+\end{botherref}
+\endbibitem
+
+%%% 50
+\bibitem{cluster}
+\begin{botherref}
+\oauthor{\bsnm{Martin~Maechler}, \binits{A.S.M.H.y.K.H.}
+  \bsuffix{Peter~Rousseeuw}}:
+Cluster: Cluster Analysis Basics and Extensions.
+(2022).
+Versión 2.1.5.
+\url{https://cran.r-project.org/package=cluster}
+\end{botherref}
+\endbibitem
+
+%%% 51
+\bibitem{factoextra}
+\begin{botherref}
+\oauthor{\bparticle{y} \bsnm{Fabian~Mundt}, \binits{A.K.}}:
+Factoextra: Extract and Visualize the Results of Multivariate Data Analyses.
+(2017).
+Versión 1.0.8.
+\url{https://cran.r-project.org/package=factoextra}
+\end{botherref}
+\endbibitem
+
+%%% 52
+\bibitem{wgcna}
+\begin{botherref}
+\oauthor{\bparticle{y} \bsnm{Steve~Horvath}, \binits{P.L.}}:
+WGCNA: Weighted Correlation Network Analysis.
+(2008).
+Versión 1.71.
+\url{https://cran.r-project.org/package=WGCNA}
+\end{botherref}
+\endbibitem
+
+%%% 53
+\bibitem{igraph}
+\begin{botherref}
+\oauthor{\bparticle{y} \bsnm{Tamás~Nepusz}, \binits{G.C.}}:
+Igraph: Network Analysis and Visualization.
+(2006).
+Versión 1.5.0.
+\url{https://igraph.org/r/}
+\end{botherref}
+\endbibitem
+
+%%% 54
+\bibitem{stringdb}
+\begin{botherref}
+\oauthor{\bsnm{Damian~Szklarczyk},
+  \binits{D.L.A.J.S.W.J.H.-C.M.S.N.T.D.J.H.M.P.B.y.o.} \bsuffix{Annika
+  L.~Gable}}:
+STRINGdb: Functional Protein Association Networks.
+(2019).
+Versión 2.10.0.
+\url{https://cran.r-project.org/package=STRINGdb}
+\end{botherref}
+\endbibitem
+
+%%% 55
+\bibitem{pathview}
+\begin{botherref}
+\oauthor{\bparticle{y} \bsnm{Cory~Brouwer}, \binits{W.L.}}:
+Pathview: An R/Bioconductor Package for Pathway-based Data Integration and
+  Visualization.
+(2013).
+Versión 1.36.0.
+\url{https://bioconductor.org/packages/pathview/}
+\end{botherref}
+\endbibitem
+
+%%% 56
+\bibitem{clusterprofiler}
+\begin{botherref}
+\oauthor{\bsnm{Guangchuang~Yu}, \binits{Y.H.y.Q.-Y.H.}
+  \bsuffix{Li{-}Gen~Wang}}:
+clusterProfiler: An R Package for Comparing Biological Themes Among Gene
+  Clusters.
+(2012).
+Versión 4.15.0.
+\url{https://bioconductor.org/packages/clusterProfiler/}
+\end{botherref}
 \endbibitem
 
 \end{thebibliography}
@@ -1483,6 +1651,164 @@ Treatment Study of Frontotemporal Dementia
   <issue>2</issue>
   <fpage>728</fpage>
   <lpage>-752</lpage>
+</bibl>
+
+<bibl id="B43">
+  <title><p>pandas: Powerful data structures for data analysis in
+  Python</p></title>
+  <aug>
+    <au><snm>team</snm><fnm>T</fnm></au>
+  </aug>
+  <pubdate>2024</pubdate>
+  <url>https://pandas.pydata.org</url>
+  <note>Versión 2.2.3</note>
+</bibl>
+
+<bibl id="B44">
+  <title><p>Matplotlib: A 2D Graphics Environment</p></title>
+  <aug>
+    <au><snm>Hunter</snm><fnm>JD</fnm></au>
+  </aug>
+  <source>Computing in Science \& Engineering</source>
+  <pubdate>2007</pubdate>
+  <volume>9</volume>
+  <issue>3</issue>
+  <fpage>90</fpage>
+  <lpage>-95</lpage>
+  <url>https://matplotlib.org</url>
+  <note>Versión 3.8.1</note>
+</bibl>
+
+<bibl id="B45">
+  <title><p>SciencePlots: Matplotlib styles for scientific figures</p></title>
+  <aug>
+    <au><snm>Nelson</snm><fnm>GL</fnm></au>
+  </aug>
+  <pubdate>2021</pubdate>
+  <url>https://github.com/garrettj403/SciencePlots</url>
+  <note>Versión 2.1.1</note>
+</bibl>
+
+<bibl id="B46">
+  <title><p>Requests: HTTP for Humans</p></title>
+  <aug>
+    <au><snm>Reitz</snm><fnm>K</fnm></au>
+    <au><cnm>Requests</cnm></au>
+  </aug>
+  <pubdate>2024</pubdate>
+  <url>https://docs.python-requests.org</url>
+  <note>Versión 2.31.0</note>
+</bibl>
+
+<bibl id="B47">
+  <title><p>GOATOOLS: A Python library for Gene Ontology analyses</p></title>
+  <aug>
+    <au><snm>Klopfenstein</snm><fnm>DV</fnm></au>
+    <au><snm>Dangl</snm><fnm>L</fnm></au>
+    <au><snm>Wilfert</snm><fnm>A</fnm></au>
+    <au><snm>Lombardot</snm><fnm>E</fnm></au>
+    <au><snm>Mariadassou</snm><fnm>HS</fnm></au>
+    <au><snm>Goetz</snm><fnm>W</fnm></au>
+  </aug>
+  <pubdate>2018</pubdate>
+  <url>https://github.com/tanghaibao/goatools</url>
+  <note>Versión 1.2.3</note>
+</bibl>
+
+<bibl id="B48">
+  <title><p>gProfiler: A web server for functional enrichment analysis and
+  conversions of gene lists</p></title>
+  <aug>
+    <au><snm>Räty</snm><fnm>R</fnm></au>
+    <au><snm>otros</snm><fnm>TL</fnm></au>
+  </aug>
+  <pubdate>2019</pubdate>
+  <url>https://github.com/biit/gprofiler</url>
+  <note>Versión 1.4.0</note>
+</bibl>
+
+<bibl id="B49">
+  <title><p>Statsmodels: Econometric and statistical modeling with
+  Python</p></title>
+  <aug>
+    <au><snm>Josef Perktold</snm><fnm>SS</fnm></au>
+  </aug>
+  <pubdate>2010</pubdate>
+  <url>https://www.statsmodels.org</url>
+  <note>Versión 0.15.0</note>
+</bibl>
+
+<bibl id="B50">
+  <title><p>cluster: Cluster Analysis Basics and Extensions</p></title>
+  <aug>
+    <au><snm>Martin Maechler</snm><fnm>ASMHyKH</fnm></au>
+  </aug>
+  <pubdate>2022</pubdate>
+  <url>https://cran.r-project.org/package=cluster</url>
+  <note>Versión 2.1.5</note>
+</bibl>
+
+<bibl id="B51">
+  <title><p>factoextra: Extract and Visualize the Results of Multivariate Data
+  Analyses</p></title>
+  <aug>
+    <au><snm>Fabian Mundt</snm><fnm>AK</fnm></au>
+  </aug>
+  <pubdate>2017</pubdate>
+  <url>https://cran.r-project.org/package=factoextra</url>
+  <note>Versión 1.0.8</note>
+</bibl>
+
+<bibl id="B52">
+  <title><p>WGCNA: Weighted Correlation Network Analysis</p></title>
+  <aug>
+    <au><snm>Steve Horvath</snm><fnm>PL</fnm></au>
+  </aug>
+  <pubdate>2008</pubdate>
+  <url>https://cran.r-project.org/package=WGCNA</url>
+  <note>Versión 1.71</note>
+</bibl>
+
+<bibl id="B53">
+  <title><p>igraph: Network Analysis and Visualization</p></title>
+  <aug>
+    <au><snm>Tamás Nepusz</snm><fnm>GC</fnm></au>
+  </aug>
+  <pubdate>2006</pubdate>
+  <url>https://igraph.org/r/</url>
+  <note>Versión 1.5.0</note>
+</bibl>
+
+<bibl id="B54">
+  <title><p>STRINGdb: Functional Protein Association Networks</p></title>
+  <aug>
+    <au><snm>Damian Szklarczyk</snm><fnm>DLAJSWJHCMSNTDJHMPByo</fnm></au>
+  </aug>
+  <pubdate>2019</pubdate>
+  <url>https://cran.r-project.org/package=STRINGdb</url>
+  <note>Versión 2.10.0</note>
+</bibl>
+
+<bibl id="B55">
+  <title><p>Pathview: An R/Bioconductor package for pathway-based data
+  integration and visualization</p></title>
+  <aug>
+    <au><snm>Cory Brouwer</snm><fnm>WL</fnm></au>
+  </aug>
+  <pubdate>2013</pubdate>
+  <url>https://bioconductor.org/packages/pathview/</url>
+  <note>Versión 1.36.0</note>
+</bibl>
+
+<bibl id="B56">
+  <title><p>clusterProfiler: An R package for comparing biological themes among
+  gene clusters</p></title>
+  <aug>
+    <au><snm>Guangchuang Yu</snm><fnm>YHyQYH</fnm></au>
+  </aug>
+  <pubdate>2012</pubdate>
+  <url>https://bioconductor.org/packages/clusterProfiler/</url>
+  <note>Versión 4.15.0</note>
 </bibl>
 
 </refgrp>
