@@ -120,6 +120,15 @@ A continuación, se detallan los tres algoritmos de clustering, proporcionados p
 
 \subsubsection*{Medidas de Rendimiento}
 
+Como se comentó anteriormente, el principal objetivo del clustering en nuestra red PPI es determinar las comunidades funcionales subyacentes con la finalidad de identificar rutas metabólicas compatibles con la elaboración de dianas o biomarcadores para el tratamiento de la FTD. Por esto, no se debe perder la interpretabilidad biológica de la red, a la vez que se intenta maximizar la calidad del clustering aplicado. Dadas estas condiciones, se propone una optimización multiobjetivo, repartiendo las tareas de significancia biológica y calidad del clustering entre las siguientes métricas:
+
+\begin{itemize}
+	\item \textit{Modularidad (Q)}. Destinada a la evaluación de la calidad del clustering aplicado. Valores altos indican una conectividad interna densa dentro de los clústeres y conexiones dispersas entre ellos. La alta modularidad sugiere comunidades bien definidas.
+	
+	\item \textit{Puntaje de Enriquecimiento Funcional}: Para cada clúster, se realizó un análisis de enriquecimiento funcional mediante STRINGdb. Este puntaje refleja la significancia estadística de pathways, términos de la Ontología de Genes u otras anotaciones funcionales enriquecidas dentro de los clústeres. Un puntaje alto indica mayor relevancia biológica, ya que los clústeres enriquecidos en términos específicos probablemente representan procesos biológicos significativos.
+\end{itemize}
+
+
 \subsubsection*{Optimización}
 
 \begin{figure}[h]
