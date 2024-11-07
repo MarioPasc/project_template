@@ -130,6 +130,9 @@ Como se comentó anteriormente, el principal objetivo del clustering en nuestra 
 
 
 \subsubsection*{Optimización}
+Se generaron varias configuraciones de modelos al ajustar sistemáticamente los parámetros de los algoritmos y evaluamos cada configuración en base a modularidad y puntaje de enriquecimiento funcional. Al trazar estos puntajes en un frente de Pareto, identificamos las configuraciones que representan el mejor equilibrio entre coherencia estructural (modularidad) y relevancia biológica (enriquecimiento funcional) \cite{goodarzi2014PARETOFRONT1,jahan2013multiPARETOFRONT2,costa2015paretoPARETOFRONT3}. Las configuraciones a lo largo de esta frontera representan soluciones Pareto-eficientes de clustering, donde mejorar una métrica no compromete significativamente la otra, permitiendo explorar soluciones con un balance diferente de las métricas de rendimiento elegidas.
+
+% \textbf{NOTA:} Podríamos aplicar algún algoritmo interesante de ajuste de los hiperparámetros, yo (Mario) tengo experiencia aplicando Tree-structured Parzen Estimator y otros algoritmos de ajuste Bayesiano en Python.
 
 \begin{figure}[h]
 	\centering
