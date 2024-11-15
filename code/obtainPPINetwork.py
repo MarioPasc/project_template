@@ -62,6 +62,12 @@ def main():
         help='Path to the file containing the list of genes (e.g., data/genes.tsv)'
     )
     parser.add_argument(
+        'network_path', 
+        type=str, 
+        help='Path where the network file will be written'
+    )
+
+    parser.add_argument(
         '-f', "--filter", 
         type=int, 
         default=400, 
@@ -123,7 +129,7 @@ def main():
             required_score=args.filter, 
             add_nodes=args.nodes
         )
-        network.to_csv("data/network.tsv", sep="\t")
+        network.to_csv(args.network_path, sep="\t")
         logging.info("The interaction network was successfully saved to 'data/network.tsv'.")
     except Exception as e:
         logging.error(f"Failed to obtain the interaction network: {e}")
