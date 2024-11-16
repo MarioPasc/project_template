@@ -10,7 +10,7 @@ import logging
 # Create the logs directory
 log_folder = "logs"
 if not os.path.exists(log_folder):
-    os.makedirs(log_folder)
+    os.makedirs(log_folder, exist_ok = True)
 
 # Configure logging of this stage of the project
 logging.basicConfig(
