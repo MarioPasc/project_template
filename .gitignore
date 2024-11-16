@@ -10,3 +10,4 @@
 *.csv  # Ignorar archivos de datos en formato CSV
 *.tsv #Ignorar archivos de datos en formato TSV
 *.txt  # Ignorar archivos de texto
+Py_libs/
