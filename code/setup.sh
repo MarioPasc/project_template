@@ -10,3 +10,4 @@ pip install --target=$PYTHON_LIB igraph
 pip install --target=$PYTHON_LIB matplotlib
 pip install --target=$PYTHON_LIB cairocffi
 pip install --target=$PYTHON_LIB networkx
+pip install --target=$PYTHON_LIB optuna

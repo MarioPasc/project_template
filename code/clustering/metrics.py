@@ -23,6 +23,9 @@ class Metrics:
         # Calcular la modularidad usando igraph
         return graph.modularity(membership)
 
+    # TODO: Gonzalo, porfi, cambia functional_enrichment_score para que reciva el grafo y los clústeres formados,
+    #       para tener la funcionalidad del todo implementada aquí y no tener que hacer un enrichment en optimize.py
+
     @staticmethod
     def functional_enrichment_score(enrichment_data):
         """

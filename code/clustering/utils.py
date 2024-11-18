@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
 import logging
+import igraph
+import os
+from typing import Union
 
 def setup_logger(name: str, log_file: str, level=logging.INFO) -> logging.Logger:
     """
@@ -30,3 +33,7 @@ def setup_logger(name: str, log_file: str, level=logging.INFO) -> logging.Logger
     logger.addHandler(file_handler)
     
     return logger
+
+# TODO: Gonzalo implementa esta función un besito
+def network_to_igraph_format(network_csv: Union[str, os.PathLike]) -> igraph.Graph:
+    return None
