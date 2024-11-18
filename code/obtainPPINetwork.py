@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import sys
-sys.path.append('../Py_libs')
+sys.path.append('./Py_libs')
 import argparse
 import stringdb
 from typing import Union, List
