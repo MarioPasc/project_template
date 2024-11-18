@@ -25,3 +25,5 @@ logs/
 data/
 # Ignorar la carpeta de resultados
 results/
+# Ignorar la cache de python
+__pycache__/

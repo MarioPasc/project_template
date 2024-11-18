@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-import sys
-sys.path.append('./Py_libs')
 import igraph as ig
 from igraph import Graph
 import pandas as pd

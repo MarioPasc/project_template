@@ -2,7 +2,7 @@ import sys
 sys.path.append('../Py_libs')
 
 from igraph import Graph
-from metricas import Metricas
+from metrics import Metrics
 
 # Crear la red con igraph
 edges = [(0, 1), (0, 2), (1, 2),  # Clúster 1
@@ -20,7 +20,7 @@ enrichment_data = {
 }
 
 # Cálculo de métricas
-modularity_score = Metricas.modularidad(graph, clusters)
+modularity_score = Metrics.modularity(graph, clusters)
 #functional_enrichment_score = Metricas.puntuaje_enriquecimiento_funcional(enrichment_data)
 
 print(f"Modularidad: {modularity_score}")

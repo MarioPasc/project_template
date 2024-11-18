@@ -2,10 +2,12 @@
 
 # variables de entorno R_LIB, PYTHON_LIB
 export PYTHON_LIB=./Py_libs
+export PYTHONPATH=$PYTHON_LIB:$PYTHONPATH  # Añadir Py_libs al PYTHONPATH
 
 # DESCARGA DE DATOS
 mkdir -p data
 # obtener genes de HPO
+# ES NECESARIO INSTALAR CURL YA QUE NO VIENE INSTALADO POR DEFECTO
 curl -X 'GET' 'https://ontology.jax.org/api/network/annotation/HP%3A0002145/download/gene' -H 'accept: application/json' -o data/hpoGenes.tsv -s
 hpo_genes="data/hpoGenesNames.tsv"
 awk 'NR > 1{print $2}' data/hpoGenes.tsv > $hpo_genes # obtener nombres de los genes

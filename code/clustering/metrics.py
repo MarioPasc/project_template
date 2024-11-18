@@ -4,9 +4,9 @@ import igraph as ig
 import networkx as nx
 import numpy as np
 
-class Metricas:
+class Metrics:
     @staticmethod
-    def modularidad(graph, clusters):
+    def modularity(graph, clusters):
         """
         Calcula la modularidad (Q) usando igraph.
 
@@ -24,7 +24,7 @@ class Metricas:
         return graph.modularity(membership)
 
     @staticmethod
-    def puntuaje_enriquecimiento_funcional(enrichment_data):
+    def functional_enrichment_score(enrichment_data):
         """
         Calcula el puntaje promedio de enriquecimiento funcional para los clusters.
 
