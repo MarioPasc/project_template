@@ -3,6 +3,7 @@
 import logging
 import igraph
 import os
+import pandas as pd
 from typing import Union
 
 def setup_logger(name: str, log_file: str, level=logging.INFO) -> logging.Logger:
@@ -35,5 +36,30 @@ def setup_logger(name: str, log_file: str, level=logging.INFO) -> logging.Logger
     return logger
 
 # TODO: Gonzalo implementa esta función un besito
-def network_to_igraph_format(network_csv: Union[str, os.PathLike]) -> igraph.Graph:
-    return None
+# lo he implementado yo (Carmen), porque también lo uso en mi parte
+def network_to_igraph_format(network_csv: Union[str, os.PathLike], sep: str ="\t") -> igraph.Graph:
+    """
+    Converts a network, in a file, to an igraph format.
+
+    Args:
+        network_csv (Union[str, os.PathLike]): File path to the network.
+        sep (str): Delimiter of the file (default: "\t").
+
+    Returns:
+        igraph.Graph: Graph in an igraph format, or None if an error occurs.
+
+    """
+    try:
+        network_df= pd.read_csv(network_csv, sep=sep, header=0) #cambiar separador si poneis otro formato que no sea tsv
+        graph= igraph.Graph.DataFrame(network_df[['preferredName_A', 'preferredName_B']], directed=False, use_vids=False)
+        return graph
+    except FileNotFoundError:
+        print(f"Error: The file {network_csv} could not be found.")
+        return None
+    except pd.errors.ParserError:
+        print(f"Error: The file {network_csv} is not in the right format.")
+    except KeyError:
+        print(f"Error: The columns 'preferredName_A' and 'preferredName_B' are not in the file ")
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+
