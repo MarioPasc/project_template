@@ -19,8 +19,11 @@ enrichment_data = {
     1: [0.02, 0.03]          # p-valores para cluster 1
 }
 
+
+log_file = "../logs/clustering.log"
+
 # Cálculo de métricas
-modularity_score = Metrics.modularity(graph, clusters)
+modularity_score = Metrics.modularity(graph, clusters, log_file=log_file)
 #functional_enrichment_score = Metricas.puntuaje_enriquecimiento_funcional(enrichment_data)
 
 print(f"Modularidad: {modularity_score}")
