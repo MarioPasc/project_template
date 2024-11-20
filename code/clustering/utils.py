@@ -52,14 +52,18 @@ def network_to_igraph_format(network_csv: Union[str, os.PathLike], sep: str ="\t
     try:
         network_df= pd.read_csv(network_csv, sep=sep, header=0) #cambiar separador si poneis otro formato que no sea tsv
         graph= igraph.Graph.DataFrame(network_df[['preferredName_A', 'preferredName_B']], directed=False, use_vids=False)
+        logging.info(f"Successfully converts network to igraph format")
         return graph
     except FileNotFoundError:
-        print(f"Error: The file {network_csv} could not be found.")
-        return None
+        logging.error(f"File not found: {network_csv}")
+        raise
     except pd.errors.ParserError:
-        print(f"Error: The file {network_csv} is not in the right format.")
+        logging.error(f"File not in the right format:  {network_csv}")
+        raise
     except KeyError:
-        print(f"Error: The columns 'preferredName_A' and 'preferredName_B' are not in the file ")
+        logging.error(f"Columns 'preferredName_A' and 'preferredName_B' not file: {network_csv} ")
+        raise
     except Exception as e:
-        print(f"Unexpected error: {e}")
+        logging.error(f"Unexpected error: {e}")
+        raise
 
