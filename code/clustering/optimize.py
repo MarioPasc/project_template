@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import igraph as ig
 import numpy as np
 import optuna
@@ -5,11 +7,15 @@ import pandas as pd
 import os
 import time
 import random
-from typing import Union, Tuple, Dict
+from typing import Union, Tuple
 
 from metrics import Metrics  
-from utils import setup_logger, network_to_igraph_format
 from algorithms import Algorithms
+from utils import (
+    setup_logger, 
+    network_to_igraph_format
+)
+
 
 class BHO_Clustering:
     def __init__(self, 
@@ -31,34 +37,6 @@ class BHO_Clustering:
         self.n_trials: int = n_trials
         self.save_plots: bool = save_plots
         self.study: optuna.Study = None  # Will hold the Optuna study object after optimization
-
-    def optimize(self) -> None:
-        """
-        Set up the Optuna study and execute the optimization process.
-        """
-        # Create pruner and sampler
-        pruner = optuna.pruners.MedianPruner()
-        sampler = optuna.samplers.TPESampler()
-
-        # Set up storage (database) for saving results
-        storage: str = f'sqlite:///{self.output_path}/optuna_results.db'
-
-        # Create the study
-        self.study = optuna.create_study(
-            directions=['maximize', 'maximize'],
-            sampler=sampler,
-            pruner=pruner,
-            storage=storage,
-            study_name='community_detection_optimization',
-            load_if_exists=True
-        )
-
-        # Execute the optimization
-        self.study.optimize(self._train, n_trials=self.n_trials)
-
-        # Save plots if requested
-        if self.save_plots:
-            self._save_plots()
 
     def _train(self, 
                trial: optuna.Trial
@@ -102,6 +80,40 @@ class BHO_Clustering:
         trial.set_user_attr('execution_time', execution_time)
 
         return modularity_score, fes_score
+
+    def optimize(self) -> None:
+        """
+        Optimize the give clustering algorithm with TPE Sampler for both metrics. 
+
+        References
+        --------------------------------
+        (1) OZAKI, Yoshihiko, et al. 
+            Multiobjective tree-structured Parzen estimator. 
+            Journal of Artificial Intelligence Research, 2022, vol. 73, p. 1209-1250.
+        """
+        # Create pruner and sampler
+        pruner = optuna.pruners.MedianPruner()
+        sampler = optuna.samplers.TPESampler()
+
+        # Set up storage (database) for saving results
+        storage: str = f'sqlite:///{self.output_path}/optuna_results.db'
+
+        # Create the study
+        self.study = optuna.create_study(
+            directions=['maximize', 'maximize'],
+            sampler=sampler,
+            pruner=pruner,
+            storage=storage,
+            study_name='community_detection_optimization',
+            load_if_exists=True
+        )
+
+        # Execute the optimization
+        self.study.optimize(self._train, n_trials=self.n_trials)
+
+        # Save plots if requested
+        if self.save_plots:
+            self._save_plots()
 
     def save_results(self) -> None:
         """
