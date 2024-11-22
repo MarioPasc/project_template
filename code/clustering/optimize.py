@@ -7,7 +7,14 @@ import pandas as pd
 import os
 import time
 import random
-from typing import Union, Tuple
+from typing import (
+    Union, 
+    Tuple, 
+    Dict, 
+    Any, 
+    List
+)
+import yaml 
 
 from metrics import Metrics  
 from algorithms import Algorithms
@@ -16,12 +23,25 @@ from utils import (
     network_to_igraph_format
 )
 
+def load_config(config_path: str) -> Dict[str, Any]:
+    """
+    Load the YAML configuration file.
+
+    :param config_path: Path to the YAML configuration file.
+    :return: A dictionary containing the algorithm and parameters.
+    """
+    with open(config_path, 'r') as file:
+        config = yaml.safe_load(file)
+    return config
 
 class BHO_Clustering:
     def __init__(self, 
+                 config_path: Union[str, os.PathLike],
                  network_csv: Union[str, os.PathLike], 
                  output_path:  Union[str, os.PathLike], 
+                 study_name: int = "community_detection_optimization",
                  n_trials: int = 100, 
+                 storage_name: int = "optuna_study",
                  save_plots: bool = False
                  ) -> None:
         """
@@ -32,11 +52,62 @@ class BHO_Clustering:
         :param n_trials: Number of optimization trials.
         :param save_plots: Boolean indicating whether to save optimization plots.
         """
+        config = load_config(config_path=config_path)
         self.graph: ig.Graph = network_to_igraph_format(network_csv=network_csv)
+        self.selected_algorithm: str = config["algorithm"]
+        self.hyperparameters = {  # Map of hyperparameter names to their configs
+            (param["name"], param["type"]): param for param in config.get("parameters", [])
+        }
         self.output_path: Union[str, os.PathLike] = output_path
+        self.study_name: int = study_name
         self.n_trials: int = n_trials
         self.save_plots: bool = save_plots
+        self.storage_name: int = storage_name
         self.study: optuna.Study = None  # Will hold the Optuna study object after optimization
+
+    def _extract_hyperparameters(self, trial: optuna.Trial) -> Dict[str, Any]:
+        """
+        Extracts hyperparameters from the search space using the Optuna trial object.
+
+        Parameters
+        ----------
+        trial : optuna.Trial
+            The current Optuna trial object used for suggesting hyperparameters.
+
+        Returns
+        -------
+        Dict[str, Any]
+            A dictionary of hyperparameters suggested by the Optuna trial.
+
+        Raises
+        ------
+        ValueError
+            If an unknown function type is encountered while suggesting hyperparameters.
+
+        Notes
+        -----
+        This method uses the Optuna trial object to suggest hyperparameter values based
+        on the configured search space. It supports different types of distributions
+        (e.g., 'loguniform', 'uniform', 'int', 'categorical') and logs the extraction process.
+        """
+        final_hyperparam: Dict[str, Any] = {}
+
+        for (hyperparam, func_type), param_config in self.hyperparameters.items():
+            low = param_config.get("min") or param_config.get("low")
+            high = param_config.get("max") or param_config.get("high")
+            if func_type == "loguniform":
+                final_hyperparam[hyperparam] = trial.suggest_float(hyperparam, low, high, log=True)
+            elif func_type == "uniform":
+                final_hyperparam[hyperparam] = trial.suggest_float(hyperparam, low, high)
+            elif func_type == "int":
+                final_hyperparam[hyperparam] = trial.suggest_int(hyperparam, int(low), int(high))
+            elif func_type == "categorical":
+                choices = param_config["choices"]
+                final_hyperparam[hyperparam] = trial.suggest_categorical(hyperparam, choices)
+            else:
+                raise ValueError(f"Unknown function type {func_type} for hyperparameter {hyperparam}")
+        
+        return final_hyperparam
 
     def _train(self, 
                trial: optuna.Trial
@@ -56,14 +127,18 @@ class BHO_Clustering:
         # Record the start time
         start_time = time.time()
 
-        # Sample hyperparameters
-        resolution = trial.suggest_float('resolution', low=0.5, high=2.0)
+        # Extract hyperparameters
+        hyperparams = self.extract_hyperparameters(trial)
 
-        # Run the community detection algorithm
-        clusters = Algorithms.clustering(
-            graph=self.graph,
-            resolution=resolution
-        )
+        # Run the selected clustering algorithm
+        if self.selected_algorithm == "multilevel":
+            clusters = Algorithms.multilevel_clustering(graph=self.graph, **hyperparams)
+        elif self.selected_algorithm == "walktrap":
+            clusters = self.graph.community_walktrap(**hyperparams).as_clustering()
+        elif self.selected_algorithm == "leiden":
+            clusters = self.graph.community_leiden(**hyperparams)
+        else:
+            raise ValueError(f"Unsupported algorithm: {self.selected_algorithm}")
 
         # Convert clusters to list of lists
         cluster_list = [cluster for cluster in clusters]
