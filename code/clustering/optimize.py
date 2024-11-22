@@ -11,10 +11,10 @@ from typing import (
     Union, 
     Tuple, 
     Dict, 
-    Any, 
-    List
+    Any
 )
 import yaml 
+import argparse
 
 from metrics import Metrics  
 from algorithms import Algorithms
@@ -22,17 +22,6 @@ from utils import (
     setup_logger, 
     network_to_igraph_format
 )
-
-def load_config(config_path: str) -> Dict[str, Any]:
-    """
-    Load the YAML configuration file.
-
-    :param config_path: Path to the YAML configuration file.
-    :return: A dictionary containing the algorithm and parameters.
-    """
-    with open(config_path, 'r') as file:
-        config = yaml.safe_load(file)
-    return config
 
 class BHO_Clustering:
     def __init__(self, 
@@ -52,7 +41,7 @@ class BHO_Clustering:
         :param n_trials: Number of optimization trials.
         :param save_plots: Boolean indicating whether to save optimization plots.
         """
-        config = load_config(config_path=config_path)
+        config = self._load_config(config_path=config_path)
         self.graph: ig.Graph = network_to_igraph_format(network_csv=network_csv)
         self.selected_algorithm: str = config["algorithm"]
         self.hyperparameters = {  # Map of hyperparameter names to their configs
@@ -64,6 +53,18 @@ class BHO_Clustering:
         self.save_plots: bool = save_plots
         self.storage_name: int = storage_name
         self.study: optuna.Study = None  # Will hold the Optuna study object after optimization
+
+    @staticmethod
+    def _load_config(config_path: str) -> Dict[str, Any]:
+        """
+        Load the YAML configuration file.
+
+        :param config_path: Path to the YAML configuration file.
+        :return: A dictionary containing the algorithm and parameters.
+        """
+        with open(config_path, 'r') as file:
+            config = yaml.safe_load(file)
+        return config
 
     def _extract_hyperparameters(self, trial: optuna.Trial) -> Dict[str, Any]:
         """
@@ -128,7 +129,7 @@ class BHO_Clustering:
         start_time = time.time()
 
         # Extract hyperparameters
-        hyperparams = self.extract_hyperparameters(trial)
+        hyperparams = self._extract_hyperparameters(trial)
 
         # Run the selected clustering algorithm
         if self.selected_algorithm == "multilevel":
