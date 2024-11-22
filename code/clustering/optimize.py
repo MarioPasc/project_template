@@ -52,6 +52,9 @@ class BHO_Clustering:
         self.save_plots: bool = save_plots
         self.study: optuna.Study = None  # Will hold the Optuna study object after optimization
 
+        os.makedirs('./logs', exist_ok=True)
+        self.logger = setup_logger(name="Bayesian_Hyperparameter_Optimization_Clustering_Networks", log_file="logs/bho_optimization.log")
+
     @staticmethod
     def _load_config(config_path: str) -> Dict[str, Any]:
         """
@@ -104,6 +107,7 @@ class BHO_Clustering:
                 choices = param_config["choices"]
                 final_hyperparam[hyperparam] = trial.suggest_categorical(hyperparam, choices)
             else:
+                self.logger.critical(f"Unknown function type {func_type} for hyperparameter {hyperparam}. Choose from float | uniform | int | categorical.")
                 raise ValueError(f"Unknown function type {func_type} for hyperparameter {hyperparam}")
         
         return final_hyperparam
@@ -143,10 +147,10 @@ class BHO_Clustering:
         cluster_list = [cluster for cluster in clusters]
 
         # Compute modularity
-        modularity_score = Metrics.modularity(self.graph, cluster_list)
+        modularity_score = Metrics.modularity(graph=self.graph, clusters=cluster_list, logger=self.logger)
 
         # Compute functional enrichment score
-        fes_score = Metrics.functional_enrichment_score(cluster_list)
+        fes_score = Metrics.functional_enrichment_score(graph=self.graph, clusters=cluster_list, logger=self.logger)
 
         # Calculate execution time
         execution_time = time.time() - start_time
@@ -237,7 +241,7 @@ def main():
     parser.add_argument("--output_path", type=str, required=True, help="Directory to save results and plots.")
     parser.add_argument("--n_trials", type=int, default=100, help="Number of optimization trials (default: 100).")
     parser.add_argument("--save_plots", type=bool, default=False, help="Save optimization plots (default: False).")
-    
+
     # Parse arguments
     args = parser.parse_args()
 
