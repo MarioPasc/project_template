@@ -30,7 +30,6 @@ class BHO_Clustering:
                  output_path:  Union[str, os.PathLike], 
                  study_name: int = "community_detection_optimization",
                  n_trials: int = 100, 
-                 storage_name: int = "optuna_study",
                  save_plots: bool = False
                  ) -> None:
         """
@@ -51,7 +50,6 @@ class BHO_Clustering:
         self.study_name: int = study_name
         self.n_trials: int = n_trials
         self.save_plots: bool = save_plots
-        self.storage_name: int = storage_name
         self.study: optuna.Study = None  # Will hold the Optuna study object after optimization
 
     @staticmethod
@@ -96,7 +94,7 @@ class BHO_Clustering:
         for (hyperparam, func_type), param_config in self.hyperparameters.items():
             low = param_config.get("min") or param_config.get("low")
             high = param_config.get("max") or param_config.get("high")
-            if func_type == "loguniform":
+            if func_type == "float":
                 final_hyperparam[hyperparam] = trial.suggest_float(hyperparam, low, high, log=True)
             elif func_type == "uniform":
                 final_hyperparam[hyperparam] = trial.suggest_float(hyperparam, low, high)
@@ -148,7 +146,6 @@ class BHO_Clustering:
         modularity_score = Metrics.modularity(self.graph, cluster_list)
 
         # Compute functional enrichment score
-        # TODO: Gonzalo must adjust the functional_enrichment_score function to accept cluster_list 
         fes_score = Metrics.functional_enrichment_score(cluster_list)
 
         # Calculate execution time
@@ -172,7 +169,7 @@ class BHO_Clustering:
         sampler = optuna.samplers.TPESampler()
 
         # Set up storage (database) for saving results
-        storage: str = f'sqlite:///{self.output_path}/optuna_results.db'
+        storage: str = f'sqlite:///{self.output_path}/{self.study_name}.db'
 
         # Create the study
         self.study = optuna.create_study(
@@ -180,7 +177,7 @@ class BHO_Clustering:
             sampler=sampler,
             pruner=pruner,
             storage=storage,
-            study_name='community_detection_optimization',
+            study_name=self.study_name,
             load_if_exists=True
         )
 
@@ -224,3 +221,39 @@ class BHO_Clustering:
         param_importance_fig.write_image(f'{self.output_path}/param_importances.png')
 
         print("Plots saved to output path.")
+
+def main():
+    """
+    Main function to handle command-line arguments and execute the BHO_Clustering optimization.
+
+    Example:
+    python code/clustering/optimize.py --config_path code/clustering/configs/multilevel.yaml --network_csv code/data/network.tsv --study_name try --output_path results --n_trials 2 --save_plots True
+    """
+    # Argument parser
+    parser = argparse.ArgumentParser(description="Optimize clustering hyperparameters using Optuna.")
+    parser.add_argument("--config_path", type=str, required=True, help="Path to the YAML configuration file.")
+    parser.add_argument("--network_csv", type=str, required=True, help="Path to the CSV network file.")
+    parser.add_argument("--study_name", type=str, required=True, help="Name of the study.")
+    parser.add_argument("--output_path", type=str, required=True, help="Directory to save results and plots.")
+    parser.add_argument("--n_trials", type=int, default=100, help="Number of optimization trials (default: 100).")
+    parser.add_argument("--save_plots", type=bool, default=False, help="Save optimization plots (default: False).")
+    
+    # Parse arguments
+    args = parser.parse_args()
+
+    # Instantiate and run the BHO_Clustering optimizer
+    optimizer = BHO_Clustering(
+        config_path=args.config_path,
+        network_csv=args.network_csv,
+        output_path=args.output_path,
+        study_name=args.study_name,
+        n_trials=args.n_trials,
+        save_plots=args.save_plots
+    )
+
+    # Run optimization and save results
+    optimizer.optimize()
+    optimizer.save_results()
+
+if __name__ == "__main__":
+    main()
