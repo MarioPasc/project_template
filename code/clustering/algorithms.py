@@ -31,6 +31,46 @@
 #       clase Metrics, así que sería genial si pudieras adaptar las funciones de metrics.py para que funcionen con VertexClustering, o adaptar la salida de
 #       los algoritmos para que devuelvan algún otro formato.  
 
+from igraph import Graph, VertexClustering
+from typing import List, Optional, Union
+
 class Algorithms:
-    def clustering():
-        return 0
+    @staticmethod
+    def multilevel_clustering(graph: Graph, weights: Optional[List[float]] = None, 
+                              return_levels: bool = False, resolution: float = 1) -> Union[VertexClustering, List[VertexClustering]]:
+        """
+        Performs multilevel clustering on a graph using the Louvain algorithm.
+
+        :param graph: An igraph.Graph object to cluster.
+        :param weights: Optional weights for the edges of the graph.
+        :param return_levels: If True, returns the clustering at each level of resolution.
+        :param resolution: Resolution parameter for the clustering (default is 1).
+        :return: A VertexClustering object representing the final clustering, or a list of VertexClustering objects if `return_levels` is True.
+        """
+        try:
+            # Validate graph type
+            if not isinstance(graph, Graph):
+                raise TypeError("The parameter 'graph' must be an instance of igraph.Graph.")
+
+            # Perform community detection using the Louvain method
+            clustering_result = graph.community_multilevel(weights=weights, return_levels=return_levels, resolution=resolution)
+            
+            return Algorithms.convert_clustering_to_list(clustering_result)
+
+        except Exception as e:
+            raise RuntimeError(f"Error performing multilevel clustering: {e}")
+        
+    @staticmethod
+    def convert_clustering_to_list(clustering: VertexClustering) -> List[List[int]]:
+        """
+        Converts a VertexClustering object into a list of lists format.
+
+        :param clustering: A VertexClustering object from igraph.
+        :return: A list of lists where each sublist represents the vertices in a cluster.
+        """
+        try:
+            # Extract clusters as a list of lists
+            cluster_list = [list(cluster) for cluster in clustering]
+            return cluster_list
+        except Exception as e:
+            raise RuntimeError(f"Error converting VertexClustering to list: {e}")
