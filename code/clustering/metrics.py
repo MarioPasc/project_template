@@ -7,6 +7,7 @@ import logging
 from stringdb import get_string_ids, get_enrichment
 from typing import List, Optional
 import pandas as pd
+import requests
 
 class Metrics:
     @staticmethod
@@ -147,18 +148,39 @@ class Metrics:
 
             # Realizar análisis de enriquecimiento
             enrichment_results = get_enrichment(string_ids['stringId'].tolist())
-            if enrichment_results.empty:
+            filtered_terms = enrichment_results[enrichment_results['category'] == 'Process']
+            if filtered_terms.empty:
                 logging.warning("No se encontraron términos enriquecidos para los genes proporcionados.")
                 return None
 
-            logging.info(f"Resultados de enriquecimiento obtenidos: {len(enrichment_results)} términos enriquecidos.")
-            return enrichment_results
+            logging.info(f"Resultados de enriquecimiento obtenidos: {len(filtered_terms)} términos enriquecidos.")
+            return filtered_terms
 
         except Exception as e:
             logging.error(f"Error durante el análisis de enriquecimiento funcional: {e}")
             raise
 
-
+    @staticmethod
+    def _get_go_term_depth(go_id: str) -> int:
+        """
+        Consulta la profundidad de un término GO en la jerarquía Gene Ontology usando la API de GO.
+        
+        :param go_id: Identificador del término GO (por ejemplo, "GO:0008150").
+        :return: Entero que representa la profundidad del término en la ontología.
+        """
+        url = f"https://www.ebi.ac.uk/QuickGO/services/ontology/go/terms/{go_id}/ancestors"
+        try:
+            response = requests.get(url, headers={"Accept": "application/json"})
+            response.raise_for_status()
+            data = response.json()
+            
+            # Contar la profundidad como el número de ancestros hasta la raíz
+            ancestors = data.get("results", [])[0].get("ancestors", [])
+            return len(ancestors)
+        except Exception as e:
+            logging.warning(f"No se pudo obtener la profundidad para {go_id}: {e}")
+            return 1  # Profundidad predeterminada si ocurre un error
+        
     @staticmethod
     def _calculate_cluster_score(enriched_terms: pd.DataFrame) -> float:
         """
@@ -171,13 +193,16 @@ class Metrics:
             scores = []
             for _, row in enriched_terms.iterrows():
                 p_value: Optional[float] = row.get('p_value', None)
-                depth: int = row.get('depth', 1)  # Por defecto, profundidad 1
-
+                go_id: Optional[str] = row.get('term', None)  # Asumiendo que la columna 'term' contiene el ID GO
+                
                 if p_value is None or not isinstance(p_value, (int, float)) or p_value <= 0:
                     continue
 
+                # Obtener la profundidad del término GO
+                depth = Metrics._get_go_term_depth(go_id) if go_id else 1
+
                 # Calcular score: -log10(p_value) * depth
-                scores.append(-log10(p_value) * depth)
+                scores.append(-log10(p_value) * depth / 600) # Max -log10(p-value) = 60 Max depth = 10
 
             return sum(scores) / len(scores) if scores else 0.0
 
