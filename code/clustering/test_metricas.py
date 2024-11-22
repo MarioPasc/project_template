@@ -1,3 +1,4 @@
+'''
 import sys
 sys.path.append('../Py_libs')
 
@@ -28,3 +29,26 @@ modularity_score = Metrics.modularity(graph, clusters, log_file=log_file)
 
 print(f"Modularidad: {modularity_score}")
 #print(f"Puntaje de Enriquecimiento Funcional: {functional_enrichment_score}")
+'''
+
+from igraph import Graph
+from metrics import Metrics
+
+# Crear un grafo de ejemplo con nombres de genes reales
+genes = ["TP53", "BRCA1", "EGFR", "MYC", "CDK2"]
+edges = [(0, 1), (1, 2), (2, 3), (3, 4)]
+graph = Graph(edges=edges)
+graph.vs["name"] = genes
+
+# Definir clusters (nodos indexados)
+clusters = [[0, 1], [2, 3, 4]]
+
+# Ruta para el log
+log_file = "../logs/enrichment.log"
+
+# Llamar a la función
+score = Metrics.functional_enrichment_score(graph, clusters, log_file)
+print(f"Puntaje de enriquecimiento funcional: {score}")
+
+modularity_score = Metrics.modularity(graph, clusters, log_file=log_file)
+print(f"Modularidad: {modularity_score}")
