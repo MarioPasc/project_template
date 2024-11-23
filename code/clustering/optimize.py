@@ -353,9 +353,9 @@ def main():
     python code/clustering/optimize.py \
         --config_path code/clustering/configs/multilevel.yaml \
         --network_csv code/data/network.tsv \
-        --study_name try \
+        --study_name multilevel_optimization \
         --output_path results \
-        --n_trials 2
+        --n_trials 100
     """
 
     # Argument parser
