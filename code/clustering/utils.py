@@ -6,6 +6,9 @@ import os
 import pandas as pd
 from typing import Union
 
+import os
+import logging
+
 def setup_logger(name: str, log_file: str, level=logging.INFO) -> logging.Logger:
     """
     Sets up a logger with the specified name, log file, and logging level.
@@ -15,6 +18,12 @@ def setup_logger(name: str, log_file: str, level=logging.INFO) -> logging.Logger
     :param level: Logging level (default is DEBUG).
     :return: Configured logger.
     """
+    # Ensure the directory for the log file exists
+    log_dir = os.path.dirname(log_file)
+    if log_dir and not os.path.exists(log_dir):
+        os.makedirs(log_dir)
+
+    # Create logger
     logger = logging.getLogger(name)
     logger.setLevel(level)
     
@@ -23,7 +32,7 @@ def setup_logger(name: str, log_file: str, level=logging.INFO) -> logging.Logger
         logger.handlers.clear()
     
     # Create file handler
-    file_handler: logging.FileHandler = logging.FileHandler(log_file)
+    file_handler = logging.FileHandler(log_file)
     file_handler.setLevel(level)
     
     # Create formatter and add it to the handler
@@ -34,6 +43,7 @@ def setup_logger(name: str, log_file: str, level=logging.INFO) -> logging.Logger
     logger.addHandler(file_handler)
     
     return logger
+
 
 # TODO: Gonzalo implementa esta función un besito
 # lo he implementado yo (Carmen), porque también lo uso en mi parte

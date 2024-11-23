@@ -85,7 +85,8 @@ class Metrics:
                     continue
 
                 # Calcular el puntaje del clúster
-                cluster_score = Metrics._calculate_cluster_score(enrichment_results)
+                cluster_score = Metrics._calculate_cluster_score(enriched_terms=enrichment_results,
+                                                                 logger = logger)
                 scores.append(cluster_score)
                 logger.info(f"Puntaje para clúster {i}: {cluster_score}")
 
@@ -150,7 +151,7 @@ class Metrics:
             raise
 
     @staticmethod
-    def _get_go_term_depth(go_id: str) -> int:
+    def _get_go_term_depth(go_id: str, logger: logging.Logger) -> int:
         """
         Consulta la profundidad de un término GO en la jerarquía Gene Ontology usando la API de GO.
         
@@ -167,11 +168,11 @@ class Metrics:
             ancestors = data.get("results", [])[0].get("ancestors", [])
             return len(ancestors)
         except Exception as e:
-            logging.warning(f"No se pudo obtener la profundidad para {go_id}: {e}")
+            logger.warning(f"No se pudo obtener la profundidad para {go_id}: {e}")
             return 1  # Profundidad predeterminada si ocurre un error
         
     @staticmethod
-    def _calculate_cluster_score(enriched_terms: pd.DataFrame) -> float:
+    def _calculate_cluster_score(enriched_terms: pd.DataFrame, logger: logging.Logger) -> float:
         """
         Calcula el puntaje combinado para un clúster a partir de los términos enriquecidos.
 
@@ -188,7 +189,7 @@ class Metrics:
                     continue
 
                 # Obtener la profundidad del término GO
-                depth = Metrics._get_go_term_depth(go_id) if go_id else 1
+                depth = Metrics._get_go_term_depth(go_id = go_id, logger = logger) if go_id else 1
 
                 # Calcular score: -log10(p_value) * depth
                 scores.append(-log10(p_value) * depth / 600) # Max -log10(p-value) = 60 Max depth = 10
@@ -196,5 +197,5 @@ class Metrics:
             return sum(scores) / len(scores) if scores else 0.0
 
         except Exception as e:
-            logging.error(f"Error en _calculate_cluster_score: {e}")
+            logger.error(f"Error en _calculate_cluster_score: {e}")
             raise
