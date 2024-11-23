@@ -1,0 +1,10 @@
+algorithm: walktrap
+parameters:
+  - name: steps
+    type: int
+    min: 1
+    max: 20
+
+# Property 1 from the paper tells us that the distance between vertex i and vertex j only depends on the degree of vertex j when step is infinite.
+# Therefore, if you set step very large and your graph is a dense network. 
+# The distance between vertex No.1 and other N vertices is the same. And it will end up with only one community. So set a max step value of ~[15-20]
