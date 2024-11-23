@@ -35,14 +35,30 @@ class BHO_Clustering:
                  n_trials: int = 100
                  ) -> None:
         """
-        Initialize the BHO_Clustering class.
+        Parameters
+        ----------
+        config_path : Union[str, os.PathLike]
+            Path to the YAML configuration file containing the clustering algorithm and hyperparameter details.
+        network_csv : Union[str, os.PathLike]
+            Path to the CSV file representing the protein-protein interaction network.
+        output_path : Union[str, os.PathLike]
+            Directory to save the results and plots of the optimization process.
+        study_name : str, optional
+            Name of the Optuna study (default is "community_detection_optimization").
+        n_trials : int, optional
+            Number of optimization trials to run (default is 100).
 
-        :param network_csv: Path to the CSV file representing the network.
-        :param output_path: Path to save the study results and plots.
-        :param study_name: Name of the Optuna study.
-        :param n_trials: Number of optimization trials.
-        :param save_plots: Boolean indicating whether to save optimization plots.
+        Raises
+        ------
+        FileNotFoundError
+            If the network CSV file or configuration YAML file does not exist.
+
+        Notes
+        -----
+        Initializes and configures the Bayesian Hyperparameter Optimization for clustering
+        algorithms. Logs study details and the execution environment.
         """
+
         # Load configuration and initialize variables
         config = self._load_config(config_path=config_path)
         self.graph: ig.Graph = network_to_igraph_format(network_csv=network_csv)
@@ -81,7 +97,13 @@ class BHO_Clustering:
     def _log_system_info(self):
         """
         Logs system information where the script is being executed.
+
+        Notes
+        -----
+        This method gathers and logs details about the operating system, processor,
+        memory, and Python version. Useful for reproducibility and debugging.
         """
+
         self.logger.info("Execution Environment:")
         self.logger.info(f"  OS: {platform.system()} {platform.release()} ({platform.version()})")
         self.logger.info(f"  Python Version: {platform.python_version()}")
@@ -92,10 +114,22 @@ class BHO_Clustering:
 
     def _load_config(self, config_path: str) -> Dict[str, Any]:
         """
-        Load the YAML configuration file.
+        Parameters
+        ----------
+        config_path : str
+            Path to the YAML configuration file.
 
-        :param config_path: Path to the YAML configuration file.
-        :return: A dictionary containing the algorithm and parameters.
+        Returns
+        -------
+        Dict[str, Any]
+            A dictionary containing the algorithm and hyperparameter details.
+
+        Raises
+        ------
+        FileNotFoundError
+            If the YAML file cannot be found.
+        yaml.YAMLError
+            If the YAML file cannot be parsed.
         """
         try:
             with open(config_path, 'r') as file:
@@ -155,11 +189,27 @@ class BHO_Clustering:
                trial: optuna.Trial
                ) -> Tuple[float, float]:
         """
-        Train the model and compute the metrics for optimization.
+        Parameters
+        ----------
+        trial : optuna.Trial
+            The current Optuna trial object used for suggesting hyperparameters.
 
-        :param trial: An Optuna trial object.
-        :return: A tuple of (modularity_score, fes_score).
+        Returns
+        -------
+        Tuple[float, float]
+            A tuple containing two metrics: modularity score and functional enrichment score.
+
+        Raises
+        ------
+        ValueError
+            If the selected algorithm is not supported.
+
+        Notes
+        -----
+        This method performs clustering using the specified algorithm and evaluates
+        the results using modularity and functional enrichment scores.
         """
+
         # Set a seed for reproducibility
         seed = trial.number  # Use trial number as the seed
         np.random.seed(seed)
@@ -201,17 +251,37 @@ class BHO_Clustering:
 
     def optimize(self) -> None:
         """
-        Optimize the give clustering algorithm with TPE Sampler for both metrics. 
+        Runs the optimization process for the selected clustering algorithm.
+
+        Notes
+        -----
+        This method uses the Tree-structured Parzen Estimator (TPE) for sampling and the
+        Hyperband pruning strategy for efficient optimization of multiple objectives.
 
         References
-        --------------------------------
+        ----------
         (1) OZAKI, Yoshihiko, et al. 
             Multiobjective tree-structured Parzen estimator. 
             Journal of Artificial Intelligence Research, 2022, vol. 73, p. 1209-1250.
+        (2) LI, Lisha, et al. 
+            Hyperband: A novel bandit-based approach to hyperparameter optimization. 
+            Journal of Machine Learning Research, 2018, vol. 18, no 185, p. 1-52.
         """
-        # Create pruner and sampler
-        pruner = optuna.pruners.MedianPruner()
-        sampler = optuna.samplers.TPESampler()
+
+        # Dynamically allocates resources (trials) to promising candidates based on intermediate results.
+        pruner = optuna.pruners.HyperbandPruner(
+            min_resource=5, 
+            max_resource=100,
+            reduction_factor=3 
+        )
+
+        sampler = optuna.samplers.TPESampler(
+            n_startup_trials=20, # Determines the number of random trials before the TPE model is built
+            n_ei_candidates=64, # Number of candidates taken into consideration when calculating expected improvement
+            multivariate=True, # Sampling hyperparameters considering correlations between them
+            seed=42  # For reproducibility
+        )
+
 
         # Set up storage (database) for saving results
         storage: str = f'sqlite:///{self.output_path}/{self.study_name}.db'
@@ -231,8 +301,20 @@ class BHO_Clustering:
 
     def save_results(self) -> None:
         """
-        Save the optimization results to a CSV file.
+        Saves the optimization results to a CSV file.
+
+        Notes
+        -----
+        The results include trial numbers, parameter values, objective values, and
+        other trial attributes. This method ensures reproducibility by storing all
+        relevant data.
+
+        Raises
+        ------
+        ValueError
+            If the `optimize` method has not been executed and no study exists.
         """
+
         if self.study is None:
             raise ValueError("No study found. Please run optimize() first.")
 
@@ -246,11 +328,36 @@ class BHO_Clustering:
 
 def main():
     """
-    Main function to handle command-line arguments and execute the BHO_Clustering optimization.
+    Handles command-line arguments and executes the BHO_Clustering optimization process.
 
-    Example:
-    python code/clustering/optimize.py --config_path code/clustering/configs/multilevel.yaml --network_csv code/data/network.tsv --study_name try --output_path results --n_trials 2 --save_plots True
+    Parameters
+    ----------
+    config_path : str
+        Path to the YAML configuration file.
+    network_csv : str
+        Path to the CSV file representing the protein-protein interaction network.
+    study_name : str
+        Name of the Optuna study.
+    output_path : str
+        Directory to save the results and plots of the optimization process.
+    n_trials : int, optional
+        Number of optimization trials to run (default is 100).
+
+    Notes
+    -----
+    This function is the entry point for the script and handles argument parsing
+    and execution.
+
+    Example
+    -------
+    python code/clustering/optimize.py \
+        --config_path code/clustering/configs/multilevel.yaml \
+        --network_csv code/data/network.tsv \
+        --study_name try \
+        --output_path results \
+        --n_trials 2
     """
+
     # Argument parser
     parser = argparse.ArgumentParser(description="Optimize clustering hyperparameters using Optuna.")
     parser.add_argument("--config_path", type=str, required=True, help="Path to the YAML configuration file.")
@@ -268,7 +375,7 @@ def main():
         network_csv=args.network_csv,
         output_path=args.output_path,
         study_name=args.study_name,
-        n_trials=args.n_trials,
+        n_trials=args.n_trials
     )
 
     # Run optimization and save results
