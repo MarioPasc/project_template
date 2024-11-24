@@ -82,7 +82,16 @@ class Metrics:
 
 
 class NetworkAnalysis:
+    """
+    Class to carry out graph analysis using igraph
+    """
     def __init__(self, graph: igraph.Graph):
+        """
+        Initialize the NetworkAnalysis object
+
+        Args:
+            graph (igraph.Graph):  igraph.Graph object
+        """
 
         if not isinstance(graph, igraph.Graph):
             raise ValueError("'graph' needs to be an igraph.Graph object.")
@@ -92,6 +101,12 @@ class NetworkAnalysis:
 
 
     def find_critical_nodes(self) -> list:
+        """
+        Find critical nodes in the graph, nodes that make the graph disconnected when are removed.
+
+        Returns:
+            list: List of tuples where each tuple contains a set of nodes whose removal would disconnect the graph.
+        """
     # not eficient for large vertex_connectivity  
         vertex_connectivity=self.graph.vertex_connectivity() 
         critical_nodes = []  
@@ -106,6 +121,9 @@ class NetworkAnalysis:
         return critical_nodes
     
     def calculate_metrics(self):
+        """
+        Computes various statistical and structural metrics of the graph, as well as representation using these metrics.
+        """
         self.metrics["Number of nodes"]=self.graph.vcount()
         self.metrics["Number of edges"]=self.graph.ecount()
         
@@ -114,11 +132,17 @@ class NetworkAnalysis:
         self.metrics["Average degree"]=mean
         self.metrics["Std degree"]=sd
 
-    #Connectivity
+        #Connectivity
         self.metrics["Connected graph"]= self.graph.is_connected()
         self.metrics["Node connectivity"]=self.graph.vertex_connectivity() 
         self.metrics["Edge connectivity"]=self.graph.edge_connectivity()
+        critical_nodes= self.find_critical_nodes() #list of tuples
+        cn=set(e for tup in critical_nodes for e in tup)
 
+        self.visualize_network(
+            output_path="../results/criticalnodes_graph.png",
+            attributes={"vertex_color": ["#FF0000" if n in cn else "#AAAAAA" for n in range(len(self.graph.vs))]}
+        )
 
         density=self.graph.density()
         self.metrics["Density"]=density
@@ -127,22 +151,33 @@ class NetworkAnalysis:
         closeness=self.graph.closeness()
         self.metrics["Average Closeness"]= statistics.mean(closeness)
         self.metrics["Std Closeness"]= statistics.stdev(closeness)
+        #betweenness (centralidad)
+        betweenness=self.graph.betweenness()
+        self.metrics["Average betweenness"]= statistics.mean(betweenness)
+        self.metrics["Std betweenness"]= statistics.stdev(betweenness)
+        self.visualize_network(
+            output_path="../results/closeness_betwennes_graph.png",
+            attributes={"vertex_size": [20 + (v / max(betweenness)) * 40 for v in betweenness], "vertex_color": ["#%02x%02x%02x" % (int(255 * (1 - c)), 0, int(255 * c)) for c in closeness]}
+        )
 
         #Clustering Coeficiente
         #local
         local_transitivity= self.graph.transitivity_local_undirected()
         nan_nodes=[n for n, t in enumerate(local_transitivity) if math.isnan(t)]
+        self.visualize_network(
+            output_path="../results/transitivity_graph.png",
+            attributes={"vertex_color": ["#FF0000" if n in nan_nodes else "#AAAAAA" for n in range(len(self.graph.vs))]}
+        )
+
+
+
         clean_lt=[0  if math.isnan(t) else t for t in local_transitivity]
         self.metrics["Average Local transitivity"]= statistics.mean(clean_lt)
         self.metrics["Std Local transitivity"]= statistics.stdev(clean_lt)
-            #salen valor NaN -> hay nodos con 1 solo vecino
+            #salen valores NaN -> hay nodos con 1 solo vecino
 
         #global
         self.metrics["Global transitivity"]=self.graph.transitivity_undirected()
-        #betweenness (centralidad)
-        betweenness=self.graph.betweenness()
-        self.metrics["Average betweenness"]= statistics.mean(self.graph.betweenness())
-        self.metrics["Std betweenness"]= statistics.stdev(self.graph.betweenness())
 
         self.metrics["Assortativity"]=self.graph.assortativity_degree()
 
@@ -150,8 +185,41 @@ class NetworkAnalysis:
         self.metrics["Average Path Length"] = self.graph.average_path_length()
 
 
-    def visualize_network(self, output_path):
-        igraph.plot(self.graph, target=output_path, vertex_size=35,vertex_label=self.graph.vs["name"], vertex_label_size=8 )
+    def visualize_network(self, output_path: str, attributes:dict=None, default_size:int=35, default_color:str="red"):
+        """
+        Visualize the graph using igraph.plot, with options to customize the size and color of the nodes.
+
+        Args:
+            output_path (str): Path where the generated image will be saved.
+            attributes (dict, optional): Dictionary of additional attributes to customize the visualization, can include "vertex_size" and "vertex_color".
+            default_size (int, optional): Default size of the nodes. Default is 35.
+            default_color (str, optional): Default color of the nodes. Default is "red".
+        """
+        num_nodes= len(self.graph.vs)
+        vertex_size = [default_size] * num_nodes
+        vertex_color = [default_color] * num_nodes
+
+        if attributes:
+            if "vertex_size" in attributes:
+                if len(attributes["vertex_size"]) != num_nodes:
+                    raise ValueError(f"El tamaño de 'vertex_size' no coincide con el número de nodos ({num_nodes}).")
+                vertex_size = attributes["vertex_size"]
+            if "vertex_color" in attributes:
+                if len(attributes["vertex_color"]) != num_nodes:
+                    raise ValueError(f"El tamaño de 'vertex_color' no coincide con el número de nodos ({num_nodes}).")
+                vertex_color = attributes["vertex_color"]
+
+    
+        igraph.plot(
+            self.graph,
+            target=output_path,
+            vertex_size= vertex_size if vertex_size else default_size,
+            vertex_color=vertex_color,
+            vertex_label=self.graph.vs["name"],
+            vertex_label_size=8
+        )
+
+
 
 
 
@@ -175,11 +243,14 @@ def main():
     # Convert network to igraph format
     graph=utils.network_to_igraph_format(args.network)
 
-    #plot network
-    igraph.plot(graph, target="../results/network1.svg",vertex_size=35,vertex_label=graph.vs["name"], vertex_label_size=8)
-
     analyzer = NetworkAnalysis(graph)
+    # network metrics
     analyzer.calculate_metrics()
+    #plot network
+    analyzer.visualize_network("../results/network.png")
+    
+
+    #TODO find critical
 
     metrics= analyzer.metrics
     #falta modularidad que esta en la rama de clustering
