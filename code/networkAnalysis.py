@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 import igraph 
 import pandas as pd
-import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 import argparse
 import os
 import logging
 from typing import Tuple
 import utils
+import statistics
+import math
+from itertools import combinations
 
 # Create the logs directory
 log_folder = "logs"
@@ -31,7 +33,7 @@ class Metrics:
             graph (igraph.Graph): The graph to analyze.
 
         Returns:
-            tuple: Mean degree and standard deviation of the degree distribution.
+            tuple(float, float): Mean degree and standard deviation of the degree distribution.
         """
         try:
             if not isinstance(graph, igraph.Graph):
@@ -66,9 +68,9 @@ class Metrics:
                 text=f'Mean: {mean_degree:.2f}<br>Standar Deviation: {sd_degree:.2f}',  
                 showarrow=False,  
                 font=dict(size=14, color="black"),
-                align="right",  # Alineación del texto
-                bgcolor="white",  # Fondo blanco para la anotación
-                opacity=0.8  # Opacidad de la anotación
+                align="right",  
+                bgcolor="white",
+                opacity=0.8  
             )
 
             #fig.show()
@@ -79,6 +81,77 @@ class Metrics:
             raise
 
 
+class NetworkAnalysis:
+    def __init__(self, graph: igraph.Graph):
+
+        if not isinstance(graph, igraph.Graph):
+            raise ValueError("'graph' needs to be an igraph.Graph object.")
+
+        self.graph=graph
+        self.metrics={}
+
+
+    def find_critical_nodes(self) -> list:
+    # not eficient for large vertex_connectivity  
+        vertex_connectivity=self.graph.vertex_connectivity() 
+        critical_nodes = []  
+    
+        for nodes in combinations(range(self.graph.vcount()), vertex_connectivity):
+            copy_graph = self.graph.copy() 
+            copy_graph.delete_vertices(nodes)  
+
+            if not copy_graph.is_connected():
+                critical_nodes.append(nodes)
+    
+        return critical_nodes
+    
+    def calculate_metrics(self):
+        self.metrics["Number of nodes"]=self.graph.vcount()
+        self.metrics["Number of edges"]=self.graph.ecount()
+        
+        #Degree distribution
+        mean, sd=Metrics.analysis_degree(self.graph)
+        self.metrics["Average degree"]=mean
+        self.metrics["Std degree"]=sd
+
+    #Connectivity
+        self.metrics["Connected graph"]= self.graph.is_connected()
+        self.metrics["Node connectivity"]=self.graph.vertex_connectivity() 
+        self.metrics["Edge connectivity"]=self.graph.edge_connectivity()
+
+
+        density=self.graph.density()
+        self.metrics["Density"]=density
+        self.metrics["Sparsity"]= 1-density
+
+        closeness=self.graph.closeness()
+        self.metrics["Average Closeness"]= statistics.mean(closeness)
+        self.metrics["Std Closeness"]= statistics.stdev(closeness)
+
+        #Clustering Coeficiente
+        #local
+        local_transitivity= self.graph.transitivity_local_undirected()
+        nan_nodes=[n for n, t in enumerate(local_transitivity) if math.isnan(t)]
+        clean_lt=[0  if math.isnan(t) else t for t in local_transitivity]
+        self.metrics["Average Local transitivity"]= statistics.mean(clean_lt)
+        self.metrics["Std Local transitivity"]= statistics.stdev(clean_lt)
+            #salen valor NaN -> hay nodos con 1 solo vecino
+
+        #global
+        self.metrics["Global transitivity"]=self.graph.transitivity_undirected()
+        #betweenness (centralidad)
+        betweenness=self.graph.betweenness()
+        self.metrics["Average betweenness"]= statistics.mean(self.graph.betweenness())
+        self.metrics["Std betweenness"]= statistics.stdev(self.graph.betweenness())
+
+        self.metrics["Assortativity"]=self.graph.assortativity_degree()
+
+        self.metrics["Diameter"] = self.graph.diameter()
+        self.metrics["Average Path Length"] = self.graph.average_path_length()
+
+
+    def visualize_network(self, output_path):
+        igraph.plot(self.graph, target=output_path, vertex_size=35,vertex_label=self.graph.vs["name"], vertex_label_size=8 )
 
 
 
@@ -105,28 +178,15 @@ def main():
     #plot network
     igraph.plot(graph, target="../results/network1.svg",vertex_size=35,vertex_label=graph.vs["name"], vertex_label_size=8)
 
-    metrics={}
+    analyzer = NetworkAnalysis(graph)
+    analyzer.calculate_metrics()
 
-    metrics["Number of nodes"]=graph.vcount()
-    metrics["Number of edges"]=graph.ecount()
+    metrics= analyzer.metrics
+    #falta modularidad que esta en la rama de clustering
     
-    #Degree distribution
-    mean, sd=Metrics.analysis_degree(graph)
-    metrics["Average degree"]=mean
-    metrics["Std degree"]=sd
-
-    #Connectivity
-    metrics["Connected graph"]= graph.is_connected()
-    metrics["Node connectivity"]=graph.vertex_connectivity()
-    metrics["Edge connectivity"]=graph.edge_connectivity()
-
-    metrics["Density"]=graph.density()
-    closeness=graph.closeness()
-    metrics["Average Closeness"]= sum(closeness)/len(closeness)
-
     #create a latex table
-    #df = pd.DataFrame(metrics, columns=["Metric", "Value"])
-    #df.to_latex( buf="../results/networkAnalysisMetrics",index=False, header=True, caption="Network Metrics Summary", label="tab:Networlmetrics", escape=False)
+    df = pd.DataFrame(list(metrics.items()), columns=["Metric", "Value"])
+    df.to_latex( buf="../results/networkAnalysisMetrics",index=False, header=True, caption="Network Metrics Summary", label="tab:Networlmetrics", escape=False)
 
 
 

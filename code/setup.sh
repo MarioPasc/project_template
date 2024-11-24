@@ -8,3 +8,6 @@ pip install --target=$PYTHON_LIB stringdb
 pip install --target=$PYTHON_LIB igraph
 pip install --target=$PYTHON_LIB matplotlib
 pip install --target=$PYTHON_LIB cairocffi
+pip install --target=$PYTHON_LIB plotly
+pip install --target=$PYTHON_LIB statistics
+pip install --target=$PYTHON_LIB jinja2
