@@ -2,8 +2,8 @@ from igraph import Graph
 from algorithms import Algorithms
 from metrics import Metrics
 import random
-# Crear un grafo de ejemplo
-#g = Graph.Erdos_Renyi(n=50, m=100)
+import logging
+from utils import setup_logger
 
 def create_test_graph():
     # Ejemplo de nombres de genes en distintas comunidades
@@ -37,19 +37,34 @@ def create_test_graph():
 
 g, _ = create_test_graph()
 
+logger = setup_logger("test metricas", "../logs/metricas", logging.INFO)
+
 # Realizar el clustering con el algoritmo multilevel
-clusters = Algorithms.multilevel_clustering(g)
+#clusters = Algorithms.multilevel_clustering(g, logger)
 
-# Convertir el objeto VertexClustering en una lista de listas
-cluster_list = Algorithms.convert_clustering_to_list(clusters)
-
-# Ahora puedes usar cluster_list con las métricas
-log_file = "metrics_log.txt"
+# Ejecutar el clustering con Leiden
+'''
+clusters = Algorithms.leiden_clustering(
+    graph=g,
+    logger=logger,
+    weights=None,
+    resolution=1.2,
+    beta=0.01,
+    objective_function="modularity"
+)
+'''
+# Ejecutar el clustering con Walktrap
+clusters = Algorithms.walktrap_clustering(
+    graph=g,
+    logger=logger,
+    weights=None,
+    steps=5
+)
 
 # Calcular el Functional Enrichment Score
-score = Metrics.functional_enrichment_score(g, cluster_list, log_file)
+score = Metrics.functional_enrichment_score(g, clusters, logger=logger)
 print(f"Puntaje de enriquecimiento funcional: {score}")
 
 # Calcular la modularidad
-modularity_score = Metrics.modularity(g, cluster_list, log_file=log_file)
+modularity_score = Metrics.modularity(g, clusters, logger=logger)
 print(f"Modularidad: {modularity_score}")
