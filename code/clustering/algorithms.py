@@ -89,6 +89,7 @@ class Algorithms:
         initial_membership: Optional[List[int]] = None,
         resolution: float = 1.0,
         beta: float = 0.01,
+        n_iterations: int = -1,
         objective_function: str = "modularity",
     ) -> List[List[int]]:
         """
@@ -100,6 +101,7 @@ class Algorithms:
         :param initial_membership: Initial membership for nodes, useful for incremental optimization.
         :param resolution: Resolution parameter. Higher values detect smaller communities.
         :param beta: Parameter for randomness. Higher values increase randomness in clustering.
+        :param n_iterations: Number of iterations. Using a negative number of iterations will run until a stable iteration is encountered
         :param objective_function: Objective function to optimize ('modularity' or 'CPM').
         :return: A list of clusters, where each cluster is a list of integers representing node indices.
         """
@@ -117,6 +119,7 @@ class Algorithms:
             clustering = graph.community_leiden(
                 weights=weights,
                 initial_membership=initial_membership,
+                n_iterations = n_iterations,
                 resolution_parameter=resolution,
                 beta=beta,
                 objective_function=objective_function,

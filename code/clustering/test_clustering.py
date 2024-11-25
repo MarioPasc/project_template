@@ -43,7 +43,7 @@ logger = setup_logger("test metricas", "../logs/metricas", logging.INFO)
 #clusters = Algorithms.multilevel_clustering(g, logger)
 
 # Ejecutar el clustering con Leiden
-'''
+
 clusters = Algorithms.leiden_clustering(
     graph=g,
     logger=logger,
@@ -60,7 +60,7 @@ clusters = Algorithms.walktrap_clustering(
     weights=None,
     steps=5
 )
-
+'''
 # Calcular el Functional Enrichment Score
 score = Metrics.functional_enrichment_score(g, clusters, logger=logger)
 print(f"Puntaje de enriquecimiento funcional: {score}")

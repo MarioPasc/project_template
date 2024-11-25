@@ -44,9 +44,6 @@ def setup_logger(name: str, log_file: str, level=logging.INFO) -> logging.Logger
     
     return logger
 
-
-# TODO: Gonzalo implementa esta función un besito
-# lo he implementado yo (Carmen), porque también lo uso en mi parte
 def network_to_igraph_format(network_csv: Union[str, os.PathLike], sep: str ="\t") -> igraph.Graph:
     """
     Converts a network, in a file, to an igraph format.
