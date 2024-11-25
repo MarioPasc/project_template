@@ -224,11 +224,11 @@ class BHO_Clustering:
 
         # Run the selected clustering algorithm
         if self.selected_algorithm == "multilevel":
-            clusters = Algorithms.multilevel_clustering(graph=self.graph, **hyperparams)
+            clusters = Algorithms.multilevel_clustering(graph=self.graph, logger=self.logger, **hyperparams)
         elif self.selected_algorithm == "walktrap":
-            clusters = self.graph.community_walktrap(**hyperparams).as_clustering()
+            clusters = Algorithms.walktrap_clustering(graph=self.graph, logger=self.logger, **hyperparams)
         elif self.selected_algorithm == "leiden":
-            clusters = self.graph.community_leiden(**hyperparams)
+            clusters = Algorithms.leiden_clustering(graph=self.graph, logger=self.logger, **hyperparams)
         else:
             raise ValueError(f"Unsupported algorithm: {self.selected_algorithm}")
 
