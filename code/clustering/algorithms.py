@@ -180,6 +180,41 @@ class Algorithms:
             raise
 
     @staticmethod
+    def fastgreedy_clustering(
+        graph: Graph,
+        logger: logging.Logger
+    ) -> List[List[int]]:
+        """
+        Perform clustering using the FastGreedy algorithm.
+
+        :param graph: An igraph object representing the graph to be clustered.
+        :param logger: A Logger object to log information and errors.
+        :return: A list of clusters, where each cluster is a list of integers representing node indices.
+        """
+        try:
+            # Validate input type
+            if not isinstance(graph, Graph):
+                raise TypeError("The parameter 'graph' must be an instance of igraph.Graph.")
+            
+            # Log the start of clustering
+            logger.info("Iniciando el algoritmo de clustering FastGreedy.")
+
+            # Perform clustering
+            dendrogram = graph.community_fastgreedy()
+            clustering = dendrogram.as_clustering()
+
+            # Log the results
+            logger.info(f"Clustering completado. Número de clusters detectados: {len(clustering)}")
+
+            # Convert clustering to list
+            return Algorithms.convert_clustering_to_list(clustering, logger)
+
+        except Exception as e:
+            # Log detailed error
+            logger.error(f"Error al ejecutar el algoritmo FastGreedy clustering: {e}")
+            raise
+
+    @staticmethod
     def convert_clustering_to_list(clustering: VertexClustering, logger: logging.Logger) -> List[List[int]]:
         """
         Converts a VertexClustering object into a list of lists format.
