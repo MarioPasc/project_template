@@ -54,7 +54,7 @@ def main():
     
     #create a latex table
     df = pd.DataFrame(list(metrics.items()), columns=["Metric", "Value"])
-    df.to_latex( buf="../results/networkAnalysisMetrics",index=False, header=True, caption="Network Metrics Summary", label="tab:Networlmetrics", escape=False)
+    df.to_latex( buf="../results/networkAnalysisMetrics.tex",index=False, header=True, caption="Network Metrics Summary", label="tab:Networlmetrics", escape=False)
 
 
 

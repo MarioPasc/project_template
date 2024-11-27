@@ -1,4 +1,6 @@
 import igraph 
+from matplotlib.lines import Line2D
+from matplotlib.patches import Patch
 import plotly.graph_objects as go
 from typing import Tuple, List
 import statistics
@@ -7,7 +9,7 @@ from itertools import combinations
 import logging
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
-import matplotlib.image as mpimg
+from matplotlib.axes import Axes
 
 
 class Metrics:
@@ -130,9 +132,16 @@ class Network:
         cn=set(e for tup in critical_nodes for e in tup) #obtain the nodes from the list of tuples
 
         #highlight in a plot the critical nodes
-        self.visualize_network(
+        self.visualize_network_matplotlib_save(
             output_path="../results/critical_nodes_graph.png",
-            attributes={"vertex_color": ["#FF0000" if n in cn else "#AAAAAA" for n in range(len(self.graph.vs))]}
+            attributes={"vertex_color": ["#FF0000" if n in cn else "#AAAAAA" for n in range(len(self.graph.vs))]},
+            title="Critical Nodes",
+            legend={
+                    "handles": [
+                    Patch(facecolor='red', edgecolor='black')
+                    ],
+                    "labels": ["Critical Node"]
+}
         )
 
 
@@ -173,9 +182,16 @@ class Network:
         local_transitivity= self.graph.transitivity_local_undirected()
         nan_nodes=[n for n, t in enumerate(local_transitivity) if math.isnan(t)]
         #highlight in the plot nodes with a local_transitivity of NaN (they either don't have neighbourds or only one)
-        self.visualize_network(
+        self.visualize_network_matplotlib_save(
             output_path="../results/transitivity_graph.png",
-            attributes={"vertex_color": ["#FF0000" if n in nan_nodes else "#AAAAAA" for n in range(len(self.graph.vs))]}
+            attributes={"vertex_color": ["#FF0000" if n in nan_nodes else "#AAAAAA" for n in range(len(self.graph.vs))]},
+            title=" Local Transitivity",
+            legend={
+                    "handles": [
+                    Patch(facecolor='red', edgecolor='black')
+                    ],
+                    "labels": ["Node with NaN Local Transitivity"]
+}
         )
 
         clean_lt=[0  if math.isnan(t) else t for t in local_transitivity] #drop the NaN values to compute mean and stdev
@@ -247,17 +263,58 @@ class Network:
             vertex_size= vertex_size if vertex_size else default_size,
             vertex_color=vertex_color,
             vertex_label=self.graph.vs["name"],
-            vertex_label_size=8
+            vertex_label_size=8,
+            edge_width= 0.5
         )
 
+    def visualize_network_matplotlib_save(self, output_path: str=None, attributes: dict = None, title: str=None, legend: dict=None)-> None:
+        
+        fig, ax = plt.subplots(figsize=(8, 8)) 
 
-    def visualize_clusters(self, output_path:str, clusters: List[List[int]]):
+        self.visualize_network_matplotlib(ax, attributes, title, legend)
+
+        if output_path:
+            plt.savefig(output_path, format="png", bbox_inches="tight")
+        
+
+    def visualize_network_matplotlib(self, ax: Axes, attributes: dict = None, title: str=None, legend: dict=None) -> Axes:
+        """
+        Visualize the graph using igraph and matplotlib, with options to customize the size, color of the nodes and edges,
+        and add a legend to the plot.
+    
+        Args:
+            ax (matplotlib.Axes): The axes to plot on. 
+            attributes (dict, optional): Dictionary of additional attributes to customize the visualization.
+            title (str, optional): Title of the figure.
+            legend(dic, optional): Dictionary of legend elements
+
+        
+        Return:
+         ax (matplotlib.Axes): visualization
+        """
+
+        self.visualize_network(ax, attributes) 
+    
+        if title:
+            ax.set_title(title)
+        plt.axis("off") 
+
+
+        if legend:
+            ax.legend(handles=legend["handles"], labels=legend["labels"], loc='upper right', fontsize=10)
+
+        return ax
+
+    def visualize_clusters(self, output_path:str, clusters: List[List[int]]) -> Axes:
         """
         Displays the network with different colors for each cluster.
 
         Args:
         output_path (str): Name of the file where the network image is save.
         clusters (List[List[int]]): List of lists, where each sublist contains the indexes of the nodes of a cluster.
+
+        Return:
+         ax (matplotlib.Axes): visualization
         """
 
         num_clusters = len(clusters)
@@ -269,5 +326,5 @@ class Network:
             for node in cluster:
                 vertex_color[node]=mcolors.to_hex(color_palette(num))
     
-        self.visualize_network(output_path, attributes={"vertex_color": vertex_color})
+        return self.visualize_network_matplotlib(output_path, attributes={"vertex_color": vertex_color})
 
