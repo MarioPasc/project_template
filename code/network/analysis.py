@@ -6,7 +6,7 @@ import os
 
 from network import Network
 import pandas as pd
-from utils import misc
+from utils import misc as utils
 
 # Create the logs directory
 log_folder = "logs"
@@ -43,7 +43,7 @@ def main():
     # network metrics
     analyzer.calculate_metrics()
     # plot network
-    analyzer.visualize_network("../results/network.png")
+    analyzer.visualize_network("./results/network.png")
 
     metrics = analyzer.metrics
     # falta modularidad que esta en la rama de clustering
@@ -51,7 +51,7 @@ def main():
     # create a latex table
     df = pd.DataFrame(list(metrics.items()), columns=["Metric", "Value"])
     df.to_latex(
-        buf="../results/networkAnalysisMetrics.tex",
+        buf="./results/networkAnalysisMetrics.tex",
         index=False,
         header=True,
         caption="Network Metrics Summary",

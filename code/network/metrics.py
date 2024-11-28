@@ -60,7 +60,7 @@ class Metrics:
             )
 
             fig.show()
-            fig.write_html("../results/degree_distribution.html")
+            fig.write_html("./results/degree_distribution.html")
             return mean_degree, sd_degree
         except ValueError as v:
             logging.error(f"ValueError: {v}")

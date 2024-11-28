@@ -75,7 +75,7 @@ class Network:
 
         # highlight in a plot the critical nodes
         self.visualize_network_matplotlib_save(
-            output_path="../results/critical_nodes_graph.png",
+            output_path="./results/critical_nodes_graph.png",
             attributes={
                 "vertex_color": [
                     "#FF0000" if n in cn else "#AAAAAA"
@@ -113,7 +113,7 @@ class Network:
 
         # visualization
         self.visualize_network(
-            output_path="../results/closeness_betwennes_graph.png",
+            output_path="./results/closeness_betwennes_graph.png",
             attributes={
                 "vertex_size": [20 + (v / max(betweenness)) * 40 for v in betweenness],
                 "vertex_color": [
@@ -133,7 +133,7 @@ class Network:
         nan_nodes = [n for n, t in enumerate(local_transitivity) if math.isnan(t)]
         # highlight in the plot nodes with a local_transitivity of NaN (they either don't have neighbourds or only one)
         self.visualize_network_matplotlib_save(
-            output_path="../results/transitivity_graph.png",
+            output_path="./results/transitivity_graph.png",
             attributes={
                 "vertex_color": [
                     "#FF0000" if n in nan_nodes else "#AAAAAA"
