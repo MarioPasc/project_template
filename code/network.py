@@ -268,6 +268,19 @@ class Network:
         )
 
     def visualize_network_matplotlib_save(self, output_path: str=None, attributes: dict = None, title: str=None, legend: dict=None)-> None:
+        """
+        Visualize the graph using igraph and matplotlib and save it in file
+    
+        Args:
+            out_path (str): Path where the generated image will be saved.
+            attributes (dict, optional): Dictionary of additional attributes to customize the visualization.
+            title (str, optional): Title of the figure.
+            legend(dic, optional): Dictionary of legend elements
+
+        
+        Returns:
+         ax (matplotlib.Axes): visualization
+        """
         
         fig, ax = plt.subplots(figsize=(8, 8)) 
 
@@ -289,7 +302,7 @@ class Network:
             legend(dic, optional): Dictionary of legend elements
 
         
-        Return:
+        Returns:
          ax (matplotlib.Axes): visualization
         """
 
@@ -305,13 +318,15 @@ class Network:
 
         return ax
 
-    def visualize_clusters(self, output_path:str, clusters: List[List[int]]) -> Axes:
+    def visualize_clusters(self, output_path:str, clusters: List[List[int]], title: str=None, legend: dict=None ) -> Axes:
         """
         Displays the network with different colors for each cluster.
 
         Args:
         output_path (str): Name of the file where the network image is save.
         clusters (List[List[int]]): List of lists, where each sublist contains the indexes of the nodes of a cluster.
+        title (str, optional): Title of the figure.
+        legend(dic, optional): Dictionary of legend elements
 
         Return:
          ax (matplotlib.Axes): visualization
@@ -326,5 +341,5 @@ class Network:
             for node in cluster:
                 vertex_color[node]=mcolors.to_hex(color_palette(num))
     
-        return self.visualize_network_matplotlib(output_path, attributes={"vertex_color": vertex_color})
+        return self.visualize_network_matplotlib(output_path, attributes={"vertex_color": vertex_color}, title=title, legend=legend)
 
