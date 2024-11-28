@@ -208,68 +208,122 @@ def plot_pareto_from_multiple_csvs(
 
     if SHOW: plt.show()
 
-def plot_hyperparameter_vs_metric_fixed_hyperparam(
+def plot_hyperparameter_vs_metric_fixed_hyperparam_subplots(
     csv_files: List[str],
     legend_names: List[str],
-    metric_column: str,
+    metric_column: dict,
     colors: List[str] = ["blue", "orange", "green"],
+    max_line_colors: List[str] = ["black", "black"],
     alpha: float = 0.7,
     lines_alpha: float = 0.5,
     save_path: str = None,
     label_x: str = "",
-    label_y: str = "",
     title: str = "",
 ):
     """
-    Plots the chosen metric (values_0 or values_1) against the hyperparameter 
-    (assumed to be the third column) from multiple CSV files.
+    Plots the chosen metrics against the hyperparameter (assumed to be the third column) 
+    from multiple CSV files. Creates subplots for each metric.
 
     :param csv_files: List of CSV file paths.
     :param legend_names: List of names for the legend corresponding to each CSV file.
-    :param metric_column: Column name of the metric to be plotted on the Y-axis (e.g., 'values_0' or 'values_1').
+    :param metric_column: Dictionary with keys as column names in the CSV (metrics) and values as display names of the metrics.
     :param colors: List of colors to use for each CSV file.
+    :param max_line_colors: List of colors to use for the maximum metric lines.
     :param alpha: Alpha transparency for the scatter points.
     :param lines_alpha: Alpha transparency for the dashed lines indicating max metric values.
     :param save_path: Path to save the plot. If None, the plot is just displayed.
     :param label_x: Label for the X-axis (e.g., "Hyperparameter Value").
-    :param label_y: Label for the Y-axis (e.g., "Metric Value").
-    :param title: Title for the plot.
+    :param title: Title for the entire plot.
     """
-    _, ax = plt.subplots(figsize=(10, 6))
-    
-    for idx, csv_file in enumerate(csv_files):
-        # Load the CSV
-        data = pd.read_csv(csv_file)
-        
-        # Automatically detect the hyperparameter column (third column)
-        hyperparameter_column = data.columns[2]
-        x_values = data[hyperparameter_column]
-        y_values = data[metric_column]
-        
-        # Scatter plot for the current dataset
-        color = colors[idx % len(colors)]  # Cycle through colors if not enough provided
-        max_modularity = max(y_values)
-        ax.axhline(y=max_modularity, color=color, linestyle="--", alpha=lines_alpha)
-        ax.scatter(x_values, y_values, label=legend_names[idx], color=color, alpha=alpha)
-    
-    # Add labels and legend
-    ax.set_xlabel(label_x)
-    ax.set_ylabel(label_y)
-    ax.set_title(title)
-    ax.grid(True)
-    ax.legend()
-    
-    # Customize spines (removing top and right)
-    ax.spines[['right', 'top']].set_visible(False)
-    ax.get_xaxis().tick_bottom()
-    ax.get_yaxis().tick_left()
-    
+    num_metrics = len(metric_column)
+    if num_metrics > 2:
+        raise ValueError("Only up to 2 metrics are supported for subplots.")
+
+    fig, axes = plt.subplots(1, num_metrics, figsize=(12, 5), sharex=True)
+    if num_metrics == 1:
+        axes = [axes]  # Make axes iterable even for a single subplot
+
+    max_metric_lines = []  # To store legend entries for max lines
+
+    for metric_idx, (metric_key, metric_name) in enumerate(metric_column.items()):
+        ax = axes[metric_idx]
+        max_value_overall = -np.inf
+        max_model_name = ""
+        max_metric_value = -np.inf
+
+        for idx, csv_file in enumerate(csv_files):
+            # Load the CSV
+            data = pd.read_csv(csv_file)
+
+            # Automatically detect the hyperparameter column (third column)
+            hyperparameter_column = data.columns[3]
+            x_values = data[hyperparameter_column]
+            y_values = data[metric_key]
+
+            # Scatter plot for the current dataset
+            color = colors[idx % len(colors)]
+            ax.scatter(x_values, y_values, label=legend_names[idx], color=color, alpha=alpha)
+
+            # Check if this model has the max value for the metric
+            current_max = y_values.max()
+            if current_max > max_metric_value:
+                max_metric_value = current_max
+                max_model_name = legend_names[idx]
+                max_value_overall = current_max
+
+        # Add a dashed line for the maximum value
+        max_line_color = max_line_colors[metric_idx % len(max_line_colors)]
+        ax.axhline(y=max_value_overall, color=max_line_color, linestyle="--", alpha=lines_alpha)
+        ax.get_xaxis().tick_bottom()
+        ax.get_yaxis().tick_left()
+        ax.set_xlim([0.0, 2.1])
+        ax.set_ylim([-0.01, 0.2])
+        # Add to legend entries for max lines
+        max_metric_lines.append(
+            f"Max {metric_name} ({max_model_name}: {max_value_overall:.2f})"
+        )
+
+        # Axis labels
+        ax.set_xlabel(label_x)
+        ax.set_ylabel(metric_name)
+        ax.set_title(f"{metric_name}")
+
+        # Customize spines
+        ax.spines[['right', 'top']].set_visible(False)
+        ax.grid(False)
+
+    import matplotlib.lines as mlines
+
+    # Create custom legend handles for max metric lines
+    max_metric_handles = [
+        mlines.Line2D([], [], color=max_line_colors[i % len(max_line_colors)], linestyle="--", label=label)
+        for i, label in enumerate(max_metric_lines)
+    ]
+
+    # Get scatter plot handles and labels
+    scatter_handles, scatter_labels = axes[0].get_legend_handles_labels()
+
+    # Combine scatter handles and max metric handles
+    all_handles = scatter_handles + max_metric_handles
+    all_labels = scatter_labels + max_metric_lines
+
+    # Add the legend to the figure
+    fig.legend(
+        handles=all_handles,
+        labels=all_labels,
+        loc="lower center",
+        bbox_to_anchor=(0.5, -0.1),
+        ncol=len(csv_files),
+        fontsize=9,
+    )
+
+    # Overall title
+    fig.suptitle(title)
+
     # Save or show the plot
     if save_path:
-        plt.savefig(save_path, format="pdf", dpi=300)
+        plt.savefig(save_path, format="pdf", dpi=300, bbox_inches="tight")
     if SHOW: plt.show()
-
-
 
 
 if __name__ == "__main__":
@@ -302,15 +356,15 @@ if __name__ == "__main__":
     )
 
 
-    plot_hyperparameter_vs_metric_fixed_hyperparam(
+    plot_hyperparameter_vs_metric_fixed_hyperparam_subplots(
         csv_files=csv_files,
-        legend_names=["Leiden", "Multilevel", "Walktrap"],
-        metric_column="values_0",  # Eje Y
+        legend_names=["Leiden", "Multilevel"],
+        metric_column={"values_0": "Modularidad (Q)",
+                       "values_1": "Coeficiente de Significancia Biológica (QBS)"},  # Eje Y
         colors=colors,
         alpha=0.8,
         lines_alpha=0.5,
         save_path=os.path.join(results_path, "hyperparameter_vs_metric.pdf"),
-        label_x="Hyperparameter Value",
-        label_y="Modularity",
-        title="Modularity values vs Model's hyperparameter values",
+        label_x=r"Resolución $\gamma$",
+        title=""
     )
