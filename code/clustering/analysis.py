@@ -2,6 +2,16 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from typing import List
+import os
+import scienceplots
+
+plt.style.use(['science', 'ieee', 'std-colors'])
+plt.rcParams['font.size'] = 10
+plt.rcParams.update({'figure.dpi': '300'})
+plt.rcParams['axes.spines.top'] = False
+plt.rcParams['axes.spines.right'] = False
+
+SHOW = False # For debugging you may set this to true
 
 def plot_single_pareto_front(
     csv_file: str,
@@ -70,8 +80,9 @@ def plot_single_pareto_front(
     ax.axhline(y=max_enrichment_y, color=color, linestyle="--", alpha=lines_alpha)
 
     # Customize spines (removing top and right)
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
+    ax.spines[['right', 'top']].set_visible(False)
+    ax.get_xaxis().tick_bottom()
+    ax.get_yaxis().tick_left()
 
     # Labels and legend
     ax.set_xlabel("Modularity")
@@ -80,7 +91,7 @@ def plot_single_pareto_front(
     ax.legend()
 
     plt.savefig(save_path, format="pdf", dpi=300)  # Save as PNG with high resolution
-    plt.show()
+    if SHOW: plt.show()
 
 def plot_pareto_from_multiple_csvs(
     csv_files: List[str],
@@ -105,15 +116,12 @@ def plot_pareto_from_multiple_csvs(
     :param save_path: If provided, saves the plot to this path.
     :param title: Title for the plot.
     """
-    if len(csv_files) != len(colors):
-        raise ValueError("The number of CSV files must match the number of colors.")
+    if len(csv_files) != len(colors) or len(csv_files) != len(legend_names):
+        raise ValueError("The number of CSV files, colors, and legend names must match.")
 
     _, ax = plt.subplots(figsize=(10, 6))
-    ax.grid(True)
 
-    idx = 0
-
-    for csv_file, color in zip(csv_files, colors):
+    for idx, (csv_file, color, legend_name) in enumerate(zip(csv_files, colors, legend_names)):
         # Load data from CSV
         data = pd.read_csv(csv_file)
 
@@ -132,16 +140,16 @@ def plot_pareto_from_multiple_csvs(
             if not dominated:
                 is_pareto[i] = True
 
-        # Find the index of the highest metrics value
-        max_modularity_index = np.argmax(values_0)
-        max_enrichment_index = np.argmax(values_1)
+        # Sort Pareto points for the connecting line
+        pareto_points = points[is_pareto]
+        pareto_points = pareto_points[np.argsort(pareto_points[:, 0])]
 
         # Find the best individual values for vertical/horizontal lines
-        max_modularity_x = values_0[max_modularity_index]
-        max_modularity_y = values_1[max_modularity_index]
+        max_modularity_x = pareto_points[-1, 0]
+        max_modularity_y = pareto_points[-1, 1]
 
-        max_enrichment_x = values_0[max_enrichment_index]
-        max_enrichment_y = values_1[max_enrichment_index]
+        max_enrichment_x = pareto_points[0, 0]
+        max_enrichment_y = pareto_points[0, 1]
 
         # Plot the points
         ax.scatter(
@@ -155,32 +163,50 @@ def plot_pareto_from_multiple_csvs(
             values_1[is_pareto],
             color=color,
             alpha=pareto_alpha,
-            label=legend_names[idx],
+            label=legend_name,
         )
 
-        # Add dashed lines
-        ax.axhline(y=max_modularity_y, color=color, linestyle="--", alpha=lines_alpha)
-        ax.axvline(x=max_modularity_x, color=color, linestyle="--", alpha=lines_alpha)
-        ax.axvline(x=max_enrichment_x, color=color, linestyle="--", alpha=lines_alpha)
-        ax.axhline(y=max_enrichment_y, color=color, linestyle="--", alpha=lines_alpha)
+        # Plot the Pareto line
+        ax.plot(
+            pareto_points[:, 0],
+            pareto_points[:, 1],
+            color=color,
+            alpha=pareto_alpha,
+            linestyle="-",
+            linewidth=1.5,
+        )
+        ax.set_ylim([0.0, 0.2])
+        ax.set_xlim([0.0, 0.2])
+        # Calculate normalized positions for lines
+        x_norm_modularity = (max_modularity_x - ax.get_xlim()[0]) / (ax.get_xlim()[1] - ax.get_xlim()[0])
+        y_norm_modularity = (max_modularity_y - ax.get_ylim()[0]) / (ax.get_ylim()[1] - ax.get_ylim()[0])
 
-        idx += 1
+        x_norm_enrichment = (max_enrichment_x - ax.get_xlim()[0]) / (ax.get_xlim()[1] - ax.get_xlim()[0])
+        y_norm_enrichment = (max_enrichment_y - ax.get_ylim()[0]) / (ax.get_ylim()[1] - ax.get_ylim()[0])
+
+        # Add dashed lines stopping exactly at the points
+        ax.axhline(y=max_modularity_y, xmin=0, xmax=x_norm_modularity, color=color, linestyle="--", alpha=lines_alpha)
+        ax.axvline(x=max_modularity_x, ymin=0, ymax=y_norm_modularity, color=color, linestyle="--", alpha=lines_alpha)
+        ax.axvline(x=max_enrichment_x, ymin=0, ymax=y_norm_enrichment, color=color, linestyle="--", alpha=lines_alpha)
+        ax.axhline(y=max_enrichment_y, xmin=0, xmax=x_norm_enrichment, color=color, linestyle="--", alpha=lines_alpha)
+
 
     # Customize spines (removing top and right)
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
+    ax.spines[['right', 'top']].set_visible(False)
+    ax.get_xaxis().tick_bottom()
+    ax.get_yaxis().tick_left()
 
     # Labels and legend
-    ax.set_xlabel("Modularity")
-    ax.set_ylabel("Functional Enrichment Score")
+    ax.set_xlabel("Modularidad (Q)")
+    ax.set_ylabel("Coeficiente de Significancia Biológica (QBS)")
     ax.set_title(title)
-    ax.legend()
+    ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.17), ncol=len(csv_files))
 
     # Save the plot
     if save_path:
-        plt.savefig(save_path, format="pdf", dpi=300)
+        plt.savefig(save_path, format="pdf", dpi=300, bbox_inches="tight")
 
-    plt.show()
+    if SHOW: plt.show()
 
 def plot_hyperparameter_vs_metric_fixed_hyperparam(
     csv_files: List[str],
@@ -234,54 +260,57 @@ def plot_hyperparameter_vs_metric_fixed_hyperparam(
     ax.legend()
     
     # Customize spines (removing top and right)
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
+    ax.spines[['right', 'top']].set_visible(False)
+    ax.get_xaxis().tick_bottom()
+    ax.get_yaxis().tick_left()
     
     # Save or show the plot
     if save_path:
         plt.savefig(save_path, format="pdf", dpi=300)
-    plt.show()
+    if SHOW: plt.show()
 
 
 
 
-# Example usage:
-csv_base = "../../results/results_"
-csv_file = "../../results/results_multilevel.csv"
-csv_files = [csv_base+"leiden.csv", csv_base+"multilevel.csv", csv_base+"walktrap.csv"]
-colors = ["#1f77b4", "#ff7f0e", "#2ca02c"]
+if __name__ == "__main__":
+    # Example usage:
+    csv_base = "../../results/results_"
+    csv_file = "../../results/results_multilevel.csv"
+    csv_files = [csv_base+"leiden.csv", csv_base+"multilevel.csv"]
+    colors = ['#0C5DA5', '#00B945']
+    results_path = "../../results"
 
-plot_single_pareto_front(
-    csv_file,
-    alpha_non_pareto=0.1,
-    pareto_alpha=1.0,
-    lines_alpha=0.5,
-    color="purple",
-    save_path="pareto_single.pdf",
-    title="Pareto Front")
-
-
-plot_pareto_from_multiple_csvs(
-    csv_files=csv_files,
-    legend_names=["Leiden", "Multilevel", "Walktrap"],
-    colors=colors,
-    alpha_non_pareto=0.2,
-    pareto_alpha=1.0,
-    lines_alpha=0.5,
-    save_path="pareto_comparison.pdf",
-    title="Pareto Front for the 3 Clustering algorithms"
-)
+    plot_single_pareto_front(
+        csv_file,
+        alpha_non_pareto=0.1,
+        pareto_alpha=1.0,
+        lines_alpha=0.5,
+        color="purple",
+        save_path=os.path.join(results_path, "pareto_single.pdf"),
+        title="Pareto Front")
 
 
-plot_hyperparameter_vs_metric_fixed_hyperparam(
-    csv_files=csv_files,
-    legend_names=["Leiden", "Multilevel", "Walktrap"],
-    metric_column="values_0",  # Eje Y
-    colors=colors,
-    alpha=0.8,
-    lines_alpha=0.5,
-    save_path="hyperparameter_vs_metric.pdf",
-    label_x="Hyperparameter Value",
-    label_y="Modularity",
-    title="Modularity values vs Model's hyperparameter values",
-)
+    plot_pareto_from_multiple_csvs(
+        csv_files=csv_files,
+        legend_names=["Leiden", "Multilevel"],
+        colors=colors,
+        alpha_non_pareto=0.2,
+        pareto_alpha=1.0,
+        lines_alpha=0.5,
+        save_path=os.path.join(results_path, "pareto_comparison.pdf"),
+        title=""
+    )
+
+
+    plot_hyperparameter_vs_metric_fixed_hyperparam(
+        csv_files=csv_files,
+        legend_names=["Leiden", "Multilevel", "Walktrap"],
+        metric_column="values_0",  # Eje Y
+        colors=colors,
+        alpha=0.8,
+        lines_alpha=0.5,
+        save_path=os.path.join(results_path, "hyperparameter_vs_metric.pdf"),
+        label_x="Hyperparameter Value",
+        label_y="Modularity",
+        title="Modularity values vs Model's hyperparameter values",
+    )
