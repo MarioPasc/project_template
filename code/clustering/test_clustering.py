@@ -3,7 +3,7 @@ from algorithms import Algorithms
 from metrics import Metrics
 import random
 import logging
-from utils import setup_logger
+from utils.misc import setup_logger
 
 def create_test_graph():
     # Ejemplo de nombres de genes en distintas comunidades

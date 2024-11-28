@@ -3,7 +3,7 @@
 import argparse
 import os
 import logging
-import utils
+import utils.misc as utils
 import network
 import pandas as pd
 

@@ -21,7 +21,7 @@ import psutil
 
 from metrics import Metrics  
 from algorithms import Algorithms
-from utils import (
+from utils.misc import (
     setup_logger, 
     network_to_igraph_format
 )
