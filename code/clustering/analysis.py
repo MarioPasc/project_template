@@ -326,6 +326,10 @@ def plot_hyperparameter_vs_metric_fixed_hyperparam_subplots(
     if SHOW: plt.show()
 
 
+# TODO: Debemos hacer uso de la función que tiene Carmen en su rama para generar una visualización
+#       que nos permita ver los clusterings obtenidos sin problema.  
+
+
 if __name__ == "__main__":
     # Example usage:
     csv_base = "../../results/results_"
@@ -365,6 +369,6 @@ if __name__ == "__main__":
         alpha=0.8,
         lines_alpha=0.5,
         save_path=os.path.join(results_path, "hyperparameter_vs_metric.pdf"),
-        label_x=r"Resolución $\gamma$",
+        label_x=r"Resolución ($\gamma$)",
         title=""
     )
