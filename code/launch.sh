@@ -15,4 +15,4 @@ awk 'NR > 1{print $2}' data/hpoGenes.tsv > $hpo_genes  # Extract gene names
 # Proceed with the rest of your script
 network="data/network.tsv"
 ./obtainPPINetwork.py $hpo_genes $network
-./networkAnalysis.py $network
+network/networkAnalysis.py $network
