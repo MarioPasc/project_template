@@ -67,7 +67,7 @@ def network_to_igraph_format(
             directed=False,
             use_vids=False,
         )
-        logging.info(f"Successfully converts network to igraph format")
+        logging.info("Successfully converts network to igraph format")
         return graph
     except FileNotFoundError:
         logging.error(f"File not found: {network_csv}")

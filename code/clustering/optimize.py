@@ -141,7 +141,7 @@ class BHO_Clustering:
             return config
         except Exception as e:
             self.logger.critical(
-                "Error loading hyperparameter configuration. Check example at code/clustering/configs."
+                f"Error loading hyperparameter configuration. Check example at code/clustering/configs: {e}"
             )
 
     def _extract_hyperparameters(self, trial: optuna.Trial) -> Dict[str, Any]:

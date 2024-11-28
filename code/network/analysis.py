@@ -4,9 +4,9 @@ import argparse
 import logging
 import os
 
-import network
+from network import Network
 import pandas as pd
-import utils.misc as utils
+from utils import misc
 
 # Create the logs directory
 log_folder = "logs"
@@ -39,7 +39,7 @@ def main():
     # Convert network to igraph format
     graph = utils.network_to_igraph_format(args.network)
 
-    analyzer = network.Network(graph)
+    analyzer = Network(graph)
     # network metrics
     analyzer.calculate_metrics()
     # plot network

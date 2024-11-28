@@ -3,10 +3,11 @@ import statistics
 from itertools import combinations
 from typing import List
 
+from metrics import Metrics
+
 import igraph
 import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
-import network.metrics as metrics
 from matplotlib.axes import Axes
 from matplotlib.patches import Patch
 
@@ -54,7 +55,7 @@ class Network:
         """
         Analysis of the degree of the nodes
         """
-        mean, sd = metrics.Metrics.analysis_degree(self.graph)
+        mean, sd = Metrics.analysis_degree(self.graph)
         self.metrics["Average degree"] = mean
         self.metrics["Std degree"] = sd
 
