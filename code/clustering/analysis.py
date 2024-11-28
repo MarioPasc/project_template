@@ -1,8 +1,9 @@
-import pandas as pd
+import os
+from typing import List
+
 import matplotlib.pyplot as plt
 import numpy as np
-from typing import List
-import os
+import pandas as pd
 import scienceplots
 
 plt.style.use(["science", "ieee", "std-colors"])

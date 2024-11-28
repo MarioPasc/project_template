@@ -1,4 +1,4 @@
 # utils/__init__.py
 
-from .misc import setup_logger, network_to_igraph_format
-from .obtainPPINetwork import obtain_genes, main
+from .misc import network_to_igraph_format, setup_logger
+from .obtainPPINetwork import main, obtain_genes

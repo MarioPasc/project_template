@@ -1,7 +1,9 @@
-from igraph import Graph
-import random
 import logging
+import random
+
+from igraph import Graph
 from metrics import Metrics
+
 
 # Crear grafo y clústeres
 def create_test_graph():

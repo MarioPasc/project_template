@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
 import argparse
-import os
 import logging
-import utils.misc as utils
+import os
+
 import network
 import pandas as pd
-
+import utils.misc as utils
 
 # Create the logs directory
 log_folder = "logs"

@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 import argparse
-import stringdb
-from typing import Union, List
-import os
 import logging
+import os
+from typing import List, Union
+
+import stringdb
 
 # Create the logs directory
 log_folder = "logs"

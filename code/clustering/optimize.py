@@ -1,22 +1,21 @@
 #!/usr/bin/env python3
 
+import argparse
+import os
+import platform
+import random
+import time
+from typing import Any, Dict, Tuple, Union
+
 import igraph as ig
 import numpy as np
 import optuna
 import pandas as pd
-import os
-import time
-import random
-from typing import Union, Tuple, Dict, Any
-import yaml
-import argparse
-
-import platform
 import psutil
-
-from metrics import Metrics
+import yaml
 from algorithms import Algorithms
-from utils.misc import setup_logger, network_to_igraph_format
+from metrics import Metrics
+from utils.misc import network_to_igraph_format, setup_logger
 
 
 class BHO_Clustering:

@@ -1,13 +1,14 @@
-import igraph
-from matplotlib.patches import Patch
-from typing import List
-import statistics
 import math
+import statistics
 from itertools import combinations
-import matplotlib.pyplot as plt
+from typing import List
+
+import igraph
 import matplotlib.colors as mcolors
-from matplotlib.axes import Axes
+import matplotlib.pyplot as plt
 import network.metrics as metrics
+from matplotlib.axes import Axes
+from matplotlib.patches import Patch
 
 
 class Network:

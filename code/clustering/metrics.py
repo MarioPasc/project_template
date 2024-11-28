@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 
-from math import log10
-from igraph import Graph
 import logging
-
-# import numpy as np
-from stringdb import get_string_ids, get_enrichment
+from math import log10
 from typing import List, Optional
+
 import pandas as pd
 import requests
+from igraph import Graph
+# import numpy as np
+from stringdb import get_enrichment, get_string_ids
 
 
 class Metrics:

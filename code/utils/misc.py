@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 
 import logging
-import igraph
 import os
-import pandas as pd
 from typing import Union
 
-import os
-import logging
+import igraph
+import pandas as pd
 
 
 def setup_logger(name: str, log_file: str, level=logging.INFO) -> logging.Logger:

@@ -1,8 +1,9 @@
-from igraph import Graph
-from algorithms import Algorithms
-from metrics import Metrics
-import random
 import logging
+import random
+
+from algorithms import Algorithms
+from igraph import Graph
+from metrics import Metrics
 from utils.misc import setup_logger
 
 

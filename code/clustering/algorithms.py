@@ -25,9 +25,10 @@
 #           Fast unfolding of communities in large networks.
 #           Journal of statistical mechanics: theory and experiment, 2008, vol. 2008, no 10, p. P10008.
 
-from igraph import Graph, VertexClustering
-from typing import List, Optional, Union
 import logging
+from typing import List, Optional, Union
+
+from igraph import Graph, VertexClustering
 
 
 class Algorithms:
