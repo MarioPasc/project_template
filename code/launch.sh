@@ -2,15 +2,13 @@
 
 # Path variables of Python and R
 export PYTHON_LIB=./Py_libs
-export PYTHONPATH=$PYTHON_LIB:$PYTHONPATH  
+export PYTHONPATH=$PYTHON_LIB:$PYTHONPATH  # Añadir Py_libs al PYTHONPATH
 
 # Create the data directory if it doesn't exist
 mkdir -p data
-
-# Download the HPO genes file using wget instead of curl, which is not installed by default in most Linux distros
-wget -q --header='Accept: application/json' 'https://ontology.jax.org/api/network/annotation/HP%3A0002145/download/gene' -O data/hpoGenes.tsv
-
-# Process the genes file
+# obtener genes de HPO
+# ES NECESARIO INSTALAR CURL YA QUE NO VIENE INSTALADO POR DEFECTO
+curl -X 'GET' 'https://ontology.jax.org/api/network/annotation/HP%3A0002145/download/gene' -H 'accept: application/json' -o data/hpoGenes.tsv -s
 hpo_genes="data/hpoGenesNames.tsv"
 awk 'NR > 1{print $2}' data/hpoGenes.tsv > $hpo_genes  # Extract gene names
 

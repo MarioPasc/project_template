@@ -13,6 +13,8 @@
 *.tsv  
 # Ignorar archivos de texto
 *.txt 
+# Ignorar diarios de desarrolladores
+*.md
  
 # Ignorar carpetas generadas
 # Ignorar carpeta automática de Py_libs
@@ -23,3 +25,5 @@ logs/
 data/
 # Ignorar la carpeta de resultados
 results/
+# Ignorar la cache de python
+__pycache__/
