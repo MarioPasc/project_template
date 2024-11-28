@@ -1,60 +1,41 @@
-import networkx as nx
-import os
-import pandas as pd
+from clustering.utils import network_to_igraph_format
 from functional_analysis import FunctionalAnalysis 
 
-# Crear un grafo simulado para pruebas
-def create_test_graph():
+def test_functional_analysis_on_clusters():
     """
-    Crea un grafo de prueba con nodos y atributos de clúster.
+    Prueba el análisis funcional sobre los clústeres extraídos del grafo (igraph).
     """
-    G = nx.Graph()
-    
-    # Añadir nodos con atributos de clúster
-    G.add_node('TP53', cluster='Cluster1')
-    G.add_node('BRCA1', cluster='Cluster1')
-    G.add_node('MDM2', cluster='Cluster1')
-    G.add_node('ERK2', cluster='Cluster2')
-    G.add_node('MEK1', cluster='Cluster2')
-    G.add_node('AKT1', cluster='Cluster3')  # Clúster pequeño para probar exclusión
-    
-    # Añadir conexiones (no son relevantes para los clústeres, pero válidas para la estructura del grafo)
-    G.add_edges_from([('TP53', 'BRCA1'), ('TP53', 'MDM2'), ('ERK2', 'MEK1')])
-    
-    return G
+    # Ruta al archivo de red
+    network_file = "network.tsv"
 
-# Probar la clase FunctionalAnalysis
-def test_functional_analysis():
-    """
-    Prueba el flujo completo de la clase FunctionalAnalysis.
-    """
-    # Crear el grafo de prueba
-    graph = create_test_graph()
+    # Convertir la red al formato igraph
+    try:
+        graph = network_to_igraph_format(network_file)
+    except Exception as e:
+        print(f"Error al cargar la red: {e}")
+        return
 
-    # Crear una instancia de FunctionalAnalysis
+    # Definir clústeres de prueba
+    clusters = [
+        [0, 5, 8, 9, 10, 11, 13, 17, 21, 22, 24, 25, 37, 38, 41, 47],
+        [1, 3, 4, 6, 12, 15, 16, 23, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 39, 40, 46, 48],
+        [2, 7, 14, 18, 19, 20, 42, 43, 44, 45, 49]
+    ]
+
+    # Crear instancia de FunctionalAnalysis con el grafo igraph
     fa = FunctionalAnalysis(graph)
 
-    # Definir el archivo de salida para los resultados
-    output_file = 'test_results.csv'
-
-    # Ejecutar el análisis
-    print("Ejecutando el análisis funcional...")
-    fa.perform_analysis(output_file)
-
-    # Verificar que se haya generado el archivo de resultados
-    if os.path.exists(output_file):
-        print(f"Archivo de resultados generado correctamente: {output_file}")
-        
-        # Leer el archivo y verificar su contenido
-        results = pd.read_csv(output_file)
-        print("Contenido del archivo de resultados:")
-        print(results.head())
-        
-        # Limpieza: eliminar el archivo de prueba después de validar
-        os.remove(output_file)
-    else:
-        print("Error: No se generó el archivo de resultados.")
+    # Definir la ruta de salida
+    output_file = "test_results.csv"
+    
+    try:
+        # Ejecutar el análisis funcional
+        fa.perform_analysis(clusters, output_file)
+        print(f"Prueba completada. Resultados guardados en {output_file}.")
+    except Exception as e:
+        print(f"Error durante el análisis funcional: {e}")
 
 # Ejecutar el test
 if __name__ == "__main__":
-    test_functional_analysis()
+    test_functional_analysis_on_clusters()
+
