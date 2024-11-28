@@ -2,74 +2,123 @@
 import networkx as nx
 import pandas as pd
 import gseapy as gp
+from typing import List, Dict
 
 class FunctionalAnalysis:
     def __init__(self, graph: nx.Graph):
+        """
+        Inicializa la clase con un grafo que contiene los clústeres.
+
+        :param graph: Objeto grafo que ya incluye los clústeres y genes como nodos.
+        """
+        if not isinstance(graph, nx.Graph):
+            raise TypeError("El argumento 'graph' debe ser un objeto de tipo networkx.Graph.")
         self.graph = graph
 
     @staticmethod
-    def _perform_enrichment_analysis(genes: list) -> pd.DataFrame:
+    def _perform_enrichment_analysis(genes: List[str]) -> pd.DataFrame:
         """
         Realiza un análisis de enriquecimiento funcional para una lista de genes.
+
+        :param genes: Lista de genes para los cuales realizar el enriquecimiento.
+        :return: DataFrame con los resultados del análisis funcional.
         """
-        # Realizar el análisis de enriquecimiento utilizando GSEApy
-        enr = gp.enrichr(gene_list=genes,
-                         gene_sets='KEGG_2021_Human',  # Puedes elegir otras bases de datos
-                         organism='Human',  # Especifica el organismo
-                         outdir=None,  # No guardar resultados en disco
-                         no_plot=True)  # No generar gráficos
+        
+        try:
+            if not genes:
+                raise ValueError("La lista de genes está vacía.")
 
-        # Verificar si se obtuvieron resultados
-        if enr.results.empty:
-            return pd.DataFrame()  # Retornar un DataFrame vacío si no hay resultados
+            # Realizar análisis funcional usando Enrichr
+            enr = gp.enrichr(
+                gene_list=genes,
+                gene_sets='KEGG_2021_Human',  # Base de datos funcional, ajustable
+                organism='Human',  # Especificar organismo
+                outdir=None,  # No guardar resultados en disco
+                no_plot=True  # No generar gráficos
+            )
 
-        # Retornar los resultados como un DataFrame
-        return enr.results
+            # Retornar resultados si hay datos
+            if enr.results.empty:
+                return pd.DataFrame()  # Retornar un DataFrame vacío si no hay resultados
+
+            return enr.results
+
+        except Exception as e:
+            # Captura cualquier error durante el análisis funcional
+            print(f"Error en _perform_enrichment_analysis para genes {genes}: {e}")
+            return pd.DataFrame()
 
     def perform_analysis(self, output_file: str):
         """
-        Extrae los clústeres del grafo, realiza el análisis de enriquecimiento
-        para cada clúster y guarda los resultados en un archivo CSV.
+        Extrae los clústeres del grafo, realiza análisis funcional para cada clúster
+        y guarda los resultados en un archivo CSV.
+
+        :param output_file: Ruta al archivo CSV donde se guardarán los resultados.
         """
-        # Extraer los clústeres del grafo
-        clusters = self._extract_clusters()
+        try:
+            # Validar la entrada
+            if not isinstance(output_file, str) or not output_file.endswith('.csv'):
+                raise ValueError("El parámetro 'output_file' debe ser una cadena que termine en '.csv'.")
 
-        # Lista para almacenar todos los resultados
-        all_results = []
+            # Extraer los clústeres del grafo
+            clusters = self._extract_clusters()
 
-        # Iterar sobre cada clúster y realizar el análisis de enriquecimiento
-        for cluster_id, genes in clusters.items():
-            if len(genes) < 3:
-                # Omitir clústeres con menos de 3 genes
-                continue
+            if not clusters:
+                raise ValueError("No se encontraron clústeres en el grafo.")
 
-            # Realizar el análisis de enriquecimiento
-            enrichment_results = self._perform_enrichment_analysis(genes)
+            # Lista para almacenar resultados de todos los clústeres
+            all_results = []
 
-            # Agregar una columna para identificar el clúster
-            enrichment_results['Cluster'] = cluster_id
+            # Iterar sobre cada clúster y realizar análisis funcional
+            for cluster_id, genes in clusters.items():
+                try:
+                    if len(genes) < 3:  # Ignorar clústeres con menos de 3 genes
+                        print(f"Clúster {cluster_id} ignorado (menos de 3 genes).")
+                        continue
 
-            # Agregar los resultados a la lista
-            all_results.append(enrichment_results)
+                    print(f"Realizando análisis funcional para el clúster {cluster_id}...")
+                    enrichment_results = self._perform_enrichment_analysis(genes)
 
-        # Concatenar todos los resultados en un solo DataFrame
-        if all_results:
-            final_results = pd.concat(all_results, ignore_index=True)
-            # Guardar los resultados en un archivo CSV
-            final_results.to_csv(output_file, index=False)
-        else:
-            print("No se encontraron resultados de enriquecimiento para los clústeres proporcionados.")
+                    if enrichment_results.empty:
+                        print(f"No se encontraron resultados de enriquecimiento para el clúster {cluster_id}.")
+                        continue
+
+                    # Agregar una columna para identificar el clúster
+                    enrichment_results['Cluster'] = cluster_id
+                    all_results.append(enrichment_results)
+
+                except Exception as e:
+                    print(f"Error al analizar el clúster {cluster_id}: {e}")
+                    continue
+
+            # Concatenar todos los resultados y guardarlos en un CSV
+            if all_results:
+                final_results = pd.concat(all_results, ignore_index=True)
+                final_results.to_csv(output_file, index=False)
+                print(f"Resultados guardados en {output_file}.")
+            else:
+                print("No se encontraron resultados significativos para los clústeres.")
+
+        except Exception as e:
+            print(f"Error en perform_analysis: {e}")
 
     def _extract_clusters(self) -> dict:
         """
-        Extrae los clústeres del grafo y los retorna como un diccionario.
+        Extrae los clústeres del grafo como un diccionario.
+
+        :return: Diccionario donde las claves son los IDs de los clústeres y los valores son listas de genes.
         """
-        # Suponiendo que los nodos del grafo tienen un atributo 'cluster' que indica su clúster
-        clusters = {}
-        for node, data in self.graph.nodes(data=True):
-            cluster_id = data.get('cluster')
-            if cluster_id is not None:
-                if cluster_id not in clusters:
-                    clusters[cluster_id] = []
-                clusters[cluster_id].append(node)
-        return clusters
+        try:
+            clusters = {}
+            for node, data in self.graph.nodes(data=True):
+                cluster_id = data.get('cluster')  # Suponiendo que los nodos tienen el atributo 'cluster'
+                if cluster_id:
+                    clusters.setdefault(cluster_id, []).append(node)
+
+            if not clusters:
+                print("Advertencia: No se encontraron nodos con clústeres en el grafo.")
+            return clusters
+
+        except Exception as e:
+            print(f"Error en _extract_clusters: {e}")
+            return {}
