@@ -5,6 +5,7 @@ import random
 import logging
 from utils.misc import setup_logger
 
+
 def create_test_graph():
     # Ejemplo de nombres de genes en distintas comunidades
     genes_cluster_1 = ["TP53", "BRCA1", "MDM2", "CDK2", "EGFR"]
@@ -27,23 +28,30 @@ def create_test_graph():
     # Añadir conexiones inter-clúster
     for i in range(len(genes_cluster_1)):
         if random.random() < 0.2:  # Probabilidad baja inter-clúster
-            g.add_edge(all_genes.index(genes_cluster_1[i]), all_genes.index(genes_cluster_2[i % len(genes_cluster_2)]))
+            g.add_edge(
+                all_genes.index(genes_cluster_1[i]),
+                all_genes.index(genes_cluster_2[i % len(genes_cluster_2)]),
+            )
 
     for i in range(len(genes_cluster_2)):
         if random.random() < 0.2:
-            g.add_edge(all_genes.index(genes_cluster_2[i]), all_genes.index(genes_cluster_3[i % len(genes_cluster_3)]))
+            g.add_edge(
+                all_genes.index(genes_cluster_2[i]),
+                all_genes.index(genes_cluster_3[i % len(genes_cluster_3)]),
+            )
 
     return g, [genes_cluster_1, genes_cluster_2, genes_cluster_3]
+
 
 g, _ = create_test_graph()
 
 logger = setup_logger("test metricas", "../logs/metricas", logging.INFO)
 
 # Realizar el clustering con el algoritmo multilevel
-#clusters = Algorithms.multilevel_clustering(g, logger)
+# clusters = Algorithms.multilevel_clustering(g, logger)
 
 # Ejecutar el clustering con Leiden
-'''
+"""
 clusters = Algorithms.leiden_clustering(
     graph=g,
     logger=logger,
@@ -60,7 +68,7 @@ clusters = Algorithms.walktrap_clustering(
     weights=None,
     steps=5
 )
-'''
+"""
 
 clusters = Algorithms.fastgreedy_clustering(graph=g, logger=logger)
 

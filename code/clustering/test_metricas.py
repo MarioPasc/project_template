@@ -26,17 +26,28 @@ def create_test_graph():
     # Añadir conexiones inter-clúster
     for i in range(len(genes_cluster_1)):
         if random.random() < 0.2:  # Probabilidad baja inter-clúster
-            g.add_edge(all_genes.index(genes_cluster_1[i]), all_genes.index(genes_cluster_2[i % len(genes_cluster_2)]))
+            g.add_edge(
+                all_genes.index(genes_cluster_1[i]),
+                all_genes.index(genes_cluster_2[i % len(genes_cluster_2)]),
+            )
 
     for i in range(len(genes_cluster_2)):
         if random.random() < 0.2:
-            g.add_edge(all_genes.index(genes_cluster_2[i]), all_genes.index(genes_cluster_3[i % len(genes_cluster_3)]))
+            g.add_edge(
+                all_genes.index(genes_cluster_2[i]),
+                all_genes.index(genes_cluster_3[i % len(genes_cluster_3)]),
+            )
 
     return g, [genes_cluster_1, genes_cluster_2, genes_cluster_3]
 
+
 # Archivo de log
 log_file = "../logs/test_metrics.log"
-logging.basicConfig(level=logging.INFO, filename=log_file, format="%(asctime)s - %(levelname)s - %(message)s")
+logging.basicConfig(
+    level=logging.INFO,
+    filename=log_file,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+)
 
 # Crear el grafo y los clústeres
 graph, clusters = create_test_graph()
@@ -61,4 +72,4 @@ except Exception as e:
     print(f"Error al calcular la modularidad: {e}")
 
 
-#print(Metrics._get_go_term_depth("GO:0051052"))
+# print(Metrics._get_go_term_depth("GO:0051052"))

@@ -7,33 +7,27 @@ import pandas as pd
 import os
 import time
 import random
-from typing import (
-    Union, 
-    Tuple, 
-    Dict, 
-    Any
-)
-import yaml 
+from typing import Union, Tuple, Dict, Any
+import yaml
 import argparse
 
 import platform
 import psutil
 
-from metrics import Metrics  
+from metrics import Metrics
 from algorithms import Algorithms
-from utils.misc import (
-    setup_logger, 
-    network_to_igraph_format
-)
+from utils.misc import setup_logger, network_to_igraph_format
+
 
 class BHO_Clustering:
-    def __init__(self, 
-                 config_path: Union[str, os.PathLike],
-                 network_csv: Union[str, os.PathLike], 
-                 output_path: Union[str, os.PathLike], 
-                 study_name: str = "community_detection_optimization",
-                 n_trials: int = 100
-                 ) -> None:
+    def __init__(
+        self,
+        config_path: Union[str, os.PathLike],
+        network_csv: Union[str, os.PathLike],
+        output_path: Union[str, os.PathLike],
+        study_name: str = "community_detection_optimization",
+        n_trials: int = 100,
+    ) -> None:
         """
         Parameters
         ----------
@@ -64,22 +58,27 @@ class BHO_Clustering:
         self.graph: ig.Graph = network_to_igraph_format(network_csv=network_csv)
         self.selected_algorithm: str = config["algorithm"]
         self.hyperparameters = {  # Map of hyperparameter names to their configs
-            (param["name"], param["type"]): param for param in config.get("parameters", [])
+            (param["name"], param["type"]): param
+            for param in config.get("parameters", [])
         }
         self.output_path: Union[str, os.PathLike] = output_path
         self.study_name: str = study_name
         self.n_trials: int = n_trials
-        self.study: optuna.Study = None  # Will hold the Optuna study object after optimization
+        self.study: optuna.Study = (
+            None  # Will hold the Optuna study object after optimization
+        )
 
         # Setup logger
-        os.makedirs('./logs', exist_ok=True)
+        os.makedirs("./logs", exist_ok=True)
         self.logger = setup_logger(
             name="Bayesian_Hyperparameter_Optimization_Clustering_Networks",
-            log_file="logs/bho_optimization.log"
+            log_file="logs/bho_optimization.log",
         )
 
         # Log study details
-        self.logger.info(f"Study '{self.study_name}' initialized with the following parameters:")
+        self.logger.info(
+            f"Study '{self.study_name}' initialized with the following parameters:"
+        )
         self.logger.info(f"  Config Path: {config_path}")
         self.logger.info(f"  Network CSV: {network_csv}")
         self.logger.info(f"  Output Path: {output_path}")
@@ -105,12 +104,18 @@ class BHO_Clustering:
         """
 
         self.logger.info("Execution Environment:")
-        self.logger.info(f"  OS: {platform.system()} {platform.release()} ({platform.version()})")
+        self.logger.info(
+            f"  OS: {platform.system()} {platform.release()} ({platform.version()})"
+        )
         self.logger.info(f"  Python Version: {platform.python_version()}")
         self.logger.info(f"  Processor: {platform.processor()}")
         self.logger.info(f"  CPU Cores: {psutil.cpu_count(logical=True)}")
-        self.logger.info(f"  Total Memory: {psutil.virtual_memory().total / (1024**3):.2f} GB")
-        self.logger.info(f"  Available Memory: {psutil.virtual_memory().available / (1024**3):.2f} GB")
+        self.logger.info(
+            f"  Total Memory: {psutil.virtual_memory().total / (1024**3):.2f} GB"
+        )
+        self.logger.info(
+            f"  Available Memory: {psutil.virtual_memory().available / (1024**3):.2f} GB"
+        )
 
     def _load_config(self, config_path: str) -> Dict[str, Any]:
         """
@@ -132,11 +137,13 @@ class BHO_Clustering:
             If the YAML file cannot be parsed.
         """
         try:
-            with open(config_path, 'r') as file:
+            with open(config_path, "r") as file:
                 config = yaml.safe_load(file)
             return config
         except Exception as e:
-            self.logger.critical("Error loading hyperparameter configuration. Check example at code/clustering/configs.")
+            self.logger.critical(
+                "Error loading hyperparameter configuration. Check example at code/clustering/configs."
+            )
 
     def _extract_hyperparameters(self, trial: optuna.Trial) -> Dict[str, Any]:
         """
@@ -169,25 +176,37 @@ class BHO_Clustering:
             low = param_config.get("min") or param_config.get("low")
             high = param_config.get("max") or param_config.get("high")
             if func_type == "log_float":
-                final_hyperparam[hyperparam] = trial.suggest_float(hyperparam, low, high, log=True)
+                final_hyperparam[hyperparam] = trial.suggest_float(
+                    hyperparam, low, high, log=True
+                )
             if func_type == "float":
-                final_hyperparam[hyperparam] = trial.suggest_float(hyperparam, low, high, log=False)
+                final_hyperparam[hyperparam] = trial.suggest_float(
+                    hyperparam, low, high, log=False
+                )
             elif func_type == "uniform":
-                final_hyperparam[hyperparam] = trial.suggest_float(hyperparam, low, high)
+                final_hyperparam[hyperparam] = trial.suggest_float(
+                    hyperparam, low, high
+                )
             elif func_type == "int":
-                final_hyperparam[hyperparam] = trial.suggest_int(hyperparam, int(low), int(high))
+                final_hyperparam[hyperparam] = trial.suggest_int(
+                    hyperparam, int(low), int(high)
+                )
             elif func_type == "categorical":
                 choices = param_config["choices"]
-                final_hyperparam[hyperparam] = trial.suggest_categorical(hyperparam, choices)
+                final_hyperparam[hyperparam] = trial.suggest_categorical(
+                    hyperparam, choices
+                )
             else:
-                self.logger.critical(f"Unknown function type {func_type} for hyperparameter {hyperparam}. Choose from log_float | float | uniform | int | categorical.")
-                raise ValueError(f"Unknown function type {func_type} for hyperparameter {hyperparam}")
-        
+                self.logger.critical(
+                    f"Unknown function type {func_type} for hyperparameter {hyperparam}. Choose from log_float | float | uniform | int | categorical."
+                )
+                raise ValueError(
+                    f"Unknown function type {func_type} for hyperparameter {hyperparam}"
+                )
+
         return final_hyperparam
 
-    def _train(self, 
-               trial: optuna.Trial
-               ) -> Tuple[float, float]:
+    def _train(self, trial: optuna.Trial) -> Tuple[float, float]:
         """
         Parameters
         ----------
@@ -214,7 +233,7 @@ class BHO_Clustering:
         seed = trial.number  # Use trial number as the seed
         np.random.seed(seed)
         random.seed(seed)
-        trial.set_user_attr('seed', seed)
+        trial.set_user_attr("seed", seed)
 
         # Record the start time
         start_time = time.time()
@@ -224,11 +243,17 @@ class BHO_Clustering:
 
         # Run the selected clustering algorithm
         if self.selected_algorithm == "multilevel":
-            clusters = Algorithms.multilevel_clustering(graph=self.graph, logger=self.logger, **hyperparams)
+            clusters = Algorithms.multilevel_clustering(
+                graph=self.graph, logger=self.logger, **hyperparams
+            )
         elif self.selected_algorithm == "walktrap":
-            clusters = Algorithms.walktrap_clustering(graph=self.graph, logger=self.logger, **hyperparams)
+            clusters = Algorithms.walktrap_clustering(
+                graph=self.graph, logger=self.logger, **hyperparams
+            )
         elif self.selected_algorithm == "leiden":
-            clusters = Algorithms.leiden_clustering(graph=self.graph, logger=self.logger, **hyperparams)
+            clusters = Algorithms.leiden_clustering(
+                graph=self.graph, logger=self.logger, **hyperparams
+            )
         else:
             raise ValueError(f"Unsupported algorithm: {self.selected_algorithm}")
 
@@ -236,16 +261,22 @@ class BHO_Clustering:
         cluster_list = [cluster for cluster in clusters]
 
         # Compute modularity
-        modularity_score = Metrics.modularity(graph=self.graph, clusters=cluster_list, logger=self.logger)
+        modularity_score = Metrics.modularity(
+            graph=self.graph, clusters=cluster_list, logger=self.logger
+        )
 
         # Compute functional enrichment score
-        fes_score = Metrics.functional_enrichment_score(graph=self.graph, clusters=cluster_list, logger=self.logger)
+        fes_score = Metrics.functional_enrichment_score(
+            graph=self.graph, clusters=cluster_list, logger=self.logger
+        )
 
         # Calculate execution time
         execution_time = time.time() - start_time
-        trial.set_user_attr('execution_time', execution_time)
+        trial.set_user_attr("execution_time", execution_time)
 
-        self.logger.info(f"Training for trial {trial.number} successfully finished in {execution_time :.2f} seconds.")
+        self.logger.info(
+            f"Training for trial {trial.number} successfully finished in {execution_time :.2f} seconds."
+        )
 
         return modularity_score, fes_score
 
@@ -260,40 +291,37 @@ class BHO_Clustering:
 
         References
         ----------
-        (1) OZAKI, Yoshihiko, et al. 
-            Multiobjective tree-structured Parzen estimator. 
+        (1) OZAKI, Yoshihiko, et al.
+            Multiobjective tree-structured Parzen estimator.
             Journal of Artificial Intelligence Research, 2022, vol. 73, p. 1209-1250.
-        (2) LI, Lisha, et al. 
-            Hyperband: A novel bandit-based approach to hyperparameter optimization. 
+        (2) LI, Lisha, et al.
+            Hyperband: A novel bandit-based approach to hyperparameter optimization.
             Journal of Machine Learning Research, 2018, vol. 18, no 185, p. 1-52.
         """
 
         # Dynamically allocates resources (trials) to promising candidates based on intermediate results.
         pruner = optuna.pruners.HyperbandPruner(
-            min_resource=5, 
-            max_resource=100,
-            reduction_factor=3 
+            min_resource=5, max_resource=100, reduction_factor=3
         )
 
         sampler = optuna.samplers.TPESampler(
-            n_startup_trials=20, # Determines the number of random trials before the TPE model is built
-            n_ei_candidates=64, # Number of candidates taken into consideration when calculating expected improvement
-            multivariate=True, # Sampling hyperparameters considering correlations between them
-            seed=42  # For reproducibility
+            n_startup_trials=20,  # Determines the number of random trials before the TPE model is built
+            n_ei_candidates=64,  # Number of candidates taken into consideration when calculating expected improvement
+            multivariate=True,  # Sampling hyperparameters considering correlations between them
+            seed=42,  # For reproducibility
         )
 
-
         # Set up storage (database) for saving results
-        storage: str = f'sqlite:///{self.output_path}/{self.study_name}.db'
+        storage: str = f"sqlite:///{self.output_path}/{self.study_name}.db"
 
         # Create the study
         self.study = optuna.create_study(
-            directions=['maximize', 'maximize'],
+            directions=["maximize", "maximize"],
             sampler=sampler,
             pruner=pruner,
             storage=storage,
             study_name=self.study_name,
-            load_if_exists=True
+            load_if_exists=True,
         )
 
         # Execute the optimization
@@ -319,12 +347,17 @@ class BHO_Clustering:
             raise ValueError("No study found. Please run optimize() first.")
 
         # Create a DataFrame from the study's trials
-        df: pd.DataFrame = self.study.trials_dataframe(attrs=('number', 'values', 'params', 'state', 'user_attrs'))
+        df: pd.DataFrame = self.study.trials_dataframe(
+            attrs=("number", "values", "params", "state", "user_attrs")
+        )
 
         # Save the DataFrame to a CSV file
-        csv_path: Union[str, os.PathLike] = os.path.join(self.output_path, 'optuna_results.csv')
+        csv_path: Union[str, os.PathLike] = os.path.join(
+            self.output_path, "optuna_results.csv"
+        )
         df.to_csv(csv_path, index=False)
         print(f"Results saved to {csv_path}")
+
 
 def main():
     """
@@ -359,12 +392,33 @@ def main():
     """
 
     # Argument parser
-    parser = argparse.ArgumentParser(description="Optimize clustering hyperparameters using Optuna.")
-    parser.add_argument("--config_path", type=str, required=True, help="Path to the YAML configuration file.")
-    parser.add_argument("--network_csv", type=str, required=True, help="Path to the CSV network file.")
-    parser.add_argument("--study_name", type=str, required=True, help="Name of the study.")
-    parser.add_argument("--output_path", type=str, required=True, help="Directory to save results and plots.")
-    parser.add_argument("--n_trials", type=int, default=100, help="Number of optimization trials (default: 100).")
+    parser = argparse.ArgumentParser(
+        description="Optimize clustering hyperparameters using Optuna."
+    )
+    parser.add_argument(
+        "--config_path",
+        type=str,
+        required=True,
+        help="Path to the YAML configuration file.",
+    )
+    parser.add_argument(
+        "--network_csv", type=str, required=True, help="Path to the CSV network file."
+    )
+    parser.add_argument(
+        "--study_name", type=str, required=True, help="Name of the study."
+    )
+    parser.add_argument(
+        "--output_path",
+        type=str,
+        required=True,
+        help="Directory to save results and plots.",
+    )
+    parser.add_argument(
+        "--n_trials",
+        type=int,
+        default=100,
+        help="Number of optimization trials (default: 100).",
+    )
 
     # Parse arguments
     args = parser.parse_args()
@@ -375,12 +429,13 @@ def main():
         network_csv=args.network_csv,
         output_path=args.output_path,
         study_name=args.study_name,
-        n_trials=args.n_trials
+        n_trials=args.n_trials,
     )
 
     # Run optimization and save results
     optimizer.optimize()
     optimizer.save_results()
+
 
 if __name__ == "__main__":
     main()

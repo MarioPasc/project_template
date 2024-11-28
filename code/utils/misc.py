@@ -9,10 +9,11 @@ from typing import Union
 import os
 import logging
 
+
 def setup_logger(name: str, log_file: str, level=logging.INFO) -> logging.Logger:
     """
     Sets up a logger with the specified name, log file, and logging level.
-    
+
     :param name: Name of the logger.
     :param log_file: Path to the log file.
     :param level: Logging level (default is DEBUG).
@@ -26,25 +27,28 @@ def setup_logger(name: str, log_file: str, level=logging.INFO) -> logging.Logger
     # Create logger
     logger = logging.getLogger(name)
     logger.setLevel(level)
-    
+
     # Remove any existing handlers to prevent duplicate logging
     if logger.hasHandlers():
         logger.handlers.clear()
-    
+
     # Create file handler
     file_handler = logging.FileHandler(log_file)
     file_handler.setLevel(level)
-    
+
     # Create formatter and add it to the handler
     formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
     file_handler.setFormatter(formatter)
-    
+
     # Add the file handler to the logger
     logger.addHandler(file_handler)
-    
+
     return logger
 
-def network_to_igraph_format(network_csv: Union[str, os.PathLike], sep: str ="\t") -> igraph.Graph:
+
+def network_to_igraph_format(
+    network_csv: Union[str, os.PathLike], sep: str = "\t"
+) -> igraph.Graph:
     """
     Converts a network, in a file, to an igraph format.
 
@@ -57,8 +61,14 @@ def network_to_igraph_format(network_csv: Union[str, os.PathLike], sep: str ="\t
 
     """
     try:
-        network_df= pd.read_csv(network_csv, sep=sep, header=0) #cambiar separador si poneis otro formato que no sea tsv
-        graph= igraph.Graph.DataFrame(network_df[['preferredName_A', 'preferredName_B']], directed=False, use_vids=False)
+        network_df = pd.read_csv(
+            network_csv, sep=sep, header=0
+        )  # cambiar separador si poneis otro formato que no sea tsv
+        graph = igraph.Graph.DataFrame(
+            network_df[["preferredName_A", "preferredName_B"]],
+            directed=False,
+            use_vids=False,
+        )
         logging.info(f"Successfully converts network to igraph format")
         return graph
     except FileNotFoundError:
@@ -68,7 +78,9 @@ def network_to_igraph_format(network_csv: Union[str, os.PathLike], sep: str ="\t
         logging.error(f"File not in the right format:  {network_csv}")
         raise
     except KeyError:
-        logging.error(f"Columns 'preferredName_A' and 'preferredName_B' not file: {network_csv} ")
+        logging.error(
+            f"Columns 'preferredName_A' and 'preferredName_B' not file: {network_csv} "
+        )
         raise
     except Exception as e:
         logging.error(f"Unexpected error: {e}")
