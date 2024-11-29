@@ -14,6 +14,7 @@ from typing import Union, Dict, Tuple, List, Any
 import pandas as pd
 import numpy as np
 from igraph import Graph
+import shutil
 import argparse
 import matplotlib.pyplot as plt
 from matplotlib.image import imread
@@ -310,7 +311,6 @@ def main() -> None:
         f"Modularity: {modularity:.4f}, Enrichment: {enrichment_score:.4f}, Clusters: {num_clusters}"
     )
 
-    # Optional: Add "Fast Greedy" to the visualization function (if needed)
     saved_clustering_paths[fastgreedy_algorithm_name] = {
         0: (fastgreedy_output_path, "Sin ajuste")
     }
@@ -323,7 +323,8 @@ def main() -> None:
         # Call the plotting function for the single algorithm
         plot_saved_clustering_results(single_algorithm_data)
 
-    os.removedirs(name = output_dir)
+    if os.path.exists(output_dir):
+        shutil.rmtree(output_dir)
 
 if __name__ == "__main__":
     main()
