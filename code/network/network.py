@@ -17,7 +17,7 @@ class Network:
     Class to carry out graph analysis using igraph
     """
 
-    def __init__(self, graph: igraph.Graph):
+    def __init__(self, graph: igraph.Graph)->None:
         """
         Initialize the NetworkAnalysis object
 
@@ -28,8 +28,8 @@ class Network:
         if not isinstance(graph, igraph.Graph):
             raise ValueError("'graph' needs to be an igraph.Graph object.")
 
-        self.graph = graph
-        self.metrics = {}
+        self.graph: igraph.Graph = graph
+        self.metrics: dict = {}
 
     def find_critical_nodes(self) -> list:
         """
@@ -40,7 +40,7 @@ class Network:
         """
         # not eficient for large vertex_connectivity
         vertex_connectivity = self.graph.vertex_connectivity()
-        critical_nodes = []
+        critical_nodes:list = []
 
         for nodes in combinations(range(self.graph.vcount()), vertex_connectivity):
             copy_graph = self.graph.copy()
@@ -51,15 +51,15 @@ class Network:
 
         return critical_nodes
 
-    def degree(self):
+    def degree(self, result_folder:str, format:str) -> None:
         """
-        Analysis of the degree of the nodes
+        Analysis of the degree of the nodes. Creates an histograma with the distribution of the degrees
         """
-        mean, sd = Metrics.analysis_degree(self.graph)
+        mean, sd  = Metrics.analysis_degree(self.graph, result_folder, format)
         self.metrics["Average degree"] = mean
         self.metrics["Std degree"] = sd
 
-    def connectivity(self):
+    def connectivity(self, result_folder:str, format:str)->None:
         """
         Analysis of the connectivity of the network
         """
@@ -75,7 +75,7 @@ class Network:
 
         # highlight in a plot the critical nodes
         self.visualize_network_matplotlib_save(
-            output_path="./results/critical_nodes_graph.png",
+            output_path=f"{result_folder}/critical_nodes_graph.{format}",
             attributes={
                 "vertex_color": [
                     "#FF0000" if n in cn else "#AAAAAA"
@@ -89,7 +89,7 @@ class Network:
             },
         )
 
-    def density(self):
+    def density(self)->None:
         """
         Compute density and sparsity of the  network
         """
@@ -97,7 +97,7 @@ class Network:
         self.metrics["Density"] = density
         self.metrics["Sparsity"] = 1 - density
 
-    def closeness_betweenness(self):
+    def closeness_betweenness(self, result_folder:str, format:str)->None:
         """
         Analysis of closennes and betweenness. And visualization of the network based on these metrics.
         """
@@ -111,9 +111,21 @@ class Network:
         self.metrics["Average betweenness"] = statistics.mean(betweenness)
         self.metrics["Std betweenness"] = statistics.stdev(betweenness)
 
+        legend = {
+                "handles": [
+                        Patch(facecolor="#0000FF", edgecolor="black"), 
+                        Patch(facecolor="#FF0000", edgecolor="black"), 
+                        Patch(facecolor="white", edgecolor="black", label="Node size increases with Betweenness")  
+                            ],
+                "labels": [
+                        "High Closeness (Blue)", 
+                        "Low Closeness (Red)",   
+                        "Node Size: Betweenness" 
+                ]}
+
         # visualization
-        self.visualize_network(
-            output_path="./results/closeness_betwennes_graph.png",
+        self.visualize_network_matplotlib_save(
+            output_path=f"{result_folder}/closeness_betwennes_graph.{format}",
             attributes={
                 "vertex_size": [20 + (v / max(betweenness)) * 40 for v in betweenness],
                 "vertex_color": [
@@ -121,9 +133,11 @@ class Network:
                     for c in closeness
                 ],
             },
+            title="Closeness and Betweenness",
+            legend=legend
         )
 
-    def clustering_coefficients(self):
+    def clustering_coefficients(self, result_folder:str, format:str)->None:
         """
         Compute local transitivity and global transitivity
         """
@@ -133,7 +147,7 @@ class Network:
         nan_nodes = [n for n, t in enumerate(local_transitivity) if math.isnan(t)]
         # highlight in the plot nodes with a local_transitivity of NaN (they either don't have neighbourds or only one)
         self.visualize_network_matplotlib_save(
-            output_path="./results/transitivity_graph.png",
+            output_path=f"{result_folder}/transitivity_graph.{format}",
             attributes={
                 "vertex_color": [
                     "#FF0000" if n in nan_nodes else "#AAAAAA"
@@ -156,27 +170,30 @@ class Network:
         # global
         self.metrics["Global transitivity"] = self.graph.transitivity_undirected()
 
-    def calculate_metrics(self):
+    def calculate_metrics(self, result_folder:str, format:str)->None:
         """
         Computes various statistical and structural metrics of the graph, as well as representation using these metrics.
+        Args:
+            result_folder(str): Path to the directory where the results will be saved.
+            format (str): Format of saved images.
         """
         self.metrics["Number of nodes"] = self.graph.vcount()
         self.metrics["Number of edges"] = self.graph.ecount()
 
         # Degree Distribution
-        self.degree()
+        self.degree(result_folder, format)
 
         # Connectivity
-        self.connectivity()
+        self.connectivity(result_folder, format)
 
         # Density
         self.density()
 
         # Closeness and betweenness
-        self.closeness_betweenness()
+        self.closeness_betweenness(result_folder, format)
 
         # Clustering Coeficients
-        self.clustering_coefficients()
+        self.clustering_coefficients(result_folder, format)
 
         self.metrics["Assortativity"] = self.graph.assortativity_degree()
 
@@ -189,7 +206,7 @@ class Network:
         attributes: dict = None,
         default_size: int = 35,
         default_color: str = "red",
-    ):
+    )->None:
         """
         Visualize the graph using igraph.plot, with options to customize the size and color of the nodes.
 
@@ -253,7 +270,7 @@ class Network:
         self.visualize_network_matplotlib(ax, attributes, title, legend)
 
         if output_path:
-            plt.savefig(output_path, format="png", bbox_inches="tight")
+            plt.savefig(output_path, bbox_inches="tight")
 
     def visualize_network_matplotlib(
         self, ax: Axes, attributes: dict = None, title: str = None, legend: dict = None
@@ -273,7 +290,7 @@ class Network:
          ax (matplotlib.Axes): visualization
         """
 
-        self.visualize_network(ax, attributes)
+        self.visualize_network(ax, attributes, default_size=25)
 
         if title:
             ax.set_title(title)

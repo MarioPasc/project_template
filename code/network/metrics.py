@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 
 class Metrics:
     @staticmethod
-    def analysis_degree(graph: igraph.Graph) -> Tuple[float, float]:
+    def analysis_degree(graph: igraph.Graph, result_folder:str, format:str) -> Tuple[float, float]:
         """
         Analyzes the degree distribution of a graph and saves a histogram in HTML format.
 
@@ -19,16 +19,17 @@ class Metrics:
         """
         try:
             if not isinstance(graph, igraph.Graph):
-                raise ValueError("The provided graph is not an igraph.Graph object.")
-
+                logging.error("ValueError:The provided graph is not an igraph.Graph object.")
+                raise 
+            
             # degree of each node
             # degree_dict = dict(zip(graph.vs["name"], graph.degree()))
 
             # obtain the degree distribution of the graph
             degree_distribution = graph.degree_distribution()
 
-            mean_degree = degree_distribution.mean
-            sd_degree = degree_distribution.sd
+            mean_degree: float = degree_distribution.mean
+            sd_degree: float = degree_distribution.sd
 
             # histogram of the degree distribution using plotly
             bins = list(
@@ -59,8 +60,9 @@ class Metrics:
                 opacity=0.8,
             )
 
-            fig.show()
-            fig.write_html("./results/degree_distribution.html")
+            #fig.show()
+            fig.write_html(f"{result_folder}/degree_distribution.html")
+            fig.write_image(f"{result_folder}/degree_distribution.{format}")
             return mean_degree, sd_degree
         except ValueError as v:
             logging.error(f"ValueError: {v}")

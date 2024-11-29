@@ -3,20 +3,15 @@ import argparse
 import logging
 import os
 from typing import List, Union
+from utils import misc 
 
 import stringdb
 
-# Create the logs directory
-log_folder = "logs"
-if not os.path.exists(log_folder):
-    os.makedirs(log_folder, exist_ok=True)
-
-# Configure logging of this stage of the project
-logging.basicConfig(
-    filename=os.path.join(log_folder, "data_downloading_logging.log"),
-    level=logging.DEBUG,
-    format="%(asctime)s - %(levelname)s - %(message)s",
+logging = misc.setup_logger(
+    name="Dowload_PPI_Network_from_Stringdb",
+    log_file=os.path.join("logs/data_downloading_logging.log")
 )
+
 
 
 def obtain_genes(file_path: Union[str, os.PathLike]) -> List[str]:

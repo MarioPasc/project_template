@@ -8,16 +8,10 @@ from network import Network
 import pandas as pd
 from utils import misc as utils
 
-# Create the logs directory
-log_folder = "logs"
-if not os.path.exists(log_folder):
-    os.makedirs(log_folder, exist_ok=True)
 
-# Configure logging of this stage of the project
-logging.basicConfig(
-    filename=os.path.join(log_folder, "network_analysis_logging.log"),
-    level=logging.DEBUG,
-    format="%(asctime)s - %(levelname)s - %(message)s",
+logging = utils.setup_logger(
+    name="Analysis_PPI_Network",
+    log_file=os.path.join("logs/network_analysis_logging.log")
 )
 
 
@@ -30,28 +24,45 @@ def main():
         help="Path to the file containing the network (e.g., data/genes.tsv)",
     )
 
+    parser.add_argument(
+        "results",
+        type=str,
+        help="Folder where the results will be saved",
+    )
+
+    parser.add_argument(
+        "-f",
+        "--format",
+        type=str,
+        default="pdf",
+        help="Format to save the imagen (ej. pdf, png, svg...)"
+    )
+
     args = parser.parse_args()
     if not os.path.isfile(args.network):
         print(f"Error: The network file '{args.network}' does not exist.")
         logging.error(f"The gene file '{args.network}' does not exist.")
         return
+    
+    if not os.path.exists(args.results):
+        os.makedirs(args.results)
+    
 
     # Convert network to igraph format
     graph = utils.network_to_igraph_format(args.network)
 
     analyzer = Network(graph)
     # network metrics
-    analyzer.calculate_metrics()
+    analyzer.calculate_metrics(args.results, args.format)
     # plot network
-    analyzer.visualize_network("./results/network.png")
+    analyzer.visualize_network(f"{args.results}/network.{args.format}")
 
     metrics = analyzer.metrics
-    # falta modularidad que esta en la rama de clustering
 
     # create a latex table
     df = pd.DataFrame(list(metrics.items()), columns=["Metric", "Value"])
     df.to_latex(
-        buf="./results/networkAnalysisMetrics.tex",
+        buf=f"{args.results}/networkAnalysisMetrics.tex",
         index=False,
         header=True,
         caption="Network Metrics Summary",

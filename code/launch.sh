@@ -19,12 +19,13 @@ awk 'NR > 1{print $2}' $hpo_genes_data > $hpo_genes  # Extract gene names
 
 # Proceed with the rest of your script
 network="./code/data/network.tsv"
+results="./results"
 
 # Retrieve the Protein-Protein Interaction Network
 ./code/utils/obtainPPINetwork.py $hpo_genes $network --filter="700" 
 
-# Perform Netowkr Analysis
-./code/network/analysis.py $network
+# Perform Network Analysis
+./code/network/analysis.py $network $results
 
 # Try optimizing
 
