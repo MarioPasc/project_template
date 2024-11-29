@@ -43,3 +43,8 @@ network="./code/data/network.tsv"
     --study_name leiden_optimization \
     --output_path results \
     --n_trials 150
+
+# Show clustering results
+./code/clustering/analysis.py \
+    code/data/network.tsv \
+    results/

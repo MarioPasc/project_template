@@ -30,6 +30,7 @@ plt.rcParams["axes.spines.right"] = False
 from algorithms import Algorithms
 from network import network
 from utils import misc
+from metrics import Metrics
 
 def get_extreme_configurations(csv_path: Union[str, os.PathLike]) -> Dict[Tuple[float, float], Tuple[float, str]]:
     """
@@ -92,64 +93,66 @@ def get_extreme_configurations(csv_path: Union[str, os.PathLike]) -> Dict[Tuple[
 
 def plot_saved_clustering_results(saved_clustering_paths: Dict[str, Dict[float, Tuple[str, str]]]) -> None:
     """
-    Display saved clustering plots in a grid with rows as algorithms and columns as parameter values.
+    Display saved clustering plots for a single algorithm with columns as parameter values.
 
     Args:
         saved_clustering_paths (Dict[str, Dict[float, Tuple[str, str]]]): 
-            Dictionary of clustering image paths and parameter names.
+            Dictionary of clustering image paths and parameter names for one algorithm.
             The inner value is a tuple of (image_path, parameter_name).
     """
-    num_algorithms = len(saved_clustering_paths)
-    max_params_per_algorithm = max(len(params) for params in saved_clustering_paths.values())
+    # There should only be one algorithm in this dictionary
+    algorithm_name = next(iter(saved_clustering_paths.keys()))
+    param_data = saved_clustering_paths[algorithm_name]
 
-    # Create a figure with subplots
+    num_params = len(param_data)
+
+    # Create a figure with subplots (1 row for the single algorithm)
     fig, axs = plt.subplots(
-        num_algorithms, max_params_per_algorithm,
-        figsize=(5 * max_params_per_algorithm, 5 * num_algorithms),
+        1, num_params,
+        figsize=(5 * num_params, 5),
         constrained_layout=True
     )
 
-    # Ensure axs is always a 2D array
-    if num_algorithms == 1:
+    # Ensure axs is always iterable
+    if num_params == 1:
         axs = [axs]
-    if max_params_per_algorithm == 1:
-        axs = [[ax] for ax in axs]
 
     # Define parameter name mappings
     param_name_map = {
-        "params_resolution": r"Resolution $(\gamma)$",
-        "params_steps": "Steps",
+        "params_resolution": r"Resolución $(\gamma)$",
+        "params_steps": "Pasos (Steps)",
     }
-    
+
     # Define algorithm name mappings
     algorithm_name_map = {
         "multilevel": "Louvain",
         "leiden": "Leiden",
-        "walktrap": "Walktrap"
+        "walktrap": "Walktrap",
+        "fastgreedy": "Fast Greedy"
     }
 
-    # Loop through algorithms and parameter values
-    for row_idx, (algorithm_name, param_data) in enumerate(saved_clustering_paths.items()):
-        for col_idx, (param_value, (img_path, param_name)) in enumerate(param_data.items()):
-            # Read and display the saved image
-            img = imread(img_path)
-            axs[row_idx][col_idx].imshow(img)
-            
-            # Get the parameter display name
-            param_display_name = param_name_map.get(param_name, param_name)
-            algorithm_display_name = algorithm_name_map.get(algorithm_name, algorithm_name)
-            
-            # Set title with algorithm name, parameter value, and parameter display name
-            axs[row_idx][col_idx].set_title(
-                f"{algorithm_display_name} ({param_display_name}: {param_value:.2f})"
-            )
-            axs[row_idx][col_idx].axis("off")  # Turn off axes for cleaner display
+    # Get display name for the algorithm
+    algorithm_display_name = algorithm_name_map.get(algorithm_name, algorithm_name)
 
-        # Hide unused columns
-        for col_idx in range(len(param_data), max_params_per_algorithm):
-            axs[row_idx][col_idx].axis("off")
+    # Loop through parameter values
+    for col_idx, (param_value, (img_path, param_name)) in enumerate(param_data.items()):
+        # Read and display the saved image
+        img = imread(img_path)
+        axs[col_idx].imshow(img)
+        
+        # Get the parameter display name
+        param_display_name = param_name_map.get(param_name, param_name)
+        
+        # Set title with algorithm name, parameter value, and parameter display name
+        axs[col_idx].set_title(
+            f"{algorithm_display_name} ({param_display_name}: {param_value:.2f})"
+        )
+        axs[col_idx].axis("off")  # Turn off axes for cleaner display
 
-    plt.savefig('results/try.pdf')
+    # Save the plot for this algorithm
+    output_file = f"results/{algorithm_display_name.lower()}_clustering.pdf"
+    plt.savefig(output_file)
+    plt.close(fig)  # Close the figure to free memory
 
 
 def main() -> None:
@@ -212,7 +215,8 @@ def main() -> None:
 
     # Folder to save clustering plots
     output_folder: str = "clustering_plots"
-    os.makedirs(os.path.join(args.results_folder, output_folder), exist_ok=True)
+    output_dir: os.PathLike = os.path.join(args.results_folder, output_folder)
+    os.makedirs(output_dir, exist_ok=True)
 
     # Dictionary to store saved image paths for each clustering result
     saved_clustering_paths: Dict[str, Dict[float, str]] = {}
@@ -269,6 +273,57 @@ def main() -> None:
                 f"Algorithm: {algorithm_name}, Parameter: {param_name}={param_value}, "
                 f"Configuration: (values_0={values_0}, values_1={values_1})"
             )
-    plot_saved_clustering_results(saved_clustering_paths=saved_clustering_paths)
+
+    # Separate visualization for "Fast Greedy"
+    fastgreedy_algorithm_name = "fastgreedy"
+    results: List[List[int]] = Algorithms.fastgreedy_clustering(graph=graph, logger=logger)
+
+    # Calculate modularity and enrichment score
+    modularity: float = Metrics.modularity(graph=graph, clusters=results, logger=logger)
+    enrichment_score: float = Metrics.functional_enrichment_score(graph=graph, clusters=results, logger=logger)
+
+    # Define the output path for "Fast Greedy"
+    fastgreedy_output_path: os.PathLike = os.path.join(args.results_folder, output_folder, f"{fastgreedy_algorithm_name}.pdf")
+
+    # Define the legend for "Fast Greedy"
+    num_clusters = len(results)
+    fastgreedy_legend = {
+        "handles": [
+            Line2D([0], [0], color="black", label=f"Modularidad (Q): {modularity:.4f}"),
+            Line2D([0], [0], color="black", label=f"Significancia Biológica (BSQ): {enrichment_score:.4f}"),
+            Line2D([0], [0], color="black", label=f"Clusters: {num_clusters}")
+        ],
+        "labels": []  # Labels are embedded directly in the handles
+    }
+
+    # Save the clustering visualization for "Fast Greedy"
+    network_worker.visualize_clusters(
+        output_path=fastgreedy_output_path,
+        clusters=results,
+        title="",
+        legend=fastgreedy_legend,
+    )
+
+    # Log the results for "Fast Greedy"
+    logger.info(
+        f"Algorithm: {fastgreedy_algorithm_name}, "
+        f"Modularity: {modularity:.4f}, Enrichment: {enrichment_score:.4f}, Clusters: {num_clusters}"
+    )
+
+    # Optional: Add "Fast Greedy" to the visualization function (if needed)
+    saved_clustering_paths[fastgreedy_algorithm_name] = {
+        0: (fastgreedy_output_path, "Sin ajuste")
+    }
+
+    # Iterate over clustering methods and create one visualization per method
+    for algorithm_name, param_data in saved_clustering_paths.items():
+        # Extract only the data for the current algorithm
+        single_algorithm_data = {algorithm_name: param_data}
+
+        # Call the plotting function for the single algorithm
+        plot_saved_clustering_results(single_algorithm_data)
+
+    os.removedirs(name = output_dir)
+
 if __name__ == "__main__":
     main()
