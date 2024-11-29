@@ -387,7 +387,7 @@ class Network:
                 handles=legend["handles"],
                 loc="lower right",
                 fontsize=10,
-                frameon=True,  # Optional: Add a frame around the legend
+                frameon=False,  
             )
 
         # Save the plot if output_path is provided
