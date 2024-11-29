@@ -17,6 +17,15 @@ from igraph import Graph
 import argparse
 import matplotlib.pyplot as plt
 from matplotlib.image import imread
+from matplotlib.lines import Line2D
+import scienceplots
+
+# Style
+plt.style.use(["science", "ieee", "std-colors"])
+plt.rcParams["font.size"] = 10
+plt.rcParams.update({"figure.dpi": "300"})
+plt.rcParams["axes.spines.top"] = False
+plt.rcParams["axes.spines.right"] = False
 
 from algorithms import Algorithms
 from network import network
@@ -81,12 +90,14 @@ def get_extreme_configurations(csv_path: Union[str, os.PathLike]) -> Dict[Tuple[
 
     return extremes
 
-def plot_saved_clustering_results(saved_clustering_paths: Dict[str, Dict[float, str]]) -> None:
+def plot_saved_clustering_results(saved_clustering_paths: Dict[str, Dict[float, Tuple[str, str]]]) -> None:
     """
     Display saved clustering plots in a grid with rows as algorithms and columns as parameter values.
 
     Args:
-        saved_clustering_paths (Dict[str, Dict[float, str]]): Dictionary of clustering image paths.
+        saved_clustering_paths (Dict[str, Dict[float, Tuple[str, str]]]): 
+            Dictionary of clustering image paths and parameter names.
+            The inner value is a tuple of (image_path, parameter_name).
     """
     num_algorithms = len(saved_clustering_paths)
     max_params_per_algorithm = max(len(params) for params in saved_clustering_paths.values())
@@ -104,20 +115,41 @@ def plot_saved_clustering_results(saved_clustering_paths: Dict[str, Dict[float, 
     if max_params_per_algorithm == 1:
         axs = [[ax] for ax in axs]
 
+    # Define parameter name mappings
+    param_name_map = {
+        "params_resolution": r"Resolution $(\gamma)$",
+        "params_steps": "Steps",
+    }
+    
+    # Define algorithm name mappings
+    algorithm_name_map = {
+        "multilevel": "Louvain",
+        "leiden": "Leiden",
+        "walktrap": "Walktrap"
+    }
+
     # Loop through algorithms and parameter values
-    for row_idx, (algorithm_name, param_paths) in enumerate(saved_clustering_paths.items()):
-        for col_idx, (param_value, img_path) in enumerate(param_paths.items()):
+    for row_idx, (algorithm_name, param_data) in enumerate(saved_clustering_paths.items()):
+        for col_idx, (param_value, (img_path, param_name)) in enumerate(param_data.items()):
             # Read and display the saved image
             img = imread(img_path)
             axs[row_idx][col_idx].imshow(img)
-            axs[row_idx][col_idx].set_title(f"{algorithm_name} (param: {param_value:.2f})")
+            
+            # Get the parameter display name
+            param_display_name = param_name_map.get(param_name, param_name)
+            algorithm_display_name = algorithm_name_map.get(algorithm_name, algorithm_name)
+            
+            # Set title with algorithm name, parameter value, and parameter display name
+            axs[row_idx][col_idx].set_title(
+                f"{algorithm_display_name} ({param_display_name}: {param_value:.2f})"
+            )
             axs[row_idx][col_idx].axis("off")  # Turn off axes for cleaner display
 
         # Hide unused columns
-        for col_idx in range(len(param_paths), max_params_per_algorithm):
+        for col_idx in range(len(param_data), max_params_per_algorithm):
             axs[row_idx][col_idx].axis("off")
 
-    plt.show()
+    plt.savefig('results/try.pdf')
 
 
 def main() -> None:
@@ -208,16 +240,29 @@ def main() -> None:
             # Define the output file path
             output_path: os.PathLike = os.path.join(args.results_folder, output_folder, f"{algorithm_name}_{param_value:.5f}.pdf")
 
+            # Calculate the number of clusters
+            num_clusters = len(results)
+
+            # Define the legend with dummy handles
+            legend = {
+                "handles": [
+                    Line2D([0], [0], color="black", label=f"Modularidad (Q): {values_0:.4f}"),
+                    Line2D([0], [0], color="black", label=f"Significancia Biológica (BSQ): {values_1:.4f}"),
+                    Line2D([0], [0], color="black", label=f"Clusters: {num_clusters}")
+                ],
+                "labels": []  # Labels are embedded directly in the handles
+            }
+
             # Save the clustering visualization
             network_worker.visualize_clusters(
                 output_path=output_path,
                 clusters=results,
-                title=f"Cluster {algorithm_name}, Parameter: {param_value}",
-                legend=None,
+                title="",
+                legend=legend,
             )
 
             # Store the saved image path
-            saved_clustering_paths[algorithm_name][param_value] = output_path
+            saved_clustering_paths[algorithm_name][param_value] = (output_path, param_name)
 
             # Log the results
             logger.info(
