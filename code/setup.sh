@@ -16,5 +16,5 @@ pip install --target=$PYTHON_LIB networkx
 pip install --target=$PYTHON_LIB optuna
 pip install --target=$PYTHON_LIB requests
 pip install --target=$PYTHON_LIB psutil
-pip install --target=$PYTHON_LIB Scienceplots
+pip install --target=$PYTHON_LIB scienceplots
 pip install --target=$PYTHON_LIB kaleido

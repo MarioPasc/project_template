@@ -3,9 +3,10 @@
 import os
 from typing import List
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import argparse
+import matplotlib.pyplot as plt
 import scienceplots
 
 plt.style.use(["science", "ieee", "std-colors"])
@@ -203,8 +204,8 @@ def plot_pareto_from_multiple_csvs(
             linestyle="-",
             linewidth=1.5,
         )
-        ax.set_ylim([0.0, 0.2])
-        ax.set_xlim([0.0, 0.2])
+        ax.set_ylim([0.05, 0.25])
+        ax.set_xlim([0.2, 0.3])
         # Calculate normalized positions for lines
         x_norm_modularity = (max_modularity_x - ax.get_xlim()[0]) / (
             ax.get_xlim()[1] - ax.get_xlim()[0]
@@ -346,7 +347,7 @@ def plot_hyperparameter_vs_metric_fixed_hyperparam_subplots(
         ax.get_xaxis().tick_bottom()
         ax.get_yaxis().tick_left()
         ax.set_xlim([0.0, 2.1])
-        ax.set_ylim([-0.01, 0.2])
+        ax.set_ylim([-0.01, 0.35])
         # Add to legend entries for max lines
         max_metric_lines.append(
             f"Max {metric_name} ({max_model_name}: {max_value_overall:.2f})"
@@ -401,11 +402,32 @@ def plot_hyperparameter_vs_metric_fixed_hyperparam_subplots(
     if SHOW:
         plt.show()
 
-if __name__ == "__main__":
-    csv_base = "./results/results_"
-    csv_files = [csv_base + "leiden.csv", csv_base + "multilevel.csv"]
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Visual analysis of optimization results")
+    
+    parser.add_argument(
+        "results_folder",
+        type=str,
+        help="Path to the file containing the results of the optimization (e.g. ./results/)",
+    )
+    
+    args = parser.parse_args()
+
+    folder_path = args.results_folder
+
+    # By this time we can find the results_*.csv files in the results/ folder. 
+    if not os.path.isdir(folder_path):
+        raise ValueError(f"The provided path '{folder_path}' is not a valid directory.")
+
+    # List all files in the folder and filter for 'results_*.csv'
+    # These files are the results of the optimization process.
+    csv_files = [
+        os.path.join(folder_path, file)
+        for file in os.listdir(folder_path)
+        if file.startswith("results_") and file.endswith(".csv")
+    ]
+
     colors = ["#0C5DA5", "#00B945"]
-    results_path = "../../results"
 
     plot_pareto_from_multiple_csvs(
         csv_files=csv_files,
@@ -414,7 +436,7 @@ if __name__ == "__main__":
         alpha_non_pareto=0.2,
         pareto_alpha=1.0,
         lines_alpha=0.5,
-        save_path=os.path.join(results_path, "pareto_comparison.pdf"),
+        save_path=os.path.join(args.results_folder, "pareto_comparison.pdf"),
         title="",
     )
 
@@ -428,7 +450,10 @@ if __name__ == "__main__":
         colors=colors,
         alpha=0.8,
         lines_alpha=0.5,
-        save_path=os.path.join(results_path, "hyperparameter_vs_metric.pdf"),
+        save_path=os.path.join(args.results_folder, "hyperparameter_vs_metric.pdf"),
         label_x=r"Resolución ($\gamma$)",
         title="",
     )
+
+if __name__ == "__main__":
+    main()

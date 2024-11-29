@@ -1,5 +1,11 @@
 #! /usr/bin/env bash
 
+# Set to true if you want to fine-tune the clustering algorithms. 
+train=false
+# If train is true, then set the number of trials to run the Bayesian Optimization Algorithm. 
+# In our original study we executed it for 150 trials.
+trials=150
+
 # Path to look for the libraries of Python
 export PYTHON_LIB=./Py_libs
 export PYTHONPATH=$PYTHON_LIB:./code:$PYTHONPATH  # Include both Py_libs and ./code in PYTHONPATH
@@ -27,25 +33,33 @@ results="./results"
 # Perform Network Analysis
 ./code/network/analysis.py $network $results
 
-# Try optimizing
+# Run optimization only if 'train' is true
+if [ "$train" = true ]; then
+    echo "Running optimization..."
 
-# Optimize Louvain
-./code/clustering/optimize.py \
-    --config_path code/clustering/configs/multilevel.yaml \
-    --network_csv code/data/network.tsv \
-    --study_name multilevel_optimization \
-    --output_path results \
-    --n_trials 150
+    # Optimize Louvain
+    ./code/clustering/optimize.py \
+        --config_path code/clustering/configs/multilevel.yaml \
+        --network_csv code/data/network.tsv \
+        --study_name multilevel_optimization \
+        --output_path results \
+        --n_trials $trials
 
-# Optimize Leiden
-./code/clustering/optimize.py \
-    --config_path code/clustering/configs/leiden.yaml \
-    --network_csv code/data/network.tsv \
-    --study_name leiden_optimization \
-    --output_path results \
-    --n_trials 150
+    # Optimize Leiden
+    ./code/clustering/optimize.py \
+        --config_path code/clustering/configs/leiden.yaml \
+        --network_csv code/data/network.tsv \
+        --study_name leiden_optimization \
+        --output_path results \
+        --n_trials $trials
+fi
 
-# Show clustering results
+# Store optimization results
+
+./code/clustering/bho_analysis.py \
+    results/
+
+# Store clustering results
 ./code/clustering/analysis.py \
     code/data/network.tsv \
     results/

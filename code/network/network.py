@@ -242,42 +242,43 @@ class Network:
         attributes: dict = None,
         default_size: int = 80,
         default_color: str = "red",
-    )->None:
+    ) -> None:
         """
-        Visualize the graph using igraph.plot, with options to customize the size and color of the nodes.
+        Visualize the graph using igraph.plot, with options to customize the visualization using a flexible attributes dictionary.
 
         Args:
             output_path (str): Path where the generated image will be saved.
-            attributes (dict, optional): Dictionary of additional attributes to customize the visualization, can include "vertex_size" and "vertex_color".
-            default_size (int, optional): Default size of the nodes. Default is 35.
+            attributes (dict, optional): Dictionary of additional attributes to customize the visualization, such as "vertex_size", "vertex_color", "edge_width", etc.
+            default_size (int, optional): Default size of the nodes. Default is 80.
             default_color (str, optional): Default color of the nodes. Default is "red".
         """
         num_nodes = len(self.graph.vs)
-        vertex_size = [default_size] * num_nodes
-        vertex_color = [default_color] * num_nodes
+        
+        # Initialize default values
+        plot_attributes = {
+            "vertex_size": [default_size] * num_nodes,
+            "vertex_color": [default_color] * num_nodes,
+            "vertex_label": self.graph.vs["name"],
+            "vertex_label_size": 8,
+            "edge_width": 0.5,
+        }
 
+        # Update default values with attributes passed in the dictionary
         if attributes:
-            if "vertex_size" in attributes:
-                if len(attributes["vertex_size"]) != num_nodes:
-                    self.logger(f"ValueError(El tamaño de 'vertex_size' no coincide con el número de nodos ({num_nodes}).)")
-                    raise 
-                vertex_size = attributes["vertex_size"]
-            if "vertex_color" in attributes:
-                if len(attributes["vertex_color"]) != num_nodes:
-                    self.logger(f"El tamaño de 'vertex_color' no coincide con el número de nodos ({num_nodes}).")
-                    raise 
-                vertex_color = attributes["vertex_color"]
+            for key, value in attributes.items():
+                if isinstance(value, list) and len(value) != num_nodes and key.startswith("vertex_"):
+                    self.logger.error(f"The size of '{key}' does not match the number of nodes ({num_nodes}).")
+                    raise ValueError(f"The size of '{key}' does not match the number of nodes ({num_nodes}).")
+                plot_attributes[key] = value
 
+        # Plot the graph using igraph
         igraph.plot(
             self.graph,
             target=output_path,
-            vertex_size=vertex_size if vertex_size else default_size,
-            vertex_color=vertex_color,
-            vertex_label=self.graph.vs["name"],
-            vertex_label_size=8,
-            edge_width=0.5,
+            **plot_attributes
         )
         self.logger.info(f"Visualization saved in {output_path}")
+
 
     def visualize_network_matplotlib_save(
         self,
@@ -348,6 +349,7 @@ class Network:
         clusters: List[List[int]],
         title: str = None,
         legend: dict = None,
+        attributes: dict = None,
     ) -> plt.Axes:
         """
         Displays the network with different colors for each cluster.
@@ -357,6 +359,7 @@ class Network:
             clusters (List[List[int]]): List of lists, where each sublist contains the indexes of the nodes of a cluster.
             title (str, optional): Title of the figure.
             legend (dict, optional): Dictionary of legend elements.
+            attributes (dict, optional): Attributes dictionary for visual customization.
 
         Returns:
             plt.Axes: The matplotlib Axes object for the visualization.
@@ -370,13 +373,18 @@ class Network:
             for node in cluster:
                 vertex_color[node] = mcolors.to_hex(color_palette(num))
 
+        # If attributes dictionary is provided, append vertex_color
+        if attributes is None:
+            attributes = {}
+        attributes["vertex_color"] = vertex_color
+
         # Create a matplotlib figure and axes
         fig, ax = plt.subplots(figsize=(8, 8))
 
         # Plot the network on the Axes
         ax = self.visualize_network_matplotlib(
             ax=ax,
-            attributes={"vertex_color": vertex_color},
+            attributes=attributes,  # Pass the updated attributes
             title=title,
             legend=None,  # Legend handled below
         )
@@ -387,7 +395,7 @@ class Network:
                 handles=legend["handles"],
                 loc="lower right",
                 fontsize=10,
-                frameon=False,  
+                frameon=False,
             )
 
         # Save the plot if output_path is provided
@@ -395,3 +403,4 @@ class Network:
             fig.savefig(output_path, format="png", bbox_inches="tight")
 
         return ax
+

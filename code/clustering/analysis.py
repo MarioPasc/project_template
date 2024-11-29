@@ -212,7 +212,7 @@ def main() -> None:
 
     graph: Graph = misc.network_to_igraph_format(network_csv = args.network)
 
-    network_worker: network.Network = network.Network(graph=graph)
+    network_worker: network.Network = network.Network(graph=graph, logger=logger)
 
     # Folder to save clustering plots
     output_folder: str = "clustering_plots"
@@ -264,6 +264,7 @@ def main() -> None:
                 clusters=results,
                 title="",
                 legend=legend,
+                attributes={"vertex_label_size": 7, "vertex_size": 90}
             )
 
             # Store the saved image path
@@ -303,6 +304,8 @@ def main() -> None:
         clusters=results,
         title="",
         legend=fastgreedy_legend,
+        attributes={"vertex_label_size": 7,
+                    "vertex_size": 90}
     )
 
     # Log the results for "Fast Greedy"
