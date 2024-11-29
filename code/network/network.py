@@ -300,29 +300,37 @@ class Network:
         Displays the network with different colors for each cluster.
 
         Args:
-        output_path (str): Name of the file where the network image is save.
+        output_path (str): Name of the file where the network image will be saved.
         clusters (List[List[int]]): List of lists, where each sublist contains the indexes of the nodes of a cluster.
         title (str, optional): Title of the figure.
-        legend(dic, optional): Dictionary of legend elements
+        legend (dict, optional): Dictionary of legend elements.
 
-        Return:
-         ax (matplotlib.Axes): visualization
+        Returns:
+            ax (matplotlib.Axes): The visualization.
         """
-
         num_clusters = len(clusters)
         color_palette = plt.cm.get_cmap("tab20", num_clusters)
 
-        vertex_color = [
-            0
-        ] * self.graph.vcount()  # create a list of lenght of the number of nodes
-
+        # Create a color array for nodes
+        vertex_color = [0] * self.graph.vcount()  # Default color for all nodes
         for num, cluster in enumerate(clusters):
             for node in cluster:
                 vertex_color[node] = mcolors.to_hex(color_palette(num))
 
-        return self.visualize_network_matplotlib(
-            output_path,
+        # Create a matplotlib figure and axes
+        fig, ax = plt.subplots(figsize=(8, 8))
+
+        # Pass the Axes object to visualize_network_matplotlib
+        ax = self.visualize_network_matplotlib(
+            ax=ax,
             attributes={"vertex_color": vertex_color},
             title=title,
             legend=legend,
         )
+
+        # Save the plot if output_path is provided
+        if output_path:
+            plt.savefig(output_path, format="png", bbox_inches="tight")
+
+        return ax
+
