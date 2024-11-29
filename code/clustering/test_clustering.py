@@ -4,7 +4,7 @@ import random
 from algorithms import Algorithms
 from igraph import Graph
 from metrics import Metrics
-from utils.misc import setup_logger
+from utils import misc
 
 
 def create_test_graph():
@@ -46,7 +46,7 @@ def create_test_graph():
 
 g, _ = create_test_graph()
 
-logger = setup_logger("test metricas", "../logs/metricas", logging.INFO)
+logger = misc.setup_logger("test metricas", "../logs/metricas", logging.INFO)
 
 # Realizar el clustering con el algoritmo multilevel
 # clusters = Algorithms.multilevel_clustering(g, logger)

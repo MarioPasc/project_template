@@ -25,3 +25,21 @@ network="./code/data/network.tsv"
 
 # Perform Netowkr Analysis
 ./code/network/analysis.py $network
+
+# Try optimizing
+
+# Optimize Louvain
+./code/clustering/optimize.py \
+    --config_path code/clustering/configs/multilevel.yaml \
+    --network_csv code/data/network.tsv \
+    --study_name multilevel_optimization \
+    --output_path results \
+    --n_trials 150
+
+# Optimize Leiden
+./code/clustering/optimize.py \
+    --config_path code/clustering/configs/leiden.yaml \
+    --network_csv code/data/network.tsv \
+    --study_name leiden_optimization \
+    --output_path results \
+    --n_trials 150

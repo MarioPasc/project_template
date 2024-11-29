@@ -15,7 +15,7 @@ import psutil
 import yaml
 from algorithms import Algorithms
 from metrics import Metrics
-from utils.misc import network_to_igraph_format, setup_logger
+from utils import misc 
 
 
 class BHO_Clustering:
@@ -54,7 +54,7 @@ class BHO_Clustering:
 
         # Load configuration and initialize variables
         config = self._load_config(config_path=config_path)
-        self.graph: ig.Graph = network_to_igraph_format(network_csv=network_csv)
+        self.graph: ig.Graph = misc.network_to_igraph_format(network_csv=network_csv)
         self.selected_algorithm: str = config["algorithm"]
         self.hyperparameters = {  # Map of hyperparameter names to their configs
             (param["name"], param["type"]): param
@@ -69,7 +69,7 @@ class BHO_Clustering:
 
         # Setup logger
         os.makedirs("./logs", exist_ok=True)
-        self.logger = setup_logger(
+        self.logger = misc.setup_logger(
             name="Bayesian_Hyperparameter_Optimization_Clustering_Networks",
             log_file="logs/bho_optimization.log",
         )
