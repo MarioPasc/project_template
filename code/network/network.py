@@ -240,7 +240,7 @@ class Network:
         self,
         output_path: str,
         attributes: dict = None,
-        default_size: int = 35,
+        default_size: int = 80,
         default_color: str = "red",
     )->None:
         """
@@ -348,34 +348,50 @@ class Network:
         clusters: List[List[int]],
         title: str = None,
         legend: dict = None,
-    ) -> Axes:
+    ) -> plt.Axes:
         """
         Displays the network with different colors for each cluster.
 
         Args:
-        output_path (str): Name of the file where the network image is save.
-        clusters (List[List[int]]): List of lists, where each sublist contains the indexes of the nodes of a cluster.
-        title (str, optional): Title of the figure.
-        legend(dic, optional): Dictionary of legend elements
+            output_path (str): Path where the network image will be saved.
+            clusters (List[List[int]]): List of lists, where each sublist contains the indexes of the nodes of a cluster.
+            title (str, optional): Title of the figure.
+            legend (dict, optional): Dictionary of legend elements.
 
-        Return:
-         ax (matplotlib.Axes): visualization
+        Returns:
+            plt.Axes: The matplotlib Axes object for the visualization.
         """
-
         num_clusters = len(clusters)
         color_palette = plt.cm.get_cmap("tab20", num_clusters)
 
-        vertex_color = [
-            0
-        ] * self.graph.vcount()  # create a list of lenght of the number of nodes
-
+        # Create color mapping for nodes
+        vertex_color = [0] * self.graph.vcount()
         for num, cluster in enumerate(clusters):
             for node in cluster:
                 vertex_color[node] = mcolors.to_hex(color_palette(num))
 
-        return self.visualize_network_matplotlib(
-            output_path,
+        # Create a matplotlib figure and axes
+        fig, ax = plt.subplots(figsize=(8, 8))
+
+        # Plot the network on the Axes
+        ax = self.visualize_network_matplotlib(
+            ax=ax,
             attributes={"vertex_color": vertex_color},
             title=title,
-            legend=legend,
+            legend=None,  # Legend handled below
         )
+
+        # Add legend if provided
+        if legend:
+            ax.legend(
+                handles=legend["handles"],
+                loc="lower right",
+                fontsize=10,
+                frameon=True,  # Optional: Add a frame around the legend
+            )
+
+        # Save the plot if output_path is provided
+        if output_path:
+            fig.savefig(output_path, format="png", bbox_inches="tight")
+
+        return ax
