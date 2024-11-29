@@ -19,8 +19,7 @@ class Metrics:
         """
         try:
             if not isinstance(graph, igraph.Graph):
-                logging.error("ValueError:The provided graph is not an igraph.Graph object.")
-                raise 
+                raise ValueError ("The provided graph is not an igraph.Graph object.")
             
             # degree of each node
             # degree_dict = dict(zip(graph.vs["name"], graph.degree()))
@@ -65,5 +64,4 @@ class Metrics:
             fig.write_image(f"{result_folder}/degree_distribution.{format}")
             return mean_degree, sd_degree
         except ValueError as v:
-            logging.error(f"ValueError: {v}")
-            raise
+            raise f"ValueError: {v}"

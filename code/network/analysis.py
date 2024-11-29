@@ -9,7 +9,7 @@ import pandas as pd
 from utils import misc as utils
 
 
-logging = utils.setup_logger(
+logger = utils.setup_logger(
     name="Analysis_PPI_Network",
     log_file=os.path.join("logs/network_analysis_logging.log")
 )
@@ -40,18 +40,27 @@ def main():
 
     args = parser.parse_args()
     if not os.path.isfile(args.network):
-        print(f"Error: The network file '{args.network}' does not exist.")
-        logging.error(f"The gene file '{args.network}' does not exist.")
+        logger.error(f"The network file '{args.network}' does not exist.")
         return
+    else:
+        logger.info(f"Network file '{args.network}' found.")
     
     if not os.path.exists(args.results):
         os.makedirs(args.results)
+        logger.info(f"Results folder '{args.results}' created.")
+    else:
+        logger.info(f"Results folder '{args.results}' already exists.")
     
 
     # Convert network to igraph format
-    graph = utils.network_to_igraph_format(args.network)
+    try:
+        graph = utils.network_to_igraph_format(args.network)
+        logger.info("Network conversion successful.")
+    except Exception as e:
+        logger.error(f"Error converting network to igraph format: {e}")
+        return
 
-    analyzer = Network(graph)
+    analyzer = Network(graph, logger)
     # network metrics
     analyzer.calculate_metrics(args.results, args.format)
     # plot network

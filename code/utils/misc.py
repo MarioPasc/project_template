@@ -67,19 +67,13 @@ def network_to_igraph_format(
             directed=False,
             use_vids=False,
         )
-        logging.info("Successfully converts network to igraph format")
+       
         return graph
     except FileNotFoundError:
-        logging.error(f"File not found: {network_csv}")
-        raise
+        raise FileNotFoundError(f"File not found: {network_csv}")
     except pd.errors.ParserError:
-        logging.error(f"File not in the right format:  {network_csv}")
-        raise
+        raise ValueError(f"File not in the right format:  {network_csv}")
     except KeyError:
-        logging.error(
-            f"Columns 'preferredName_A' and 'preferredName_B' not file: {network_csv} "
-        )
-        raise
+        raise KeyError(f"Columns 'preferredName_A' and 'preferredName_B' not found in file: {network_csv}")
     except Exception as e:
-        logging.error(f"Unexpected error: {e}")
-        raise
+        raise Exception(f"Unexpected error: {e}")
