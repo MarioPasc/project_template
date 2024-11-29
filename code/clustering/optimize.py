@@ -352,7 +352,7 @@ class BHO_Clustering:
 
         # Save the DataFrame to a CSV file
         csv_path: Union[str, os.PathLike] = os.path.join(
-            self.output_path, "optuna_results.csv"
+            self.output_path, f"results_{self.selected_algorithm}.csv"
         )
         df.to_csv(csv_path, index=False)
         print(f"Results saved to {csv_path}")
