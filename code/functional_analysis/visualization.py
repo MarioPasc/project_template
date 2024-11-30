@@ -88,7 +88,7 @@ class FunctionalVisualization:
             print(f"Error en bar_plot: {e}")
 
     @staticmethod
-    def cnet_plot(gene_sets):
+    def cnet_plot(gene_sets, output_file:str = None):
         try:
             # Crear el grafo
             G = nx.Graph()
@@ -137,5 +137,5 @@ class FunctionalVisualization:
 
         except Exception as e:
             print(f"Error en cnet_plot: {e}")
-            
+
 
