@@ -4,6 +4,23 @@ import seaborn as sns
 import networkx as nx
 from typing import List, Dict
 
+def prepare_data_for_visualization_from_df(df: pd.DataFrame):
+    try:
+        # Convertir Overlap a Gene Ratio (proporción)
+        df[['Observed', 'Total']] = df['Overlap'].str.split('/', expand=True).astype(int)
+        df['Gene Ratio'] = df['Observed'] / df['Total']
+
+        # Crear un diccionario para cnetplot
+        gene_sets = {
+            row['Term']: row['Genes'].split(', ') for _, row in df.iterrows()
+        }
+
+        return df, gene_sets
+
+    except Exception as e:
+        print(f"Error en prepare_data_for_visualization_from_df: {e}")
+        return None, None
+
 class FunctionalVisualization:
     @staticmethod
     def dot_plot(df: pd.DataFrame, output_file: str = None):
