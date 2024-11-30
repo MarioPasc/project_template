@@ -73,21 +73,52 @@ class FunctionalVisualization:
     @staticmethod
     def cnet_plot(gene_sets):
         try:
+            # Crear el grafo
             G = nx.Graph()
-            for term, genes in gene_sets.items():
-                G.add_node(term)  # Nodo para el término
-                for gene in genes:
-                    G.add_node(gene)  # Nodo para cada gen
-                    G.add_edge(term, gene)  # Enlace entre término y gen
-
-            # Layout básico
-            pos = nx.spring_layout(G)
             
-            # Dibujar nodos y aristas
-            nx.draw(G, pos, with_labels=True, node_size=500, node_color='lightblue', font_size=8)
-            plt.title('Cnetplot')
+            # Agregar nodos para términos enriquecidos y genes
+            for term, genes in gene_sets.items():
+                G.add_node(term, type='term', size=10)       # Nodo para el término
+                for gene in genes:
+                    G.add_node(gene, type='gene', size=10)   # Nodo para cada gen
+                    G.add_edge(term, gene)                   # Enlace entre término y gen
+
+            # Configurar la posición de los nodos con menor espaciado
+            pos = nx.spring_layout(G, seed=42, k=0.5)  # Reducir 'k' para compactar el gráfico
+
+            # Dibujar los nodos y las aristas
+            plt.figure(figsize=(12, 10))  # Ajustar el tamaño del gráfico
+            nx.draw_networkx_nodes(
+                G, pos,
+                nodelist=[n for n, d in G.nodes(data=True) if d['type'] == 'term'],
+                node_size=700, node_color='lightblue', label='Terms'
+            )
+            nx.draw_networkx_nodes(
+                G, pos,
+                nodelist=[n for n, d in G.nodes(data=True) if d['type'] == 'gene'],
+                node_size=300, node_color='orange', label='Genes'
+            )
+            nx.draw_networkx_edges(G, pos, alpha=0.5)
+
+            # Mostrar etiquetas para todos los nodos (términos y genes)
+            nx.draw_networkx_labels(
+                G, pos,
+                labels={n: n for n in G.nodes()},
+                font_size=8  # Ajustar tamaño de la fuente
+            )
+
+            # Agregar título y leyenda
+            plt.title('Cnetplot - Gene-Term Relationships', fontsize=14)
+            plt.legend()
+            plt.tight_layout()
+
+            # Guardar o mostrar el gráfico
+            if output_file:
+                plt.savefig(output_file)
+                print(f"Gráfico guardado en {output_file}")
             plt.show()
-        except:
-            print("Error en cnet_plot")
+
+        except Exception as e:
+            print(f"Error en cnet_plot: {e}")
             
 
