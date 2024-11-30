@@ -5,6 +5,12 @@ import networkx as nx
 from typing import List, Dict
 
 def prepare_data_for_visualization_from_df(df: pd.DataFrame):
+    """
+    Prepara los datos del DataFrame generado por FunctionalAnalysis para las gráficas.
+
+    :param df: DataFrame con los resultados del análisis funcional.
+    :return: DataFrame para dot_plot y bar_plot, y diccionario de relaciones para cnetplot.
+    """
     try:
         # Convertir Overlap a Gene Ratio (proporción)
         df[['Observed', 'Total']] = df['Overlap'].str.split('/', expand=True).astype(int)
@@ -22,8 +28,22 @@ def prepare_data_for_visualization_from_df(df: pd.DataFrame):
         return None, None
 
 class FunctionalVisualization:
+    """
+    Clase para generar visualizaciones relacionadas con el análisis funcional.
+    Incluye:
+    - Dot Plot: Muestra la significancia y magnitud del enriquecimiento.
+    - Bar Plot: Resalta los términos más significativos.
+    - Cnetplot: Visualiza las relaciones entre genes y categorías enriquecidas.
+    """
+    
     @staticmethod
     def dot_plot(df: pd.DataFrame, output_file: str = None):
+        """
+        Genera un gráfico de puntos (Dot Plot) basado en términos enriquecidos.
+
+        :param df: DataFrame con columnas ['Term', 'Adjusted P-value', 'Gene Ratio'].
+        :param output_file: Ruta para guardar el gráfico (opcional).
+        """
         try:
             # Ordenar los términos de significancia (los más significativos primero)
             df = df.sort_values('Adjusted P-value', ascending=True).head(20)
@@ -36,8 +56,8 @@ class FunctionalVisualization:
                 y='Term',
                 size='Adjusted P-value',
                 hue='Adjusted P-value',
-                sizes=(50, 300),  # Aumentar el rango de tamaños de los puntos
-                palette='coolwarm',  # Mejorar contraste de colores
+                sizes=(300, 50),        # Aumenta el rango de tamaños de los puntos
+                palette='coolwarm',     # Mejorar contraste de colores
                 legend='brief'
             )
             plt.title('Dot Plot - Enrichment Analysis', fontsize=14)
@@ -57,85 +77,103 @@ class FunctionalVisualization:
 
     @staticmethod
     def bar_plot(df: pd.DataFrame, output_file:str = None):
+        """
+        Genera un gráfico de barras (Bar Plot) para destacar los términos más enriquecidos.
+
+        :param df: DataFrame con columnas ['Term', 'Adjusted P-value'].
+        :param output_file: Ruta para guardar el gráfico (opcional).
+        """
         try:
             # Ordenar los términos por significancia (los más significativos primero)
             df = df.sort_values('Adjusted P-value', ascending=True).head(20)
-            
+
             # Crear el gráfico de barras
             plt.figure(figsize=(12, 8))
             sns.barplot(
                 data=df,
                 x='Adjusted P-value',
                 y='Term',
-                hue='Term',  # Resolver FutureWarning
-                dodge=False,  # Prevenir separación innecesaria
-                palette='Spectral'  # Paleta más contrastante
+                hue='Term',  # Asignar hue al mismo eje y para evitar la advertencia
+                dodge=False,  # Evitar separación innecesaria de barras
+                errorbar=None,  # Reemplazar ci=None con errorbar=None
+                palette='Spectral',  # Paleta de colores más atractiva
+                legend=False  # No mostrar la leyenda automática generada por hue
             )
-            plt.xscale('log')  # Usar escala logarítmica para resaltar diferencias
-            plt.title('Bar Plot - Enrichment Analysis', fontsize=14)
-            plt.xlabel('Adjusted P-value (log scale)', fontsize=12)
-            plt.ylabel('Term', fontsize=12)
-            plt.gca().yaxis.set_tick_params(labelsize=10)  # Tamaño de etiquetas
-            plt.tight_layout()
-            
+            plt.xscale('log')  # Escala logarítmica para resaltar diferencias
+            plt.title('Bar Plot - Enrichment Analysis', fontsize=16, fontweight='bold')  # Título con estilo
+            plt.xlabel('Adjusted P-value (log scale)', fontsize=14)  # Etiqueta X mejorada
+            plt.ylabel('Term', fontsize=14)  # Etiqueta Y mejorada
+            plt.xticks(fontsize=12)  # Ajustar tamaño de etiquetas en eje X
+            plt.yticks(fontsize=12)  # Ajustar tamaño de etiquetas en eje Y
+            plt.grid(axis='x', linestyle='--', alpha=0.7)  # Agregar líneas de referencia
+
             # Guardar o mostrar el gráfico
             if output_file:
-                plt.savefig(output_file, dpi= 300)
+                plt.savefig(output_file, dpi=300, bbox_inches='tight')
                 print(f"Gráfico guardado en {output_file}")
             plt.show()
-            
+
         except Exception as e:
             print(f"Error en bar_plot: {e}")
 
     @staticmethod
-    def cnet_plot(gene_sets, output_file:str = None):
+    def cnet_plot(df: pd.DataFrame, gene_sets: Dict[str, List[str]], output_file: str = None):
+        """
+        Genera un gráfico de red (Cnetplot) mostrando las relaciones entre genes y términos enriquecidos.
+
+        :param df: DataFrame con columnas ['Term', 'Genes'].
+        :param gene_sets: Diccionario donde las claves son términos enriquecidos y los valores son listas de genes.
+        :param output_file: Ruta para guardar el gráfico (opcional).
+        """
         try:
             # Crear el grafo
             G = nx.Graph()
-            
+
             # Agregar nodos para términos enriquecidos y genes
             for term, genes in gene_sets.items():
-                G.add_node(term, type='term', size=10)       # Nodo para el término
+                G.add_node(term, type='term', size=20)
                 for gene in genes:
-                    G.add_node(gene, type='gene', size=10)   # Nodo para cada gen
-                    G.add_edge(term, gene)                   # Enlace entre término y gen
+                    G.add_node(gene, type='gene', size=10)
+                    G.add_edge(term, gene)
 
-            # Configurar la posición de los nodos con menor espaciado
-            pos = nx.spring_layout(G, seed=42, k=0.5)  # Reducir 'k' para compactar el gráfico
+            # Configurar la posición de los nodos para una distribución uniforme
+            pos = nx.spring_layout(G, seed=42, k=0.8)  # k intermedio para balancear repulsión y atracción
 
-            # Dibujar los nodos y las aristas
-            plt.figure(figsize=(12, 10))  # Ajustar el tamaño del gráfico
+            # Normalizar las posiciones para cubrir uniformemente el área del gráfico
+            pos = {node: (x * 10, y * 10) for node, (x, y) in pos.items()}
+
+            # Dibujar nodos y aristas con estilos mejorados
+            plt.figure(figsize=(14, 12))
             nx.draw_networkx_nodes(
                 G, pos,
                 nodelist=[n for n, d in G.nodes(data=True) if d['type'] == 'term'],
-                node_size=700, node_color='lightblue', label='Terms'
+                node_size=800, node_color='skyblue', edgecolors='black', linewidths=1.5, label='Terms'
             )
             nx.draw_networkx_nodes(
                 G, pos,
                 nodelist=[n for n, d in G.nodes(data=True) if d['type'] == 'gene'],
-                node_size=300, node_color='orange', label='Genes'
+                node_size=400, node_color='salmon', edgecolors='black', linewidths=1.5, label='Genes'
             )
             nx.draw_networkx_edges(G, pos, alpha=0.5)
 
             # Mostrar etiquetas para todos los nodos (términos y genes)
             nx.draw_networkx_labels(
                 G, pos,
-                labels={n: n for n in G.nodes()},
-                font_size=8  # Ajustar tamaño de la fuente
+                labels={n: n for n in G.nodes()},  # Mostrar etiquetas para todos los nodos
+                font_size=8,
+                font_color='darkblue'
             )
 
-            # Agregar título y leyenda
-            plt.title('Cnetplot - Gene-Term Relationships', fontsize=14)
-            plt.legend()
+            # Agregar título y leyenda mejorada
+            plt.title('Cnetplot - Gene-Term Relationships', fontsize=16)
+            plt.legend(frameon=True, loc='upper left', fontsize=10)
             plt.tight_layout()
 
             # Guardar o mostrar el gráfico
             if output_file:
-                plt.savefig(output_file)
+                plt.savefig(output_file, dpi=300)
                 print(f"Gráfico guardado en {output_file}")
             plt.show()
 
         except Exception as e:
             print(f"Error en cnet_plot: {e}")
-
-
