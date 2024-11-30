@@ -4,16 +4,37 @@ import networkx as nx
 
 class FunctionalVisualization:
     @staticmethod
-    def dot_plot(df: pd.DataFrame):
+    def dot_plot(df: pd.DataFrame, output_file: str = None):
         try:
-            df = df.sort_values('Adjusted P-value').head(10)
-            plt.scatter(df['Gene Ratio'], df['Term'], s=100, c=df['Adjusted P-value'], cmap='coolwarm')
-            plt.title('Dot Plot')
-            plt.xlabel('Gene Ratio')
-            plt.ylabel('Term')
+            # Ordenar los términos de significancia (los más significativos primero)
+            df = df.sort_values('Adjusted P-value', ascending=True).head(20)
+            
+            # Crear un gráfico de puntos
+            plt.figure(figsize=(10, 8))
+            scatter = sns.scatterplot(
+                data=df,
+                x='Gene Ratio',
+                y='Term',
+                size='Adjusted P-value',
+                hue='Adjusted P-value',
+                sizes=(50, 300),  # Aumentar el rango de tamaños de los puntos
+                palette='coolwarm',  # Mejorar contraste de colores
+                legend='brief'
+            )
+            plt.title('Dot Plot - Enrichment Analysis', fontsize=14)
+            plt.xlabel('Gene Ratio', fontsize=12)
+            plt.ylabel('Term', fontsize=12)
+            plt.gca().yaxis.set_tick_params(labelsize=10)  # Mejorar tamaño de etiquetas
+            plt.tight_layout()
+            
+            # Guardar o mostrar el gráfico
+            if output_file:
+                plt.savefig(output_file, dpi=300)
+                print(f"Gráfico guardado en {output_file}")
             plt.show()
-        except:
-            print("Error in dot_plot")
+            
+        except Exception as e:
+            print(f"Error en dot_plot: {e}")
 
     @staticmethod
     def bar_plot(df: pd.DataFrame):
@@ -46,3 +67,5 @@ class FunctionalVisualization:
             plt.show()
         except:
             print("Error en cnet_plot")
+            
+
