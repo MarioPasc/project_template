@@ -13,6 +13,7 @@ import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
 from matplotlib.patches import Patch
+import matplotlib.cm as cm
 
 import os
 VERBOSE: bool = os.environ.get("VERBOSE", "0") == "1"
@@ -103,10 +104,10 @@ class Network:
                     for n in range(len(self.graph.vs))
                 ]
             },
-            title="Critical Nodes",
+            title="Nodos críticos (desconectan el grafo si son eliminados)",
             legend={
                 "handles": [Patch(facecolor="red", edgecolor="black")],
-                "labels": ["Critical Node"],
+                "labels": ["Nodos críticos"],
             },
         )
 
@@ -144,29 +145,45 @@ class Network:
 
         legend = {
                 "handles": [
-                        Patch(facecolor="#0000FF", edgecolor="black"), 
-                        Patch(facecolor="#FF0000", edgecolor="black"), 
-                        Patch(facecolor="white", edgecolor="black", label="Node size increases with Betweenness")  
+                        Patch(facecolor="white", edgecolor="black", label="Tamaño de los nodos incrementa con la centralidad"),
+                        Patch(facecolor="white", edgecolor="black", label="Color aumenta con la cercanía"), 
                             ],
-                "labels": [
-                        "High Closeness (Blue)", 
-                        "Low Closeness (Red)",   
-                        "Node Size: Betweenness" 
+                "labels": [ 
+                        "Tamaño nodos: Betweenness",
+                        "Color nodos: Closeness"
+
                 ]}
 
         # visualization
-        self.visualize_network_matplotlib_save(
-            output_path=f"{result_folder}/closeness_betwennes_graph.{format}",
+        fig, ax = plt.subplots(figsize=(8, 8))
+
+        # normalize closseness values to represent them as a colour scale
+        norm = mcolors.Normalize(vmin=min(closeness), vmax=max(closeness))
+        cmap = cm.YlOrRd
+
+        self.visualize_network_matplotlib(
+            ax,
             attributes={
                 "vertex_size": [20 + (v / max(betweenness)) * 40 for v in betweenness],
                 "vertex_color": [
-                    "#%02x%02x%02x" % (int(255 * (1 - c)), 0, int(255 * c))
+                    cmap(norm(c)) 
                     for c in closeness
                 ],
             },
-            title="Closeness and Betweenness",
+            title=" Cercanía (closeness) y Centralidad (betweenness)",
             legend=legend
         )
+
+        # add color bar
+        sm = cm.ScalarMappable(cmap=cmap, norm=norm)
+        sm.set_array([])
+        cbar = plt.colorbar(sm, ax=ax, orientation="vertical")
+        cbar.set_label("Closeness", fontsize=10)
+
+        #save graph
+        output_path=f"{result_folder}/closeness_betwennes_graph.{format}"
+        plt.savefig(output_path, format=format, dpi=300, bbox_inches="tight")
+        plt.close(fig)
        
 
     def clustering_coefficients(self, result_folder:str, format:str)->None:
@@ -189,10 +206,10 @@ class Network:
                     for n in range(len(self.graph.vs))
                 ]
             },
-            title=" Local Transitivity",
+            title="Transitividad Local",
             legend={
                 "handles": [Patch(facecolor="red", edgecolor="black")],
-                "labels": ["Node with NaN Local Transitivity"],
+                "labels": ["Nodo con transitividad local NaN"],
             },
         )
 
@@ -258,8 +275,9 @@ class Network:
         self,
         output_path: str,
         attributes: dict = None,
-        default_size: int = 80,
+        default_size: int = 35,
         default_color: str = "red",
+        layout: str = "auto"
     ) -> None:
         """
         Visualize the graph using igraph.plot, with options to customize the visualization using a flexible attributes dictionary.
@@ -269,6 +287,7 @@ class Network:
             attributes (dict, optional): Dictionary of additional attributes to customize the visualization, such as "vertex_size", "vertex_color", "edge_width", etc.
             default_size (int, optional): Default size of the nodes. Default is 80.
             default_color (str, optional): Default color of the nodes. Default is "red".
+            layout (str, optional): Type of layout of the graph (default: auto)
         """
         num_nodes = len(self.graph.vs)
         
@@ -278,7 +297,7 @@ class Network:
             "vertex_color": [default_color] * num_nodes,
             "vertex_label": self.graph.vs["name"],
             "vertex_label_size": 8,
-            "edge_width": 0.5,
+            "edge_width": 0.5
         }
 
         # Update default values with attributes passed in the dictionary
@@ -289,10 +308,22 @@ class Network:
                     raise ValueError(f"The size of '{key}' does not match the number of nodes ({num_nodes}).")
                 plot_attributes[key] = value
 
+        # try if the layout is valid
+        try:
+            if layout != "auto" and layout != None:
+                graph_layout = self.graph.layout(layout)  
+            else:
+                graph_layout=self.graph.layout_auto()
+        except ValueError:
+            self.logger.error(f"Invalid layout '{layout}' specified.")
+            raise ValueError(f"Invalid layout '{layout}' specified.")
+        #NOTE: drl, kamada_kawai, fruchterman_reingold no van mal
+
         # Plot the graph using igraph
         igraph.plot(
             self.graph,
             target=output_path,
+            layout=graph_layout,
             **plot_attributes
         )
         self.logger.info(f"Visualization saved in {output_path}")
@@ -304,6 +335,7 @@ class Network:
         attributes: dict = None,
         title: str = None,
         legend: dict = None,
+        layout: str = None
     ) -> None:
         """
         Visualize the graph using igraph and matplotlib and save it in file
@@ -313,6 +345,7 @@ class Network:
             attributes (dict, optional): Dictionary of additional attributes to customize the visualization.
             title (str, optional): Title of the figure.
             legend(dic, optional): Dictionary of legend elements
+            layout (str, optionl): Network layout
 
 
         Returns:
@@ -321,15 +354,20 @@ class Network:
 
         fig, ax = plt.subplots(figsize=(8, 8))
 
-        self.visualize_network_matplotlib(ax, attributes, title, legend)
+        self.visualize_network_matplotlib(ax, attributes, title, legend, layout)
 
         if output_path:
             plt.savefig(output_path, bbox_inches="tight")
         self.logger.info(f"Visualization saved in {output_path}")
 
     def visualize_network_matplotlib(
-        self, ax: Axes, attributes: dict = None, title: str = None, legend: dict = None
-    ) -> Axes:
+        self, 
+        ax: Axes, 
+        attributes: dict = None,
+        title: str = None, 
+        legend: dict = None,
+        layout: str = None
+    ) -> plt.Axes:
         """
         Visualize the graph using igraph and matplotlib, with options to customize the size, color of the nodes and edges,
         and add a legend to the plot.
@@ -339,13 +377,14 @@ class Network:
             attributes (dict, optional): Dictionary of additional attributes to customize the visualization.
             title (str, optional): Title of the figure.
             legend(dic, optional): Dictionary of legend elements
+            layout (str, optionl): Network layout
 
 
         Returns:
          ax (matplotlib.Axes): visualization
         """
 
-        self.visualize_network(ax, attributes, default_size=25)
+        self.visualize_network(ax, attributes, default_size=25, layout= layout)
 
         if title:
             ax.set_title(title)

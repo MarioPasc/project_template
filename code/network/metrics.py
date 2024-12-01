@@ -43,9 +43,9 @@ class Metrics:
             fig = go.Figure(data=[go.Bar(x=x, y=y)])
 
             fig.update_layout(
-                title="Degree Distribution",
-                xaxis_title="Degree",
-                yaxis_title="Frecuency",
+                title="Distribución del grado de los nodos",
+                xaxis_title="Grado",
+                yaxis_title="Frecuencia",
                 bargap=0.2,
             )
 
@@ -53,7 +53,7 @@ class Metrics:
             fig.add_annotation(
                 x=34,
                 y=4,
-                text=f"Mean: {mean_degree:.2f}<br>Standar Deviation: {sd_degree:.2f}",
+                text=f"Media: {mean_degree:.2f}<br>Distribución estándar: {sd_degree:.2f}",
                 showarrow=False,
                 font=dict(size=14, color="black"),
                 align="right",

@@ -19,7 +19,7 @@ logger = utils.setup_logger(
 
 def main():
 
-    parser = argparse.ArgumentParser(description="Analysis an interaction network")
+    parser = argparse.ArgumentParser(description="Analysis of an  PPI interaction network")
     parser.add_argument(
         "network",
         type=str,
