@@ -17,6 +17,7 @@ from igraph import Graph
 import shutil
 import argparse
 import json
+import time
 
 import matplotlib.pyplot as plt
 from matplotlib.image import imread
@@ -34,6 +35,8 @@ from algorithms import Algorithms
 from network import network
 from utils import misc
 from metrics import Metrics
+
+VERBOSE: bool = os.environ.get("VERBOSE", "0") == "1"
 
 def get_extreme_configurations(csv_path: Union[str, os.PathLike]) -> Dict[Tuple[float, float], Tuple[float, str]]:
     """
@@ -234,6 +237,8 @@ def main() -> None:
     PATH_PLOTS: os.PathLike = f"{folder_path}/plots/clustering"
     os.makedirs(PATH_PLOTS, exist_ok=True)
 
+    if VERBOSE:
+        print(f"Starting clustering analysis. Results are being plotted to {PATH_PLOTS}")
 
     # By this time we can find the results_*.csv files in the results/ folder. 
     if not os.path.isdir(folder_path):
@@ -270,6 +275,9 @@ def main() -> None:
     output_folder: str = "clustering_plots"
     output_dir: os.PathLike = os.path.join(args.results_folder, output_folder)
     os.makedirs(output_dir, exist_ok=True)
+
+    if VERBOSE:
+        print(f"INFO: Folder {output_dir} is a temp folder, it will be removed shortly.")
 
     # Dictionary to store saved image paths for each clustering result
     saved_clustering_paths: Dict[str, Dict[float, str]] = {}
@@ -358,6 +366,9 @@ def main() -> None:
                 f"Configuration: (values_0={values_0}, values_1={values_1})"
             )
 
+    if VERBOSE:
+        print("Executing Fast-Greddy Algorithm (baseline). This may take a couple of minutes ...")
+        start = time.time()
     # Separate visualization for "Fast Greedy"
     fastgreedy_algorithm_name = "fastgreedy"
     results: List[List[int]] = Algorithms.fastgreedy_clustering(graph=graph, logger=logger)
@@ -368,6 +379,9 @@ def main() -> None:
     # Calculate modularity and enrichment score
     modularity: float = Metrics.modularity(graph=graph, clusters=results, logger=logger)
     enrichment_score: float = Metrics.functional_enrichment_score(graph=graph, clusters=results, logger=logger)
+
+    if VERBOSE:
+        print(f"Fast-Greddy successfully computed and performance metrics calculated in {time.time() - start} seconds.")
 
     # Define the output path for "Fast Greedy"
     fastgreedy_output_path: os.PathLike = os.path.join(output_dir, f"{fastgreedy_algorithm_name}.pdf")
@@ -403,6 +417,9 @@ def main() -> None:
         0: (fastgreedy_output_path, "Sin ajuste")
     }
 
+    if VERBOSE:
+        print(f"Final clustering results saved as a json file in {args.results_folder}/clustering_results.json.")
+
     save_clustering_results_as_json(graph=graph,
                                     clustering_results=results_dict,
                                     output_file=os.path.join(args.results_folder, "clustering_results.json"))
@@ -414,6 +431,9 @@ def main() -> None:
 
         # Call the plotting function for the single algorithm
         plot_saved_clustering_results(saved_clustering_paths=single_algorithm_data, base_path_plots=PATH_PLOTS)
+
+    if VERBOSE:
+        print(f"Clustering analysis completed. All plots have been successfully generated.")
 
     if os.path.exists(output_dir):
         shutil.rmtree(output_dir)

@@ -6,6 +6,7 @@ from typing import List
 import numpy as np
 import pandas as pd
 import argparse
+import re
 import matplotlib.pyplot as plt
 import scienceplots
 
@@ -16,6 +17,8 @@ plt.rcParams["axes.spines.top"] = False
 plt.rcParams["axes.spines.right"] = False
 
 SHOW = False  # For debugging you may set this to true
+
+VERBOSE: bool = os.environ.get("VERBOSE", "0") == "1"
 
 
 def plot_single_pareto_front(
@@ -430,11 +433,48 @@ def main() -> None:
         if file.startswith("results_") and file.endswith(".csv")
     ]
 
-    colors = ["#0C5DA5", "#00B945"]
+    colors = ["#0C5DA5", "#00B945", "#FF2C00"]
+
+    if VERBOSE:
+        print("Starting analysis of the Bayesian Hyperparameter Optimization process")
+        print(f"Results are being saved to {plots_folder}.")
+        print()
+
+        # Print detected CSV files
+        print("Detected CSV files:")
+        for idx, csv_file in enumerate(csv_files):
+            color = colors[idx % len(colors)]  # Rotate through colors
+            print(f"  - File {idx + 1}: {csv_file} (color: {color})")
+        print()
+
+    
+    # Extract words from the filenames
+    extracted_words = [
+        re.match(r"./results/results_(.+)\.csv", file).group(1)
+        for file in csv_files
+    ]
+
+
+    # Define dictionary for matching extracted words to formatted names
+    dictionary_matching = {
+        'leiden': 'Leiden',
+        'multilevel': 'Louvain',
+        'walktrap': 'Walktrap'
+    }
+
+    # Map extracted words to legend names using the dictionary
+    legend_names = [
+        dictionary_matching[word]
+        for word in extracted_words
+        if word in dictionary_matching
+    ]
+
+    colors = colors[:len(legend_names)]
+
 
     plot_pareto_from_multiple_csvs(
         csv_files=csv_files,
-        legend_names=["Leiden", "Multilevel"],
+        legend_names=legend_names,
         colors=colors,
         alpha_non_pareto=0.2,
         pareto_alpha=1.0,
@@ -445,7 +485,7 @@ def main() -> None:
 
     plot_hyperparameter_vs_metric_fixed_hyperparam_subplots(
         csv_files=csv_files,
-        legend_names=["Leiden", "Multilevel"],
+        legend_names=legend_names,
         metric_column={
             "values_0": "Modularidad (Q)",
             "values_1": "Coeficiente de Significancia Biológica (QBS)",
@@ -457,6 +497,10 @@ def main() -> None:
         label_x=r"Resolución ($\gamma$)",
         title="",
     )
+
+    if VERBOSE:
+        print("BHO Analysis completed.")
+        print()
 
 if __name__ == "__main__":
     main()

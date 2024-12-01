@@ -14,6 +14,9 @@ import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
 from matplotlib.patches import Patch
 
+import os
+VERBOSE: bool = os.environ.get("VERBOSE", "0") == "1"
+import time
 
 class Network:
     """
@@ -218,20 +221,33 @@ class Network:
         self.metrics["Number of edges"] = self.graph.ecount()
         self.logger.info(f"Num node:{self.graph.vcount()}  Num edges:{self.graph.ecount()}")
 
+        # Add the time.sleep to not saturate the terminal output
+
+        if VERBOSE: print("Network Stats: Computing degree distribution ...")        
         # Degree Distribution
         self.degree(result_folder, format)
-
+        if VERBOSE: time.sleep(0.5)
+        
+        if VERBOSE: print("Network Stats: Computing connectivity ...")        
         # Connectivity
         self.connectivity(result_folder, format)
+        if VERBOSE: time.sleep(0.5)
 
+        if VERBOSE: print("Network Stats: Computing network density ...")
         # Density
         self.density()
+        if VERBOSE: time.sleep(0.5)
 
+        if VERBOSE: print("Network Stats: Computing closeness and betweenness ...")
         # Closeness and betweenness
         self.closeness_betweenness(result_folder, format)
+        if VERBOSE: time.sleep(0.5)
 
+        if VERBOSE: print("Network Stats: Computing clustering coefficients ...")
         # Clustering Coeficients
         self.clustering_coefficients(result_folder, format)
+        if VERBOSE: time.sleep(0.5)
+        if VERBOSE: print()
 
         self.metrics["Assortativity"] = self.graph.assortativity_degree()
 

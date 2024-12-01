@@ -8,6 +8,9 @@ from utils import misc
 
 import stringdb
 
+
+VERBOSE: bool = os.environ.get("VERBOSE", "0") == "1"
+
 logging = misc.setup_logger(
     name="Dowload_PPI_Network_from_Stringdb",
     log_file=os.path.join("logs/data_downloading_logging.log")
@@ -80,6 +83,11 @@ def main():
 
     args = parser.parse_args()
 
+    if VERBOSE: 
+        print("Retrieving Protein-Protein Interaction Network from STRINGdb using")
+        print(f"the HPO Gene Terms located in {args.gene_file} for Homo Sapiens (9606).")
+        print()
+
     # Validate and handle invalid arguments
     if not os.path.isfile(args.gene_file):
         logging.error(f"The gene file '{args.gene_file}' does not exist.")
@@ -144,6 +152,9 @@ def main():
         print(f"Error: Failed to obtain the interaction network. Details: {e}")
         return
 
+    if VERBOSE: 
+        print(f"Network successfully downloaded in {args.network_path}. Check logs for details.")
+        print()
 
 if __name__ == "__main__":
     main()

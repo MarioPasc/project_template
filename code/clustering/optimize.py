@@ -17,6 +17,7 @@ from algorithms import Algorithms
 from metrics import Metrics
 from utils import misc 
 
+VERBOSE: bool = os.environ.get("VERBOSE", "0") == "1"
 
 class BHO_Clustering:
     def __init__(
@@ -66,7 +67,7 @@ class BHO_Clustering:
         self.study: optuna.Study = (
             None  # Will hold the Optuna study object after optimization
         )
-
+        self.start_time = time.time()
         # Setup logger
         os.makedirs("./logs", exist_ok=True)
         self.logger = misc.setup_logger(
@@ -355,7 +356,11 @@ class BHO_Clustering:
             self.output_path, f"results_{self.selected_algorithm}.csv"
         )
         df.to_csv(csv_path, index=False)
-        print(f"Results saved to {csv_path}")
+        if VERBOSE: 
+            print(f"Optimization completed for {self.study_name} in {(time.time() - self.start_time)/60} minutes.")
+            print(f"Results saved to {csv_path}.")
+            print(f"Study saved to {self.output_path}/{self.study_name}.db")
+            print()
 
 
 def main():
@@ -422,6 +427,24 @@ def main():
     # Parse arguments
     args = parser.parse_args()
 
+    if VERBOSE:
+        print("=" * 91)
+        print("Bayesian Hyperparameter Optimization process. Information.")
+        print("-" * 91)
+        print(f"Study name: {args.study_name}")
+        print(f"Trials: {args.trials}")
+        print(f"Configuration file: {args.config_path}")
+        print(f"Network file: {args.network}")
+        print(f"Output path: {args.output_path}")
+        print("-" * 91)
+        print("WARNING!")
+        print("This process may take up to 60-90 minutes depending on the number of trials selected.")
+        print("We suggest 100-150 trials, which fall in that time range. Details are saved in logs/")
+        print(f"If you have an existing .db file named '{args.study_name}.db' in {args.output_path},")
+        print("the study will continue from last checkpoint instead of creating a new one.")
+        print("=" * 91)
+        print()
+        time.sleep(4)
     # Instantiate and run the BHO_Clustering optimizer
     optimizer = BHO_Clustering(
         config_path=args.config_path,

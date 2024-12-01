@@ -8,6 +8,8 @@ from network import Network
 import pandas as pd
 from utils import misc as utils
 
+VERBOSE: bool = os.environ.get("VERBOSE", "0") == "1"
+
 
 logger = utils.setup_logger(
     name="Analysis_PPI_Network",
@@ -51,7 +53,6 @@ def main():
     else:
         logger.info(f"Results folder '{args.results}' already exists.")
     
-
     # Convert network to igraph format
     try:
         graph = utils.network_to_igraph_format(args.network)
@@ -62,6 +63,10 @@ def main():
 
     network_path_plots: os.PathLike = os.path.join(args.results, 'plots/network')
     os.makedirs(network_path_plots, exist_ok=True)
+
+    if VERBOSE:
+        print(f"Starting statistical network analysis. Plotting results in {network_path_plots}.")
+        print()
 
     analyzer = Network(graph, logger)
     # network metrics
@@ -82,6 +87,8 @@ def main():
         escape=False,
     )
 
+    if VERBOSE:
+        print(f"Network successfully analyzed. Check {args.results} folder for results and logs for details.")
 
 if __name__ == "__main__":
     main()
