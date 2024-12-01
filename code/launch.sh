@@ -2,6 +2,7 @@
 
 # Set to true if you want to fine-tune the clustering algorithms. 
 train=false
+
 # If train is true, then set the number of trials to run the Bayesian Optimization Algorithm. 
 # In our original study we executed it for 150 trials.
 trials=150
@@ -10,6 +11,8 @@ trials=150
 export PYTHON_LIB=./Py_libs
 export PYTHONPATH=$PYTHON_LIB:./code:$PYTHONPATH  # Include both Py_libs and ./code in PYTHONPATH
 
+# Print sesion info
+./code/utils/sesion_info.py
 
 # Create the data directory if it doesn't exist
 mkdir -p ./code/data
@@ -42,7 +45,7 @@ if [ "$train" = true ]; then
         --config_path code/clustering/configs/multilevel.yaml \
         --network_csv code/data/network.tsv \
         --study_name multilevel_optimization \
-        --output_path results \
+        --output_path $results \
         --n_trials $trials
 
     # Optimize Leiden
@@ -50,16 +53,15 @@ if [ "$train" = true ]; then
         --config_path code/clustering/configs/leiden.yaml \
         --network_csv code/data/network.tsv \
         --study_name leiden_optimization \
-        --output_path results \
+        --output_path $results \
         --n_trials $trials
 fi
 
-# Store optimization results
-
+# Performance analysis on optimization results
 ./code/clustering/bho_analysis.py \
-    results
+    $results
 
-# Store clustering results
+# Clustering visualization and final results saving
 ./code/clustering/analysis.py \
     code/data/network.tsv \
-    results
+    $results
