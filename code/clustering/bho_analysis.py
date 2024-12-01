@@ -415,6 +415,9 @@ def main() -> None:
 
     folder_path = args.results_folder
 
+    os.makedirs("./results/plots/clustering", exist_ok=True)
+    os.makedirs('./results/clustering_results', exist_ok=True)
+
     # By this time we can find the results_*.csv files in the results/ folder. 
     if not os.path.isdir(folder_path):
         raise ValueError(f"The provided path '{folder_path}' is not a valid directory.")

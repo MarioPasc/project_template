@@ -16,6 +16,8 @@ import numpy as np
 from igraph import Graph
 import shutil
 import argparse
+import json
+
 import matplotlib.pyplot as plt
 from matplotlib.image import imread
 from matplotlib.lines import Line2D
@@ -92,54 +94,53 @@ def get_extreme_configurations(csv_path: Union[str, os.PathLike]) -> Dict[Tuple[
 
     return extremes
 
-def save_single_clustering_result_to_file(
+def save_clustering_results_as_json(
     graph: Graph,
-    clustering_result: List[List[int]],
-    results_file: str = "clustering_results.csv",
-    algorithm_name: str = "algorithm"
+    clustering_results: Dict[str, List[List[int]]],
+    output_file: str = "clustering_results.json",
 ) -> None:
     """
-    Save a single clustering result to a CSV file using pandas.
+    Save clustering results into a JSON file in a hierarchical structure.
 
     Args:
         graph (Graph): The graph object with vertex attributes, including "name".
-        clustering_result (List[List[int]]): 
-            List of clusters where each cluster is a list of node indices.
-        results_file (str): The file where the results will be saved.
-        algorithm_name (str): Name of the clustering algorithm.
+        clustering_results (Dict[str, List[List[int]]]): 
+            Dictionary where keys are algorithm names and values are lists of clusters.
+        output_file (str): The file path where the JSON will be saved.
     """
-    # Prepare a list to store the results
-    all_results = []
+    # Create a hierarchical dictionary to store all results
+    results_dict = {}
 
-    # Iterate over each cluster
-    for cluster_idx, cluster in enumerate(clustering_result, start=1):
-        # Get the genes and nodes for this cluster
-        genes = [
-            graph.vs[node]["name"]
-            for node in cluster
-            if "name" in graph.vs[node].attributes()
-        ]
-        nodes = cluster  # Nodes are already the indices
+    for algorithm_name, clusters in clustering_results.items():
+        # Add a dictionary for the algorithm
+        results_dict[algorithm_name] = {}
+        
+        for cluster_idx, cluster in enumerate(clusters, start=1):
+            # Get the genes and nodes for this cluster
+            genes = [
+                graph.vs[node]["name"]
+                for node in cluster
+                if "name" in graph.vs[node].attributes()
+            ]
+            nodes = cluster  # Nodes are already the indices
+            
+            # Add the cluster data
+            results_dict[algorithm_name][f"Cluster {cluster_idx}"] = {
+                "Genes": genes,
+                "Nodes": nodes,
+            }
+    
+    # Ensure the directory for the output file exists
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
-        # Append the cluster's data
-        all_results.append({
-            "Algorithm": algorithm_name,
-            "Cluster": cluster_idx,
-            "Genes": ";".join(genes),
-            "Nodes": ";".join(map(str, nodes)),
-        })
+    # Save the hierarchical dictionary as a JSON file
+    with open(output_file, "w", encoding="utf-8") as file:
+        json.dump(results_dict, file, indent=4, ensure_ascii=False)
+    
+    print(f"Clustering results saved in {output_file}.")
 
-    # Convert the results to a pandas DataFrame
-    results_df = pd.DataFrame(all_results)
-
-    # Ensure the directory for the results file exists
-    os.makedirs('./results/clustering_results', exist_ok=True)
-
-    # Save the DataFrame to a CSV file
-    results_df.to_csv(os.path.join('./results/clustering_results', results_file), index=False, encoding="utf-8")
-    print(f"Clustering results saved in {results_file}.")
-
-def plot_saved_clustering_results(saved_clustering_paths: Dict[str, Dict[float, Tuple[str, str]]]) -> None:
+def plot_saved_clustering_results(saved_clustering_paths: Dict[str, Dict[float, Tuple[str, str]]],
+                                  base_path_plots: os.PathLike) -> None:
     """
     Display saved clustering plots for a single algorithm with columns as parameter values.
 
@@ -198,14 +199,13 @@ def plot_saved_clustering_results(saved_clustering_paths: Dict[str, Dict[float, 
         axs[col_idx].axis("off")  # Turn off axes for cleaner display
 
     # Save the plot for this algorithm
-    output_file = f"results/{algorithm_display_name.lower()}_clustering.pdf"
+    output_file = f"{base_path_plots}/{algorithm_display_name.lower()}_clustering.pdf"
     plt.savefig(output_file)
     plt.close(fig)  # Close the figure to free memory
 
 
 def main() -> None:
-    
-    # Setup logger
+    # Setup logger    
     os.makedirs("./logs", exist_ok=True)
     logger = misc.setup_logger(
         name="Bayesian_Hyperparameter_Optimization_Clustering_Networks",
@@ -227,9 +227,14 @@ def main() -> None:
     )
     
     args = parser.parse_args()
+
     
     folder_path: str = args.results_folder
-    
+
+    PATH_PLOTS: os.PathLike = f"{folder_path}/plots/clustering"
+    os.makedirs(PATH_PLOTS, exist_ok=True)
+
+
     # By this time we can find the results_*.csv files in the results/ folder. 
     if not os.path.isdir(folder_path):
         raise ValueError(f"The provided path '{folder_path}' is not a valid directory.")
@@ -269,6 +274,9 @@ def main() -> None:
     # Dictionary to store saved image paths for each clustering result
     saved_clustering_paths: Dict[str, Dict[float, str]] = {}
 
+    # Dictionary to store the results for each algorithm in order to create the json
+    results_dict: Dict[str, List[List[int]]] = {}
+
     # Loop through each algorithm and its extreme configurations
     for algorithm_name, extreme_configurations in configurations.items():
         if algorithm_name not in saved_clustering_paths:
@@ -288,11 +296,6 @@ def main() -> None:
                 results: List[List[int]] = Algorithms.walktrap_clustering(
                     graph=graph, steps=int(param_value), logger=logger
                 )
-            
-            save_single_clustering_result_to_file(graph=graph, 
-                                                 clustering_result=results, 
-                                                 results_file=f"{algorithm_name}_{param_name}_{param_value}.csv",
-                                                 algorithm_name={algorithm_name})
 
             # Define the output file path
             output_path: os.PathLike = os.path.join(args.results_folder, output_folder, f"{algorithm_name}_{param_value:.5f}.pdf")
@@ -322,6 +325,9 @@ def main() -> None:
             # Store the saved image path
             saved_clustering_paths[algorithm_name][param_value] = (output_path, param_name)
 
+            # Store results
+            results_dict[f"{algorithm_name}_{param_value}"] = results
+
             # Log the results
             logger.info(
                 f"Algorithm: {algorithm_name}, Parameter: {param_name}={param_value}, "
@@ -332,12 +338,15 @@ def main() -> None:
     fastgreedy_algorithm_name = "fastgreedy"
     results: List[List[int]] = Algorithms.fastgreedy_clustering(graph=graph, logger=logger)
 
+    # Store
+    results_dict[f"{fastgreedy_algorithm_name}"] = results
+
     # Calculate modularity and enrichment score
     modularity: float = Metrics.modularity(graph=graph, clusters=results, logger=logger)
     enrichment_score: float = Metrics.functional_enrichment_score(graph=graph, clusters=results, logger=logger)
 
     # Define the output path for "Fast Greedy"
-    fastgreedy_output_path: os.PathLike = os.path.join(args.results_folder, output_folder, f"{fastgreedy_algorithm_name}.pdf")
+    fastgreedy_output_path: os.PathLike = os.path.join(output_dir, f"{fastgreedy_algorithm_name}.pdf")
 
     # Define the legend for "Fast Greedy"
     num_clusters = len(results)
@@ -370,13 +379,17 @@ def main() -> None:
         0: (fastgreedy_output_path, "Sin ajuste")
     }
 
+    save_clustering_results_as_json(graph=graph,
+                                    clustering_results=results_dict,
+                                    output_file=os.path.join(args.results_folder, "clustering_results.json"))
+
     # Iterate over clustering methods and create one visualization per method
     for algorithm_name, param_data in saved_clustering_paths.items():
         # Extract only the data for the current algorithm
         single_algorithm_data = {algorithm_name: param_data}
 
         # Call the plotting function for the single algorithm
-        plot_saved_clustering_results(single_algorithm_data)
+        plot_saved_clustering_results(saved_clustering_paths=single_algorithm_data, base_path_plots=PATH_PLOTS)
 
     if os.path.exists(output_dir):
         shutil.rmtree(output_dir)

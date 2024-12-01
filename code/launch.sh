@@ -57,9 +57,9 @@ fi
 # Store optimization results
 
 ./code/clustering/bho_analysis.py \
-    results/
+    results
 
 # Store clustering results
 ./code/clustering/analysis.py \
     code/data/network.tsv \
-    results/
+    results
