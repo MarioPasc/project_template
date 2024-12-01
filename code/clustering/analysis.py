@@ -279,10 +279,34 @@ def main() -> None:
 
     # Loop through each algorithm and its extreme configurations
     for algorithm_name, extreme_configurations in configurations.items():
+        # Initialize dictionary for saved paths if the algorithm name is not present
         if algorithm_name not in saved_clustering_paths:
             saved_clustering_paths[algorithm_name] = {}
         
-        for (values_0, values_1), (param_value, param_name) in extreme_configurations.items():
+        # Ensure there are exactly two configurations for each algorithm
+        if len(extreme_configurations) != 2:
+            raise ValueError(
+                f"Expected exactly two extreme configurations for {algorithm_name}, found {len(extreme_configurations)}."
+            )
+
+        # Extract configurations and determine roles
+        (values_0_a, values_1_a), (param_value_a, param_name_a) = list(extreme_configurations.items())[0]
+        (values_0_b, values_1_b), (param_value_b, param_name_b) = list(extreme_configurations.items())[1]
+
+        # Determine which configuration maximizes modularity
+        if values_0_a > values_0_b:
+            modularity_config = {"values": (values_0_a, values_1_a), "param": (param_value_a, param_name_a)}
+            enrichment_config = {"values": (values_0_b, values_1_b), "param": (param_value_b, param_name_b)}
+        else:
+            modularity_config = {"values": (values_0_b, values_1_b), "param": (param_value_b, param_name_b)}
+            enrichment_config = {"values": (values_0_a, values_1_a), "param": (param_value_a, param_name_a)}
+
+        # Process both configurations
+        for config_type, config_data in [("max_modularity", modularity_config), ("max_enrichment", enrichment_config)]:
+            key_name = f"{algorithm_name}_{config_type}"
+            param_value, param_name = config_data["param"]
+            values_0, values_1 = config_data["values"]
+
             # Run the appropriate clustering algorithm
             if algorithm_name == "leiden":
                 results: List[List[int]] = Algorithms.leiden_clustering(
@@ -326,7 +350,7 @@ def main() -> None:
             saved_clustering_paths[algorithm_name][param_value] = (output_path, param_name)
 
             # Store results
-            results_dict[f"{algorithm_name}_{param_value}"] = results
+            results_dict[key_name] = results
 
             # Log the results
             logger.info(
