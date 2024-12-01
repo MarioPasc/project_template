@@ -92,6 +92,53 @@ def get_extreme_configurations(csv_path: Union[str, os.PathLike]) -> Dict[Tuple[
 
     return extremes
 
+def save_single_clustering_result_to_file(
+    graph: Graph,
+    clustering_result: List[List[int]],
+    results_file: str = "clustering_results.csv",
+    algorithm_name: str = "algorithm"
+) -> None:
+    """
+    Save a single clustering result to a CSV file using pandas.
+
+    Args:
+        graph (Graph): The graph object with vertex attributes, including "name".
+        clustering_result (List[List[int]]): 
+            List of clusters where each cluster is a list of node indices.
+        results_file (str): The file where the results will be saved.
+        algorithm_name (str): Name of the clustering algorithm.
+    """
+    # Prepare a list to store the results
+    all_results = []
+
+    # Iterate over each cluster
+    for cluster_idx, cluster in enumerate(clustering_result, start=1):
+        # Get the genes and nodes for this cluster
+        genes = [
+            graph.vs[node]["name"]
+            for node in cluster
+            if "name" in graph.vs[node].attributes()
+        ]
+        nodes = cluster  # Nodes are already the indices
+
+        # Append the cluster's data
+        all_results.append({
+            "Algorithm": algorithm_name,
+            "Cluster": cluster_idx,
+            "Genes": ";".join(genes),
+            "Nodes": ";".join(map(str, nodes)),
+        })
+
+    # Convert the results to a pandas DataFrame
+    results_df = pd.DataFrame(all_results)
+
+    # Ensure the directory for the results file exists
+    os.makedirs('./results/clustering_results', exist_ok=True)
+
+    # Save the DataFrame to a CSV file
+    results_df.to_csv(os.path.join('./results/clustering_results', results_file), index=False, encoding="utf-8")
+    print(f"Clustering results saved in {results_file}.")
+
 def plot_saved_clustering_results(saved_clustering_paths: Dict[str, Dict[float, Tuple[str, str]]]) -> None:
     """
     Display saved clustering plots for a single algorithm with columns as parameter values.
@@ -241,6 +288,11 @@ def main() -> None:
                 results: List[List[int]] = Algorithms.walktrap_clustering(
                     graph=graph, steps=int(param_value), logger=logger
                 )
+            
+            save_single_clustering_result_to_file(graph=graph, 
+                                                 clustering_result=results, 
+                                                 results_file=f"{algorithm_name}_{param_name}_{param_value}.csv",
+                                                 algorithm_name={algorithm_name})
 
             # Define the output file path
             output_path: os.PathLike = os.path.join(args.results_folder, output_folder, f"{algorithm_name}_{param_value:.5f}.pdf")
