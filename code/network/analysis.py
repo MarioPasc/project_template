@@ -60,11 +60,14 @@ def main():
         logger.error(f"Error converting network to igraph format: {e}")
         return
 
+    network_path_plots: os.PathLike = os.path.join(args.results, 'plots/network')
+    os.makedirs(network_path_plots, exist_ok=True)
+
     analyzer = Network(graph, logger)
     # network metrics
-    analyzer.calculate_metrics(args.results, args.format)
+    analyzer.calculate_metrics(network_path_plots, args.format)
     # plot network
-    analyzer.visualize_network(f"{args.results}/network.{args.format}")
+    analyzer.visualize_network(f"{network_path_plots}/network.{args.format}")
 
     metrics = analyzer.metrics
 

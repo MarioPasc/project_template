@@ -415,8 +415,8 @@ def main() -> None:
 
     folder_path = args.results_folder
 
-    os.makedirs("./results/plots/clustering", exist_ok=True)
-    os.makedirs('./results/clustering_results', exist_ok=True)
+    plots_folder: os.PathLike = os.path.join(folder_path, "plots/optimization")
+    os.makedirs(plots_folder, exist_ok=True)
 
     # By this time we can find the results_*.csv files in the results/ folder. 
     if not os.path.isdir(folder_path):
@@ -439,7 +439,7 @@ def main() -> None:
         alpha_non_pareto=0.2,
         pareto_alpha=1.0,
         lines_alpha=0.5,
-        save_path=os.path.join(args.results_folder, "pareto_comparison.pdf"),
+        save_path=os.path.join(plots_folder, "pareto_comparison.pdf"),
         title="",
     )
 
@@ -453,7 +453,7 @@ def main() -> None:
         colors=colors,
         alpha=0.8,
         lines_alpha=0.5,
-        save_path=os.path.join(args.results_folder, "hyperparameter_vs_metric.pdf"),
+        save_path=os.path.join(plots_folder, "hyperparameter_vs_metric.pdf"),
         label_x=r"Resolución ($\gamma$)",
         title="",
     )
