@@ -154,7 +154,7 @@ El objetivo es seleccionar nuevos hiperparámetros \( \theta \) que maximicen el
 
 Al maximizar \( \mathrm{EI}(\theta) \), favorecemos los hiperparámetros que son más probables en el conjunto de buen rendimiento \( \mathcal{C}_1 \) y menos probables en el conjunto de peor rendimiento \( \mathcal{C}_2 \). Este proceso se repite iterativamente; en cada iteración, los nuevos datos de rendimiento actualizan \( l(\theta) \) y \( g(\theta) \), permitiendo explorar eficientemente el espacio de hiperparámetros.
 
-Para Louvain y Leiden, se han ejecutado, respectivamente, \(150\) iteraciones, explorando resoluciones entre \(0.1\) y \(2.0\) que maximicen tanto el coeficiente de modularidad (Q) como la función de evaluación de calidad (FEQ) descritas en la Sección \ref{sec:metricas}. Los datos se han almacenado en una base de datos SQLite, lo que permite extraer informes tabulados y reanudar el ajuste desde el punto de guardado si se desea, facilitando la gestión y continuidad del proceso.
+Para Louvain y Leiden, se han ejecutado, respectivamente, \(150\) iteraciones, explorando resoluciones entre \(0.1\) y \(2.0\) que maximicen tanto el coeficiente Q como el puntuaje FES, descritos en la Sección \ref{sec:metricas}. Los datos se han almacenado en una base de datos SQLite, lo que permite extraer informes tabulados y reanudar el ajuste desde el punto de guardado si se desea, facilitando la gestión y continuidad del proceso.
 
 
 
