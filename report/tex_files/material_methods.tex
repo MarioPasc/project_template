@@ -124,14 +124,20 @@ A continuación, se detallan los tres algoritmos de clustering, proporcionados p
 
 \subsubsection{Optimización}
 
-Como se explicó en la Sección \ref{sec:algoritmos}, Louvain y Leiden son algoritmos de clustering con múltiples parámetros configurables. Ajustar adecuadamente estos parámetros es crucial para mejorar tanto la interpretación biológica de la red como la detección de comunidades. Este proceso, conocido como "Ajuste de Hiperparámetros", busca optimizar el rendimiento del algoritmo según diversas métricas. En este apartado, se detalla el procedimiento empleado para ajustar el parámetro de "resolución" (\(\gamma\)) en Leiden y Louvain, con el objetivo de maximizar las métricas descritas en la Sección \ref{sec:metricas}.
+Como se explicó en la Sección \ref{sec:algoritmos}, Louvain y Leiden son algoritmos de clustering con múltiples parámetros configurables. Ajustar adecuadamente estos parámetros es crucial para mejorar tanto la interpretación biológica de la red como la detección de comunidades. Este proceso, conocido como ajuste de hiperparámetros, busca optimizar el rendimiento del algoritmo según diversas métricas. En este apartado, se detalla el procedimiento empleado para ajustar el parámetro de resolución (\(\gamma\)) en Leiden y Louvain, con el objetivo de maximizar las métricas descritas en la Sección \ref{sec:metricas}.
 
-La estadística bayesiana es un enfoque probabilístico que utiliza el teorema de Bayes para actualizar las creencias sobre un modelo matemático a medida que se incorporan nuevas evidencias o datos. Básandose en ella, el ajuste bayesiano de hiperparámetros (BHO) aplica la estadística bayesiana para optimizar los parámetros de un modelo dado. Se construye un modelo probabilístico de la función objetivo en función de los hiperparámetros y se actualiza iterativamente con nuevos datos de rendimiento. Este modelo probabilístico subyacente sugiere los hiperparámetros a probar en cada iteración, lo que permite seleccionar eficientemente los próximos conjuntos de hiperparámetros a evaluar enfocándose en las regiones más prometedoras del espacio de búsqueda.
+La estadística bayesiana es un enfoque probabilístico que utiliza el teorema de Bayes para actualizar las creencias sobre un modelo a medida que se incorporan nuevos datos. El ajuste bayesiano de hiperparámetros (BHO) aplica este enfoque para optimizar los parámetros de un modelo, construyendo y actualizando iterativamente un modelo probabilístico de la función objetivo en función de los hiperparámetros. Este modelo probabilístico sugiere los hiperparámetros a probar en cada iteración, permitiendo enfocar eficientemente la búsqueda en las regiones más prometedoras del espacio de hiperparámetros.
 
+Existen diversos algoritmos basados en BHO, cada uno caracterizado por el modelo probabilístico que construye. En este proyecto, hemos optado por el Tree-structured Parzen Estimator (TPE). En el TPE, consideramos que \( y \) es el valor obtenido al evaluar la función objetivo utilizando un conjunto de hiperparámetros \( \theta \). Definimos un umbral \( y^* \) que nos permite dividir nuestros datos en dos conjuntos: los hiperparámetros que resultan en un rendimiento mejor que \( y^* \) y los que resultan en un rendimiento peor. Es decir:
 
-Cada algoritmo de BHO está caracterizado entonces por el modelo probabilístico subyacente que construye, en este proyecto, nos hemos decantado por el Tree-structured Parzen Estimator (TPE). En el TPE, consideramos que \( y \) es el valor obtenido al evaluar la función objetivo utilizando un conjunto de hiperparámetros \( \theta \). Definimos un umbral \( y^* \) que nos permite dividir nuestros datos en dos conjuntos: los hiperparámetros que resultan en un rendimiento mejor que \( y^* \) y los que resultan en un rendimiento peor. Es decir, tenemos los hiperparámetros \( \mathcal{C}_1 = \{ \theta^{(1)}, \ldots, \theta^{(i)} \} \) donde \( y^{(\mathcal{C}_1)} \leq y^* \), y los hiperparámetros \(\mathcal{C}_2 = \{ \theta^{(i+1)}, \ldots, \theta^{(n)} \} \) donde \( y^{(\mathcal{C}_2)} > y^* \).
+\begin{equation}
+	\begin{aligned}
+		\mathcal{C}_1 = \left\{ \theta^{(i)} \mid y^{(i)} \leq y^* \right\} \\
+		\mathcal{C}_2 = \left\{ \theta^{(i)} \mid y^{(i)} > y^* \right\}
+	\end{aligned}
+\end{equation}
 
-Utilizando estimación de densidad por kernel (KDE), estimamos las distribuciones de probabilidad para estos dos conjuntos de hiperparámetros. Denotamos:
+Utilizando estimación de densidad por kernel (KDE), en este caso, el método de ventana deslizante de Parzen-Rosenblatt -ver detalles en Sección \ref{sec:anexo_a}- estimamos las distribuciones de probabilidad para estos dos conjuntos:
 
 \begin{equation}
 	\begin{aligned}
@@ -142,14 +148,13 @@ Utilizando estimación de densidad por kernel (KDE), estimamos las distribucione
 
 El objetivo es seleccionar nuevos hiperparámetros \( \theta \) que maximicen el Expected Improvement (EI), que es proporcional al cociente de estas dos densidades:
 
-
 \begin{equation}
 	\mathrm{EI}(\theta) \propto \frac{l(\theta)}{g(\theta)}
 \end{equation}
 
+Al maximizar \( \mathrm{EI}(\theta) \), favorecemos los hiperparámetros que son más probables en el conjunto de buen rendimiento \( \mathcal{C}_1 \) y menos probables en el conjunto de peor rendimiento \( \mathcal{C}_2 \). Este proceso se repite iterativamente; en cada iteración, los nuevos datos de rendimiento actualizan \( l(\theta) \) y \( g(\theta) \), permitiendo explorar eficientemente el espacio de hiperparámetros.
 
-Al maximizar \( \mathrm{EI}(\theta) \), favorecemos los hiperparámetros que son más probables en el conjunto de buen rendimiento \( \mathcal{C}_1 \) y menos probables en el conjunto de peor rendimiento \( \mathcal{C}_2 \). Este proceso se repite iterativamente, actualizando \( l(\theta) \) y \( g(\theta) \) a medida que se recopilan más datos, lo que permite explorar eficientemente el espacio de hiperparámetros.
-
+Para Louvain y Leiden, se han ejecutado, respectivamente, \(150\) iteraciones, explorando resoluciones entre \(0.1\) y \(2.0\) que maximicen tanto el coeficiente de modularidad (Q) como la función de evaluación de calidad (FEQ) descritas en la Sección \ref{sec:metricas}. Los datos se han almacenado en una base de datos SQLite, lo que permite extraer informes tabulados y reanudar el ajuste desde el punto de guardado si se desea, facilitando la gestión y continuidad del proceso.
 
 
 
