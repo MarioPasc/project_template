@@ -84,13 +84,14 @@ El análisis de enriquecimiento se realizó tanto en el conjunto completo de gen
 
 Al aplicar algoritmos de clustering, nuestro objetivo es descubrir comunidades funcionales dentro de la red de genes asociada a la demencia frontotemporal. Estas comunidades, módulos, o \textit{clusters} funcionales pueden representar procesos biológicos específicos, vías celulares, o mecanismos asociados al fenotipo FTD. Encontrar estos clusters podría revelar posibles dianas terapéuticas o grupos de biomarcadores dentro del conjunto de genes, lo cual podría abrir las puertas a nuevos tratamientos para los pacientes de FTD.
 
-\subsubsection*{Red}
+\subsubsection{Red}
 
 En la red de interacción proteína-proteína (PPI) obtenida mediante la API de STRINGdb, cada nodo representa un gen y cada arista representa una interacción entre genes, ponderada por un puntaje de confianza otorgado por STRINGdb \cite{szklarczyk2023stringdb}. Para enfocarnos en interacciones más sólidas y confiables, se aplicó un umbral mínimo de confianza en las aristas, lo que permitió refinar la red y mejorar la relevancia de los clústeres detectados 
 
 % (\textbf{NOTA:} Se debe ahondar en esto si al final se hace: ¿Por qué ese umbral? ¿Y si fueran otros umbrales?).
 
-\subsubsection*{Algoritmos}
+\subsubsection{Algoritmos}
+\label{sec:algoritmos}
 
 A continuación, se detallan los tres algoritmos de clustering, proporcionados por la librería \textit{iGraph}, elegidos para este estudio, los cuales pretenden cubrir diferentes enfoques teóricos en la detección de comunidades funcionales \cite{igraph}.  
 
@@ -118,9 +119,39 @@ A continuación, se detallan los tres algoritmos de clustering, proporcionados p
 
 \noindent Se ajustó el parámetro de resolución, que controla el tamaño final de las comunidades. El resto de parámetros se dejaron con sus valores por defecto.
 
-\subsubsection*{Medidas de Rendimiento}
+\subsubsection{Medidas de Rendimiento}
+\label{sec:metricas}
 
-\subsubsection*{Optimización}
+\subsubsection{Optimización}
+
+Como se explicó en la Sección \ref{sec:algoritmos}, Louvain y Leiden son algoritmos de clustering con múltiples parámetros configurables. Ajustar adecuadamente estos parámetros es crucial para mejorar tanto la interpretación biológica de la red como la detección de comunidades. Este proceso, conocido como "Ajuste de Hiperparámetros", busca optimizar el rendimiento del algoritmo según diversas métricas. En este apartado, se detalla el procedimiento empleado para ajustar el parámetro de "resolución" (\(\gamma\)) en Leiden y Louvain, con el objetivo de maximizar las métricas descritas en la Sección \ref{sec:metricas}.
+
+La estadística bayesiana es un enfoque probabilístico que utiliza el teorema de Bayes para actualizar las creencias sobre un modelo matemático a medida que se incorporan nuevas evidencias o datos. Básandose en ella, el ajuste bayesiano de hiperparámetros (BHO) aplica la estadística bayesiana para optimizar los parámetros de un modelo dado. Se construye un modelo probabilístico de la función objetivo en función de los hiperparámetros y se actualiza iterativamente con nuevos datos de rendimiento. Este modelo probabilístico subyacente sugiere los hiperparámetros a probar en cada iteración, lo que permite seleccionar eficientemente los próximos conjuntos de hiperparámetros a evaluar enfocándose en las regiones más prometedoras del espacio de búsqueda.
+
+
+Cada algoritmo de BHO está caracterizado entonces por el modelo probabilístico subyacente que construye, en este proyecto, nos hemos decantado por el Tree-structured Parzen Estimator (TPE). En el TPE, consideramos que \( y \) es el valor obtenido al evaluar la función objetivo utilizando un conjunto de hiperparámetros \( \theta \). Definimos un umbral \( y^* \) que nos permite dividir nuestros datos en dos conjuntos: los hiperparámetros que resultan en un rendimiento mejor que \( y^* \) y los que resultan en un rendimiento peor. Es decir, tenemos los hiperparámetros \( \mathcal{C}_1 = \{ \theta^{(1)}, \ldots, \theta^{(i)} \} \) donde \( y^{(\mathcal{C}_1)} \leq y^* \), y los hiperparámetros \(\mathcal{C}_2 = \{ \theta^{(i+1)}, \ldots, \theta^{(n)} \} \) donde \( y^{(\mathcal{C}_2)} > y^* \).
+
+Utilizando estimación de densidad por kernel (KDE), estimamos las distribuciones de probabilidad para estos dos conjuntos de hiperparámetros. Denotamos:
+
+\begin{equation}
+	\begin{aligned}
+		l(\theta) &= p(\theta \mid \theta \in \mathcal{C}_1) \\
+		g(\theta) &= p(\theta \mid \theta \in \mathcal{C}_2)
+	\end{aligned}
+\end{equation}
+
+El objetivo es seleccionar nuevos hiperparámetros \( \theta \) que maximicen el Expected Improvement (EI), que es proporcional al cociente de estas dos densidades:
+
+
+\begin{equation}
+	\mathrm{EI}(\theta) \propto \frac{l(\theta)}{g(\theta)}
+\end{equation}
+
+
+Al maximizar \( \mathrm{EI}(\theta) \), favorecemos los hiperparámetros que son más probables en el conjunto de buen rendimiento \( \mathcal{C}_1 \) y menos probables en el conjunto de peor rendimiento \( \mathcal{C}_2 \). Este proceso se repite iterativamente, actualizando \( l(\theta) \) y \( g(\theta) \) a medida que se recopilan más datos, lo que permite explorar eficientemente el espacio de hiperparámetros.
+
+
+
 
 \begin{figure}[h]
 	\centering
