@@ -89,4 +89,35 @@ class FunctionalAnalysis:
 
         except Exception as e:
             print(f"Error en perform_analysis_from_json: {e}")
+            
+    def filter_results(self, input_file: str, output_file: str, 
+                       p_value_threshold: float = None, 
+                       combined_score_min: float = None):
+        """
+        Filtra los resultados del análisis funcional según p-valor o Combined Score.
 
+        :param input_file: Ruta al archivo CSV con los resultados del análisis funcional.
+        :param output_file: Ruta al archivo CSV donde se guardarán los resultados filtrados.
+        :param p_value_threshold: Umbral máximo del p-valor. (Opcional)
+        :param combined_score_min: Umbral mínimo de Combined Score. (Opcional)
+        """
+        try:
+            # Cargar resultados
+            data = pd.read_csv(input_file)
+
+            # Validar que se proporcione al menos un criterio de filtrado
+            if p_value_threshold is None and combined_score_min is None:
+                raise ValueError("Debes proporcionar al menos un criterio de filtrado (p_value_threshold o combined_score_min).")
+
+            # Aplicar filtros
+            if p_value_threshold is not None:
+                data = data[data['P-value'] <= p_value_threshold]
+
+            if combined_score_min is not None:
+                data = data[data['Combined Score'] >= combined_score_min]
+
+            # Guardar resultados filtrados
+            data.to_csv(output_file, index=False)
+            print(f"Resultados filtrados guardados en {output_file}.")
+        except Exception as e:
+            print(f"Error al filtrar resultados: {e}")
