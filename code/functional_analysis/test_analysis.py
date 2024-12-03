@@ -1,5 +1,8 @@
-from clustering.utils import network_to_igraph_format
-from functional_analysis import FunctionalAnalysis 
+
+import json
+from functional_analysis import FunctionalAnalysis
+# from clustering.utils import network_to_igraph_format
+from utils import network_to_igraph_format
 
 def test_functional_analysis_on_clusters():
     """
@@ -16,11 +19,18 @@ def test_functional_analysis_on_clusters():
         return
 
     # Definir clústeres de prueba
-    clusters = [
-        [0, 5, 8, 9, 10, 11, 13, 17, 21, 22, 24, 25, 37, 38, 41, 47],
-        [1, 3, 4, 6, 12, 15, 16, 23, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 39, 40, 46, 48],
-        [2, 7, 14, 18, 19, 20, 42, 43, 44, 45, 49]
-    ]
+    clustering_data = {
+        "leiden_max_modularity": {
+            "Cluster 1": {
+                "Genes": ["GRN", "CHMP2B", "MAPT"],
+                "Nodes": [0, 3, 4]
+            },
+            "Cluster 2": {
+                "Genes": ["FUS", "TARDBP", "TAF15"],
+                "Nodes": [1, 7, 25]
+            }
+        }
+    }
 
     # Crear instancia de FunctionalAnalysis con el grafo igraph
     fa = FunctionalAnalysis(graph)
@@ -30,7 +40,7 @@ def test_functional_analysis_on_clusters():
     
     try:
         # Ejecutar el análisis funcional
-        fa.perform_analysis(clusters, output_file)
+        fa.perform_analysis(clustering_data, output_file)
         print(f"Prueba completada. Resultados guardados en {output_file}.")
     except Exception as e:
         print(f"Error durante el análisis funcional: {e}")
@@ -38,4 +48,3 @@ def test_functional_analysis_on_clusters():
 # Ejecutar el test
 if __name__ == "__main__":
     test_functional_analysis_on_clusters()
-
