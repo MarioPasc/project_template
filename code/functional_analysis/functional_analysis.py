@@ -33,7 +33,7 @@ class FunctionalAnalysis:
             # Realizar análisis funcional usando Enrichr
             enr = gp.enrichr(
                 gene_list=genes,
-                gene_sets='KEGG_2021_Human',  # Base de datos funcional, ajustable
+                gene_sets='GO_Biological_Process_2021',  # Base de datos funcional, ajustable
                 organism='Human',  # Especificar organismo
                 outdir=None,  # No guardar resultados en disco
                 no_plot=True  # No generar gráficos
