@@ -13,7 +13,10 @@ def prepare_data_for_visualization_from_df(df: pd.DataFrame):
     Prepara los datos del DataFrame generado por FunctionalAnalysis para las gráficas.
 
     :param df: DataFrame con los resultados del análisis funcional.
-    :return: DataFrame para dot_plot y bar_plot, y diccionario de relaciones para cnetplot.
+
+    :return:
+        - DataFrame procesado con columnas adicionales ['Observed', 'Total', 'Gene Ratio'] para dot_plot, bar_plot y cnetplot.
+        - Diccionario donde las claves son términos ('Term') y los valores son listas de genes ('Genes') para cnetplot.
     """
     try:
         # Convertir Overlap a Gene Ratio (proporción)
@@ -252,7 +255,7 @@ class FunctionalVisualization:
             print(f"Error en upset_plot: {e}")
     
     @staticmethod
-    def venn_diagram(file_modularity1: str, file_enrichment2: str, output_file: Optional[str] = None):
+    def venn_diagram(file_modularity: str, file_enrichment: str, output_file: Optional[str] = None):
         """
         Genera un diagrama de Venn comparando dos conjuntos de términos enriquecidos de dos métodos de clustering 
         (Leiden  con Modularidad Máxima y Leiden con Máximo Puntuaje de Enrequecimiento Funcional ),
@@ -265,8 +268,8 @@ class FunctionalVisualization:
         
         try:
             # Leer archivos CSV
-            data_leiden_max_modularity = pd.read_csv(file_modularity1)
-            data_leiden_max_enrichment = pd.read_csv(file_enrichment2)
+            data_leiden_max_modularity = pd.read_csv(file_modularity)
+            data_leiden_max_enrichment = pd.read_csv(file_enrichment)
 
             # Extraer términos únicos del primer archivo
             terms_modularity = set(data_leiden_max_modularity['Term'])
@@ -276,8 +279,13 @@ class FunctionalVisualization:
             len(terms_modularity), len(terms_enrichment)
 
             # Crear el diagrama de Venn comparando los dos conjuntos
-            plt.figure(figsize=(8, 6))
-            venn = venn2([terms_modularity, terms_enrichment], ('Leiden (Máxima Modularidad)', 'Leiden (Máximo Puntuaje de Enrequecimiento Funcional'))
+            venn = venn2([terms_modularity, terms_enrichment], 
+                         (f'Leiden (Máxima Modularidad)\nTotal: {len(terms_modularity)}',
+                          f'Leiden (Máximo Puntuaje de Enrequecimiento Funcional)\nTotal: {len(terms_enrichment)}'))
+
+            # Añadir un título al diagrama
+            plt.title('Comparación de términos funcionales entre las soluciones \n'
+                      'con el algoritmo de Leiden (Máxima Modularidad vs Máxima Significancia Biológica)')
 
             # Guardar el gráfico en un archivo si se especifica una ruta
             if output_file:
