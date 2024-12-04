@@ -77,7 +77,6 @@ class FunctionalVisualization:
             if output_file:
                 plt.savefig(output_file, dpi=300)
                 print(f"Gráfico guardado en {output_file}")
-            plt.show()
             
         except Exception as e:
             print(f"Error en dot_plot: {e}")
@@ -118,7 +117,6 @@ class FunctionalVisualization:
             if output_file:
                 plt.savefig(output_file, dpi=300, bbox_inches='tight')
                 print(f"Gráfico guardado en {output_file}")
-            plt.show()
 
         except Exception as e:
             print(f"Error en bar_plot: {e}")
@@ -180,7 +178,6 @@ class FunctionalVisualization:
             if output_file:
                 plt.savefig(output_file, dpi=300)
                 print(f"Gráfico guardado en {output_file}")
-            plt.show()
 
         except Exception as e:
             print(f"Error en cnet_plot: {e}")
@@ -249,7 +246,6 @@ class FunctionalVisualization:
             if output_file:
                 plt.savefig(output_file, dpi=300)
                 print(f"Gráfico guardado en {output_file}")
-            plt.show()
 
         except Exception as e:
             print(f"Error en upset_plot: {e}")
@@ -291,7 +287,6 @@ class FunctionalVisualization:
             if output_file:
                     plt.savefig(output_file, dpi=300)
                     print(f"Gráfico guardado en {output_file}")
-            plt.show()
 
         except Exception as e:
             print(f"Error en venn_diagram_from_csv: {e}")
