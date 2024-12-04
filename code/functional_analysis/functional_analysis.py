@@ -48,13 +48,13 @@ class FunctionalAnalysis:
             print(f"Error en _perform_enrichment_analysis para genes {genes}: {e}")
             return pd.DataFrame()
 
-    def perform_analysis(self, clustering_data: Dict[str, Any], output_file: str):
+    def perform_analysis(self, clustering_data: Dict[str, Any], output_file: str, algorithm: str = None):
         """
-        Realiza el análisis funcional para los clústeres extraídos de un JSON.
-        y guarda los resultados en un archivo CSV.
+        Realiza el análisis funcional para los clústeres extraídos de un JSON y guarda los resultados en un archivo CSV.
 
         :param clustering_data: Diccionario con la estructura del clustering.
         :param output_file: Ruta al archivo CSV donde se guardarán los resultados.
+        :param algorithm: Nombre del algoritmo para el cual realizar el análisis. (Opcional)
         """
         try:
             if not isinstance(clustering_data, dict):
@@ -62,12 +62,15 @@ class FunctionalAnalysis:
 
             all_results = []
 
+            # Filtrar por algoritmo si se especifica
+            if algorithm:
+                if algorithm not in clustering_data:
+                    raise ValueError(f"El algoritmo '{algorithm}' no está presente en los datos de clustering.")
+                clustering_data = {algorithm: clustering_data[algorithm]}
+
             for key, clusters in clustering_data.items():
                 for cluster_id, cluster_info in clusters.items():
                     genes = cluster_info.get("Genes", [])
-                    if len(genes) < 3:  # Ignorar clústeres con menos de 3 genes
-                        print(f"{key} - {cluster_id} ignorado (menos de 3 genes).")
-                        continue
 
                     print(f"Realizando análisis funcional para {key} - {cluster_id}...")
                     enrichment_results = self._perform_enrichment_analysis(genes)
@@ -88,7 +91,8 @@ class FunctionalAnalysis:
                 print("No se encontraron resultados significativos para los clústeres.")
 
         except Exception as e:
-            print(f"Error en perform_analysis_from_json: {e}")
+            print(f"Error en perform_analysis: {e}")
+
             
     def filter_results(self, input_file: str, output_file: str, 
                        p_value_threshold: float = None, 
