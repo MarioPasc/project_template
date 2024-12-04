@@ -2,7 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import networkx as nx
-from typing import List, Dict
+from typing import List, Dict, Optional
+from upsetplot import UpSet
 
 def prepare_data_for_visualization_from_df(df: pd.DataFrame):
     """
@@ -177,3 +178,41 @@ class FunctionalVisualization:
 
         except Exception as e:
             print(f"Error en cnet_plot: {e}")
+        
+    @staticmethod
+    def upset_plot(df: pd.DataFrame, output_file: Optional[str] = None):
+        try:
+            filtered_data = df[['Term', 'Cluster']]
+
+            binary_data = (
+                filtered_data
+                .groupby(['Cluster', 'Term'])
+                .size()
+                .unstack(fill_value=0)
+                .astype(bool)
+            )
+
+            binary_data = binary_data.reset_index()
+
+            binary_data = binary_data.rename(columns={'Cluster': 'count'})
+
+            index_columns = [col for col in binary_data.columns if col != 'count']
+            binary_data = binary_data.set_index(index_columns)
+
+            upset_plot = UpSet(
+                binary_data,
+                subset_size='count',
+                show_counts=True
+            )
+
+            upset_plot.plot()
+
+            plt.suptitle('UpSet Plot of Terms and Clusters')
+
+            if output_file:
+                plt.savefig(output_file, dpi=300)
+                print(f"Gráfico guardado en {output_file}")
+            plt.show()
+
+        except Exception as e:
+            print(f"Error en upset_plot: {e}")
