@@ -4,6 +4,7 @@ import seaborn as sns
 import networkx as nx
 from typing import List, Dict, Optional
 from upsetplot import UpSet
+from matplotlib_venn import venn2
 
 def prepare_data_for_visualization_from_df(df: pd.DataFrame):
     """
@@ -247,3 +248,27 @@ class FunctionalVisualization:
 
         except Exception as e:
             print(f"Error en upset_plot: {e}")
+    
+    @staticmethod
+    def venn_diagram(file1: str, file2: str, output_file: Optional[str] = None):
+        
+        try:
+            data_leiden_max_modularity = pd.read_csv(file1)
+
+            data_leiden_max_enrichment = pd.read_csv(file2)
+
+            terms_modularity = set(data_leiden_max_modularity['Term'])
+            terms_enrichment = set(data_leiden_max_enrichment['Term'])
+
+            len(terms_modularity), len(terms_enrichment)
+
+            plt.figure(figsize=(8, 6))
+            venn = venn2([terms_modularity, terms_enrichment], ('Leiden (Máxima Modularidad)', 'Leiden (Máximo Puntuaje de Enrequecimiento Funcional'))
+
+            if output_file:
+                    plt.savefig(output_file, dpi=300)
+                    print(f"Gráfico guardado en {output_file}")
+            plt.show()
+
+        except Exception as e:
+            print(f"Error en venn_diagram_from_csv: {e}")
