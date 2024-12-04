@@ -250,21 +250,34 @@ class FunctionalVisualization:
             print(f"Error en upset_plot: {e}")
     
     @staticmethod
-    def venn_diagram(file1: str, file2: str, output_file: Optional[str] = None):
+    def venn_diagram(file_modularity1: str, file_enrichment2: str, output_file: Optional[str] = None):
+        """
+        Genera un diagrama de Venn comparando dos conjuntos de términos enriquecidos de dos métodos de clustering 
+        (Leiden  con Modularidad Máxima y Leiden con Máximo Puntuaje de Enrequecimiento Funcional ),
+        donde los términos se extraen de archivos CSV correspondientes a cada resultado."
+
+        :param file1: Ruta del primer archivo CSV que contiene una columna 'Term'.
+        :param file2: Ruta del segundo archivo CSV que contiene una columna 'Term'.
+        :param output_file: Ruta opcional para guardar el gráfico generado (en formato PNG).
+        """
         
         try:
-            data_leiden_max_modularity = pd.read_csv(file1)
+            # Leer archivos CSV
+            data_leiden_max_modularity = pd.read_csv(file_modularity1)
+            data_leiden_max_enrichment = pd.read_csv(file_enrichment2)
 
-            data_leiden_max_enrichment = pd.read_csv(file2)
-
+            # Extraer términos únicos del primer archivo
             terms_modularity = set(data_leiden_max_modularity['Term'])
             terms_enrichment = set(data_leiden_max_enrichment['Term'])
 
+            # Obtener la longitud de cada conjunto (opcional para análisis interno)
             len(terms_modularity), len(terms_enrichment)
 
+            # Crear el diagrama de Venn comparando los dos conjuntos
             plt.figure(figsize=(8, 6))
             venn = venn2([terms_modularity, terms_enrichment], ('Leiden (Máxima Modularidad)', 'Leiden (Máximo Puntuaje de Enrequecimiento Funcional'))
 
+            # Guardar el gráfico en un archivo si se especifica una ruta
             if output_file:
                     plt.savefig(output_file, dpi=300)
                     print(f"Gráfico guardado en {output_file}")
