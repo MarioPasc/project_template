@@ -181,34 +181,65 @@ class FunctionalVisualization:
         
     @staticmethod
     def upset_plot(df: pd.DataFrame, output_file: Optional[str] = None):
+        """
+        Genera un gráfico UpSet que muestra las intersecciones entre términos GO y clusters.
+
+        Este gráfico es útil para analizar la distribución de términos en múltiples clusters,
+        identificando solapamientos o patrones específicos.
+
+        :param df: 
+            DataFrame que contiene los datos para generar el gráfico. Debe incluir las siguientes columnas:
+                - 'Term': Nombre de los términos GO analizados.
+                - 'Cluster': Identificador del cluster al que pertenece cada término.
+        :param output_file: 
+            Ruta opcional donde se guardará el gráfico generado como archivo PDF. Si no se proporciona,
+            el gráfico se mostrará en pantalla.
+
+        :return: 
+            None. La función muestra o guarda el gráfico generado.
+        """
         try:
+            # Verificar que las columnas necesarias estén presentes
+            if not {'Term', 'Cluster'}.issubset(df.columns):
+                raise ValueError("El DataFrame debe contener las columnas 'Term' y 'Cluster'.")
+
+            # Seleccionar solo las columnas requeridas
             filtered_data = df[['Term', 'Cluster']]
 
+            # Agrupar por 'Cluster' y 'Term', contar ocurrencias y reorganizar en una matriz binaria
             binary_data = (
                 filtered_data
                 .groupby(['Cluster', 'Term'])
-                .size()
-                .unstack(fill_value=0)
-                .astype(bool)
+                .size()                 # Contar las ocurrencias de cada par (Cluster, Term)
+                .unstack(fill_value=0)  # Expandir 'Term' en columnas, rellenar valores ausentes con 0
+                .astype(bool)           # Convertir las cuentas a valores booleanos
             )
 
+            # Restablecer el índice para convertir los clusters en una columna
             binary_data = binary_data.reset_index()
 
+            # Renombrar la columna del índice de cluster como 'count'
+            # Esto es necesario porque UpSet utiliza 'count' como marcador de tamaños de subconjunto
             binary_data = binary_data.rename(columns={'Cluster': 'count'})
 
+            # Seleccionar columnas que no sean 'count' para establecer el índice
             index_columns = [col for col in binary_data.columns if col != 'count']
             binary_data = binary_data.set_index(index_columns)
 
+            # Crear el gráfico UpSet
             upset_plot = UpSet(
                 binary_data,
-                subset_size='count',
-                show_counts=True
+                subset_size='count',    # Especifica que el tamaño de subconjuntos se basa en la columna 'count'
+                show_counts=True        # Muestra conteos en las barras del gráfico
             )
 
+            # Generar el gráfico
             upset_plot.plot()
 
-            plt.suptitle('UpSet Plot of Terms and Clusters')
+            # Añadir un título descriptivo al gráfico
+            plt.suptitle('UpSet Plot de Términos GO y Clusters')
 
+            # Guardar el gráfico si se proporciona una ruta de archivo
             if output_file:
                 plt.savefig(output_file, dpi=300)
                 print(f"Gráfico guardado en {output_file}")
