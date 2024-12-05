@@ -155,7 +155,7 @@ class Network:
                 ]}
 
         # visualization
-        fig, ax = plt.subplots(figsize=(8, 8))
+        fig, ax = plt.subplots(figsize=(20, 10))
 
         # normalize closseness values to represent them as a colour scale
         norm = mcolors.Normalize(vmin=min(closeness), vmax=max(closeness))
