@@ -41,30 +41,28 @@ La base de datos STRING (Search Tool for the Retrieval of Interacting Genes/Prot
 
 Para el análisis funcional y la construcción de redes genéticas en este estudio, se seleccionaron herramientas especializadas que permiten tanto la exploración bioinformática como la visualización de datos complejos. Dado que el objetivo principal es investigar la interacción entre genes y módulos específicos asociados a la demencia frontotemporal, se ha optado por una combinación de paquetes en Python y R que ofrecen un balance entre precisión analítica y capacidades visuales avanzadas.
 
-\subsubsection*{Paquetes de Python para el análisis funcional y otras funciones}
+\subsection*{Paquetes de Python para el análisis funcional y otras funciones}
 
 \begin{itemize}
-	\item \textbf{Pandas (versión 2.2.3)}: Estructura de datos flexible para manipulación de datos; ideal para manejar resultados de enriquecimiento \cite{pandas}.
-	\item \textbf{Matplotlib (versión 3.8.1)}: Librería de visualización de datos, utilizada para crear gráficos en 2D como líneas, barras y dispersión \cite{matplotlib}.
-	\item \textbf{Scienceplots (versión 2.1.1)}: Paquete que proporciona estilos de gráficos preconfigurados para facilitar la creación de visualizaciones con estética científica y de alta calidad \cite{scienceplots}.
-	\item \textbf{Requests (versión 2.31.0)}: Biblioteca para realizar solicitudes HTTP, utilizada para conectar con la API de STRINGdb \cite{requests}.
-	\item \textbf{GOATOOLS (versión 1.2.3)}: Paquete para realizar análisis de enriquecimiento funcional de términos Gene Ontology (GO) \cite{goatools}.
-	\item \textbf{G:Profiler (versión 1.4.0)}: Herramienta para análisis de enriquecimiento que abarca GO, KEGG y Reactome, entre otras bases de datos \cite{gprofiler}.
-	\item \textbf{Statsmodels (versión 0.14.0)}: Biblioteca de estadísticas para aplicar ajustes de p-valor (como Benjamini-Hochberg) en los resultados \cite{statsmodels}.
+	\item \textbf{Pandas (versión 2.2.3)}: Este paquete proporciona estructuras de datos eficientes y flexibles, como DataFrames, que facilitan el procesamiento y manipulación de datos complejos. En el contexto de este estudio, Pandas permite organizar, filtrar y procesar resultados de enriquecimiento funcional, simplificando el manejo de grandes volúmenes de datos bioinformáticos \cite{pandas}.
+	\item \textbf{Matplotlib (versión 3.8.1)}: Matplotlib es una librería de visualización muy versátil que soporta múltiples tipos de gráficos en 2D, lo que resulta útil para representar tendencias y relaciones entre genes en gráficos de líneas, barras, dispersión, y más. Este paquete se utilizará para visualizar los resultados de enriquecimiento y las interacciones génicas \cite{matplotlib}.
+	\item \textbf{Scienceplots (versión 2.1.1)}: Este paquete extiende Matplotlib proporcionando estilos de gráficos estéticamente optimizados para publicaciones científicas. Con Scienceplots, se puede lograr una presentación visual de alta calidad, ideal para gráficos que requieren una apariencia profesional \cite{scienceplots}.
+	\item \textbf{Requests (versión 2.31.0)}: Requests es una biblioteca para realizar solicitudes HTTP de manera simple y efectiva. En este estudio, se utiliza para conectar con APIs externas como la de STRINGdb, permitiendo la descarga automatizada de datos de redes y enriquecimiento \cite{requests}.
+	\item \textbf{GOATOOLS (versión 1.2.3)}: Este paquete permite realizar análisis de enriquecimiento funcional en términos de Gene Ontology (GO), lo que facilita la identificación de términos GO sobre-representados en conjuntos de genes. Es una herramienta clave para comprender funciones biológicas asociadas a los genes estudiados \cite{goatools}.
+	\item \textbf{G:Profiler (versión 1.4.0)}: G:Profiler realiza análisis de enriquecimiento funcional abarcando varias bases de datos (GO, KEGG, Reactome, entre otras). La versatilidad de este paquete lo convierte en una excelente opción para explorar las funciones biológicas de conjuntos de genes con una amplia cobertura de recursos \cite{gprofiler}.
+	\item \textbf{Statsmodels (versión 0.14.0)}: Statsmodels es una biblioteca de estadística que permite aplicar ajustes de p-valor, como el método de Benjamini-Hochberg, para reducir el impacto de falsos positivos en los resultados de enriquecimiento. Esto asegura una interpretación estadísticamente robusta de los resultados \cite{statsmodels}.
 \end{itemize}
 
-\vspace{1cm}
-
-\subsubsection*{Paquetes de R para clustering y visualización de redes}
+\subsection*{Paquetes de R para clustering y visualización de redes}
 
 \begin{itemize}
-	\item \textbf{Cluster (versión 2.1.5)}: Proporciona algoritmos clásicos de clustering como k-means y clustering jerárquico \cite{cluster}.
-	\item \textbf{Factoextra (versión 1.0.8)}: Extensión para la visualización de resultados de clustering de manera intuitiva y clara \cite{factoextra}.
-	\item \textbf{WGCNA (versión 1.71)}: Utilizado para identificar módulos de genes coexpresados, especialmente en estudios de expresión génica \cite{wgcna}.
-	\item \textbf{Igraph (versión 1.5.0)}: Paquete para construir, analizar y visualizar redes genéticas y módulos de coexpresión \cite{igraph}.
-	\item \textbf{STRINGdb (versión 2.10.0)}: Conector para la base de datos STRING, permite realizar enriquecimiento funcional y visualizar redes \cite{stringdb}.
-	\item \textbf{Pathview (versión 1.36.0)}: Herramienta para representar gráficamente rutas de KEGG con datos de expresión génica \cite{pathview}.
-	\item \textbf{ClusterProfiler (versión 4.15.0)}: Paquete para análisis de enriquecimiento funcional en términos GO, KEGG y Reactome, con opciones de ajuste \cite{clusterprofiler}.
+	\item \textbf{Cluster (versión 2.1.5)}: Este paquete ofrece una variedad de algoritmos clásicos de clustering (como k-means y clustering jerárquico), facilitando la agrupación de genes según patrones de expresión similares, lo cual es fundamental para identificar posibles módulos relacionados con la demencia frontotemporal \cite{cluster}.
+	\item \textbf{Factoextra (versión 1.0.8)}: Factoextra permite una visualización clara y accesible de resultados de clustering, proporcionando gráficos intuitivos para explorar la estructura de los datos y resaltar posibles módulos o patrones de coexpresión \cite{factoextra}.
+	\item \textbf{WGCNA (versión 1.71)}: Este paquete es ideal para detectar módulos de genes coexpresados mediante la construcción de redes de coexpresión genética ponderada, lo cual es útil en estudios de expresión génica complejos como el de la demencia frontotemporal \cite{wgcna}.
+	\item \textbf{Igraph (versión 1.5.0)}: Igraph facilita la construcción, manipulación y visualización de redes genéticas y módulos de coexpresión. Este paquete es útil para analizar la conectividad y relación entre genes en un contexto de red \cite{igraph}.
+	\item \textbf{STRINGdb (versión 2.10.0)}: STRINGdb es un paquete que conecta con la base de datos STRING, permitiendo realizar enriquecimiento funcional en redes y visualizar interacciones proteicas y genéticas. Es útil para identificar las relaciones funcionales entre genes \cite{stringdb}.
+	\item \textbf{Pathview (versión 1.36.0)}: Este paquete permite integrar datos de expresión génica en rutas de KEGG, ofreciendo representaciones gráficas que muestran la implicación de los genes en rutas metabólicas y de señalización, lo cual es relevante para entender su rol en la enfermedad \cite{pathview}.
+	\item \textbf{ClusterProfiler (versión 4.15.0)}: ClusterProfiler permite realizar análisis de enriquecimiento funcional de alta precisión en términos de GO, KEGG y Reactome. Ofrece opciones avanzadas de visualización y ajuste de p-valores, facilitando la interpretación de los resultados \cite{clusterprofiler}.
 \end{itemize}
 
 \subsection{Análisis de enriquecimiento de vías biológicas}
@@ -73,9 +71,9 @@ El análisis de enriquecimiento permite identificar vías biológicas o pathways
 
 Se realizó un análisis de enriquecimiento mediante la API de STRINGdb. Mediante el mapeo de las anotaciones funcionales de los genes en ontologías como Gene Ontology (GO), UniProt, Reactome y KEGG y comparando la distribución de estos términos en el conjunto de genes de interés con su distribución en un conjunto de referencia, se identificaron estadísticamente los términos sobrerrepresentados en la lista de genes asociados a la enfermedad. \cite{Tipney2010}
 
-STRINGdb, por tanto, permite analizar diversas categorías de anotaciones funcionales, incluyendo los términos de Gene Ontology (procesos biológicos, funciones moleculares y componentes celulares), rutas de KEGG y Reactome \cite{Szklarczyk2023}. Se realizó un filtrado según el tipo de término para obtener los diferentes enriquecimientos funcionales de interés.
+STRINGdb, por tanto, permite analizar diversas categorías de anotaciones funcionales, incluyendo los términos de Gene Ontology (procesos biológicos, funciones moleculares y componentes celulares), rutas de KEGG y Reactome \cite{szklarczyk2023stringdb}. Se realizó un filtrado según el tipo de término para obtener los diferentes enriquecimientos funcionales de interés.
 
-Para calcular el enriquecimiento, STRINGdb utiliza un test hipergeométrico que evalúa si la representación de cada término funcional en el conjunto de genes de interés es mayor que la esperada por azar. Para controlar el error debido a comparaciones múltiples, se aplica la corrección de Benjamini-Hochberg para ajustar la tasa de descubrimiento falso (FDR) \cite{Szklarczyk2023}.
+Para calcular el enriquecimiento, STRINGdb utiliza un test hipergeométrico que evalúa si la representación de cada término funcional en el conjunto de genes de interés es mayor que la esperada por azar. Para controlar el error debido a comparaciones múltiples, se aplica la corrección de Benjamini-Hochberg para ajustar la tasa de descubrimiento falso (FDR) \cite{szklarczyk2023stringdb}.
 
 El análisis de enriquecimiento se realizó tanto en el conjunto completo de genes asociados a la enfermedad, extraído de términos de HPO, como en los genes agrupados en clústeres. 
 
@@ -120,11 +118,23 @@ A continuación, se detallan los tres algoritmos de clustering, proporcionados p
 
 \subsubsection*{Medidas de Rendimiento}
 
+Como se comentó anteriormente, el principal objetivo del clustering en nuestra red PPI es determinar las comunidades funcionales subyacentes con la finalidad de identificar rutas metabólicas compatibles con la elaboración de dianas o biomarcadores para el tratamiento de la FTD. Por esto, no se debe perder la interpretabilidad biológica de la red, a la vez que se intenta maximizar la calidad del clustering aplicado. Dadas estas condiciones, se propone una optimización multiobjetivo, repartiendo las tareas de significancia biológica y calidad del clustering entre las siguientes métricas:
+
+\begin{itemize}
+	\item \textit{Modularidad (Q)}. Destinada a la evaluación de la calidad del clustering aplicado. Valores altos indican una conectividad interna densa dentro de los clústeres y conexiones dispersas entre ellos. La alta modularidad sugiere comunidades bien definidas.
+	
+	\item \textit{Puntaje de Enriquecimiento Funcional}: Para cada clúster, se realizó un análisis de enriquecimiento funcional mediante STRINGdb. Este puntaje refleja la significancia estadística de pathways, términos de la Ontología de Genes u otras anotaciones funcionales enriquecidas dentro de los clústeres. Un puntaje alto indica mayor relevancia biológica, ya que los clústeres enriquecidos en términos específicos probablemente representan procesos biológicos significativos.
+\end{itemize}
+
+
 \subsubsection*{Optimización}
+Se generaron varias configuraciones de modelos al ajustar sistemáticamente los parámetros de los algoritmos y evaluamos cada configuración en base a modularidad y puntaje de enriquecimiento funcional. Al trazar estos puntajes en un frente de Pareto, identificamos las configuraciones que representan el mejor equilibrio entre coherencia estructural (modularidad) y relevancia biológica (enriquecimiento funcional) \cite{goodarzi2014PARETOFRONT1,jahan2013multiPARETOFRONT2,costa2015paretoPARETOFRONT3}. Las configuraciones a lo largo de esta frontera representan soluciones Pareto-eficientes de clustering, donde mejorar una métrica no compromete significativamente la otra, permitiendo explorar soluciones con un balance diferente de las métricas de rendimiento elegidas.
+
+% \textbf{NOTA:} Podríamos aplicar algún algoritmo interesante de ajuste de los hiperparámetros, yo (Mario) tengo experiencia aplicando Tree-structured Parzen Estimator y otros algoritmos de ajuste Bayesiano en Python.
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.75\linewidth]{figures/methods/flujo_trabajo.png}
-	\caption{}
+	\includegraphics[width=1\linewidth]{figures/methods/Flujo_de_trabajo.pdf}
+	\caption{Flujo de trabajo que se seguirá durante el desarrollo del proyecto, partiendo del fenotipo como dato de entrada, metodología y análisis de resultados.}
 	\label{fig:flujo_trabajo}
 \end{figure}
