@@ -12,12 +12,14 @@ VERBOSE: bool = os.environ.get("VERBOSE", "0") == "1"
 
 logger = utils.setup_logger(
     name="Functional_Analysis_Visualization",
-    log_file=os.path.join("logs/functional_analysis_logging.log")
+    log_file=os.path.join("logs/functional_analysis_logging.log"),
 )
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Perform functional analysis and visualize results.")
+    parser = argparse.ArgumentParser(
+        description="Perform functional analysis and visualize results."
+    )
     parser.add_argument(
         "network",
         type=str,
@@ -38,7 +40,7 @@ def main():
         "--format",
         type=str,
         default="pdf",
-        help="Format to save the images (e.g., pdf, png, svg...)"
+        help="Format to save the images (e.g., pdf, png, svg...)",
     )
     parser.add_argument(
         "-a",
@@ -51,7 +53,7 @@ def main():
         "--p_value_threshold",
         type=float,
         default=0.05,
-        help="Threshold for filtering results by p-value (default: 0.05)."
+        help="Threshold for filtering results by p-value (default: 0.05).",
     )
 
     args = parser.parse_args()
@@ -61,7 +63,9 @@ def main():
         logger.error(f"The network file '{args.network}' does not exist.")
         return
     if not os.path.isfile(args.clustering_json):
-        logger.error(f"The clustering JSON file '{args.clustering_json}' does not exist.")
+        logger.error(
+            f"The clustering JSON file '{args.clustering_json}' does not exist."
+        )
         return
     if not os.path.exists(args.results):
         os.makedirs(args.results)
@@ -79,13 +83,17 @@ def main():
     functional_analysis_results = os.path.join(args.results, "functional_analysis.csv")
     try:
         fa = FunctionalAnalysis(graph)
-        clustering_data = utils.load_json(args.clustering_json)  # Supongamos que esta función carga el JSON
+        clustering_data = utils.load_json(
+            args.clustering_json
+        )  # Supongamos que esta función carga el JSON
         fa.perform_analysis(
             clustering_data=clustering_data,
             output_file=functional_analysis_results,
-            algorithm=args.algorithm
+            algorithm=args.algorithm,
         )
-        logger.info(f"Functional analysis completed. Results saved to {functional_analysis_results}.")
+        logger.info(
+            f"Functional analysis completed. Results saved to {functional_analysis_results}."
+        )
     except Exception as e:
         logger.error(f"Error during functional analysis: {e}")
         return
@@ -96,7 +104,7 @@ def main():
         fa.filter_results(
             input_file=functional_analysis_results,
             output_file=filtered_results,
-            p_value_threshold=args.p_value_threshold
+            p_value_threshold=args.p_value_threshold,
         )
         logger.info(f"Filtered results saved to {filtered_results}.")
     except Exception as e:
@@ -106,7 +114,11 @@ def main():
     # Visualizar resultados
     try:
         filtered_data = pd.read_csv(filtered_results)
-        prepared_data, gene_sets = FunctionalVisualization.prepare_data_for_visualization_from_df(filtered_data)
+        prepared_data, gene_sets = (
+            FunctionalVisualization.prepare_data_for_visualization_from_df(
+                filtered_data
+            )
+        )
 
         # Dot Plot
         dot_plot_file = os.path.join(args.results, f"dot_plot.{args.format}")
@@ -126,7 +138,9 @@ def main():
         return
 
     if VERBOSE:
-        print(f"Functional analysis and visualization successfully completed. Results saved in '{args.results}'.")
+        print(
+            f"Functional analysis and visualization successfully completed. Results saved in '{args.results}'."
+        )
 
 
 if __name__ == "__main__":

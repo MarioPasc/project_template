@@ -7,6 +7,7 @@ from typing import List, Optional
 import pandas as pd
 import requests
 from igraph import Graph
+
 # import numpy as np
 from stringdb import get_enrichment, get_string_ids
 

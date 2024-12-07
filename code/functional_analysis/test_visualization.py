@@ -1,5 +1,9 @@
 import pandas as pd
-from visualization import FunctionalVisualization, prepare_data_for_visualization_from_df
+from visualization import (
+    FunctionalVisualization,
+    prepare_data_for_visualization_from_df,
+)
+
 
 def test_visualizations():
     """
@@ -36,7 +40,9 @@ def test_visualizations():
         FunctionalVisualization.bar_plot(prepared_df, output_file=output_bar_plot)
 
         print("Generando Cnetplot...")
-        FunctionalVisualization.cnet_plot(prepared_df, gene_sets, output_file=output_cnetplot)
+        FunctionalVisualization.cnet_plot(
+            prepared_df, gene_sets, output_file=output_cnetplot
+        )
 
         print("Generando UpSet Plot...")
         FunctionalVisualization.upset_plot(df_enrichment, output_file=output_upset_plot)
@@ -45,12 +51,13 @@ def test_visualizations():
         FunctionalVisualization.venn_diagram(
             file_modularity=file_modularity,
             file_enrichment=file_enrichment,
-            output_file=output_venn_diagram
+            output_file=output_venn_diagram,
         )
 
         print("Todas las gráficas se han guardado correctamente.")
     except Exception as e:
         print(f"Error durante la generación de gráficas: {e}")
+
 
 # Ejecutar la prueba
 if __name__ == "__main__":

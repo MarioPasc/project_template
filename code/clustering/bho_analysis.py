@@ -405,15 +405,18 @@ def plot_hyperparameter_vs_metric_fixed_hyperparam_subplots(
     if SHOW:
         plt.show()
 
+
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Visual analysis of optimization results")
-    
+    parser = argparse.ArgumentParser(
+        description="Visual analysis of optimization results"
+    )
+
     parser.add_argument(
         "results_folder",
         type=str,
         help="Path to the file containing the results of the optimization (e.g. ./results/)",
     )
-    
+
     args = parser.parse_args()
 
     folder_path = args.results_folder
@@ -421,7 +424,7 @@ def main() -> None:
     plots_folder: os.PathLike = os.path.join(folder_path, "plots/optimization")
     os.makedirs(plots_folder, exist_ok=True)
 
-    # By this time we can find the results_*.csv files in the results/ folder. 
+    # By this time we can find the results_*.csv files in the results/ folder.
     if not os.path.isdir(folder_path):
         raise ValueError(f"The provided path '{folder_path}' is not a valid directory.")
 
@@ -447,19 +450,16 @@ def main() -> None:
             print(f"  - File {idx + 1}: {csv_file} (color: {color})")
         print()
 
-    
     # Extract words from the filenames
     extracted_words = [
-        re.match(r"./results/results_(.+)\.csv", file).group(1)
-        for file in csv_files
+        re.match(r"./results/results_(.+)\.csv", file).group(1) for file in csv_files
     ]
-
 
     # Define dictionary for matching extracted words to formatted names
     dictionary_matching = {
-        'leiden': 'Leiden',
-        'multilevel': 'Louvain',
-        'walktrap': 'Walktrap'
+        "leiden": "Leiden",
+        "multilevel": "Louvain",
+        "walktrap": "Walktrap",
     }
 
     # Map extracted words to legend names using the dictionary
@@ -469,8 +469,7 @@ def main() -> None:
         if word in dictionary_matching
     ]
 
-    colors = colors[:len(legend_names)]
-
+    colors = colors[: len(legend_names)]
 
     plot_pareto_from_multiple_csvs(
         csv_files=csv_files,
@@ -501,6 +500,7 @@ def main() -> None:
     if VERBOSE:
         print("BHO Analysis completed.")
         print()
+
 
 if __name__ == "__main__":
     main()

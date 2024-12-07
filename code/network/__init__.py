@@ -2,6 +2,4 @@
 
 from .metrics import Metrics
 from .network import Network
-from .analysis import (
-    main
-)
+from .analysis import main

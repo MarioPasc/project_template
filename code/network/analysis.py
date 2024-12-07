@@ -13,13 +13,15 @@ VERBOSE: bool = os.environ.get("VERBOSE", "0") == "1"
 
 logger = utils.setup_logger(
     name="Analysis_PPI_Network",
-    log_file=os.path.join("logs/network_analysis_logging.log")
+    log_file=os.path.join("logs/network_analysis_logging.log"),
 )
 
 
 def main():
 
-    parser = argparse.ArgumentParser(description="Analysis of an  PPI interaction network")
+    parser = argparse.ArgumentParser(
+        description="Analysis of an  PPI interaction network"
+    )
     parser.add_argument(
         "network",
         type=str,
@@ -37,7 +39,7 @@ def main():
         "--format",
         type=str,
         default="pdf",
-        help="Format to save the imagen (ej. pdf, png, svg...)"
+        help="Format to save the imagen (ej. pdf, png, svg...)",
     )
 
     args = parser.parse_args()
@@ -46,13 +48,13 @@ def main():
         return
     else:
         logger.info(f"Network file '{args.network}' found.")
-    
+
     if not os.path.exists(args.results):
         os.makedirs(args.results)
         logger.info(f"Results folder '{args.results}' created.")
     else:
         logger.info(f"Results folder '{args.results}' already exists.")
-    
+
     # Convert network to igraph format
     try:
         graph = utils.network_to_igraph_format(args.network)
@@ -61,11 +63,13 @@ def main():
         logger.error(f"Error converting network to igraph format: {e}")
         return
 
-    network_path_plots: os.PathLike = os.path.join(args.results, 'plots/network')
+    network_path_plots: os.PathLike = os.path.join(args.results, "plots/network")
     os.makedirs(network_path_plots, exist_ok=True)
 
     if VERBOSE:
-        print(f"Starting statistical network analysis. Plotting results in {network_path_plots}.")
+        print(
+            f"Starting statistical network analysis. Plotting results in {network_path_plots}."
+        )
         print()
 
     analyzer = Network(graph, logger)
@@ -88,7 +92,10 @@ def main():
     )
 
     if VERBOSE:
-        print(f"Network successfully analyzed. Check {args.results} folder for results and logs for details.")
+        print(
+            f"Network successfully analyzed. Check {args.results} folder for results and logs for details."
+        )
+
 
 if __name__ == "__main__":
     main()

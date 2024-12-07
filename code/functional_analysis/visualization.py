@@ -8,6 +8,7 @@ from typing import List, Dict, Optional
 from upsetplot import UpSet
 from matplotlib_venn import venn2
 
+
 def prepare_data_for_visualization_from_df(df: pd.DataFrame):
     """
     Prepara los datos del DataFrame generado por FunctionalAnalysis para las gráficas.
@@ -20,19 +21,20 @@ def prepare_data_for_visualization_from_df(df: pd.DataFrame):
     """
     try:
         # Convertir Overlap a Gene Ratio (proporción)
-        df[['Observed', 'Total']] = df['Overlap'].str.split('/', expand=True).astype(int)
-        df['Gene Ratio'] = df['Observed'] / df['Total']
+        df[["Observed", "Total"]] = (
+            df["Overlap"].str.split("/", expand=True).astype(int)
+        )
+        df["Gene Ratio"] = df["Observed"] / df["Total"]
 
         # Crear un diccionario para cnetplot
-        gene_sets = {
-            row['Term']: row['Genes'].split(', ') for _, row in df.iterrows()
-        }
+        gene_sets = {row["Term"]: row["Genes"].split(", ") for _, row in df.iterrows()}
 
         return df, gene_sets
 
     except Exception as e:
         print(f"Error en prepare_data_for_visualization_from_df: {e}")
         return None, None
+
 
 class FunctionalVisualization:
     """
@@ -42,7 +44,7 @@ class FunctionalVisualization:
     - Bar Plot: Resalta los términos más significativos.
     - Cnetplot: Visualiza las relaciones entre genes y categorías enriquecidas.
     """
-    
+
     @staticmethod
     def dot_plot(df: pd.DataFrame, output_file: str = None):
         """
@@ -53,36 +55,36 @@ class FunctionalVisualization:
         """
         try:
             # Ordenar los términos de significancia (los más significativos primero)
-            df = df.sort_values('Adjusted P-value', ascending=True).head(20)
-            
+            df = df.sort_values("Adjusted P-value", ascending=True).head(20)
+
             # Crear un gráfico de puntos
             plt.figure(figsize=(10, 8))
             scatter = sns.scatterplot(
                 data=df,
-                x='Gene Ratio',
-                y='Term',
-                size='Adjusted P-value',
-                hue='Adjusted P-value',
-                sizes=(300, 50),        # Aumenta el rango de tamaños de los puntos
-                palette='coolwarm',     # Mejorar contraste de colores
-                legend='brief'
+                x="Gene Ratio",
+                y="Term",
+                size="Adjusted P-value",
+                hue="Adjusted P-value",
+                sizes=(300, 50),  # Aumenta el rango de tamaños de los puntos
+                palette="coolwarm",  # Mejorar contraste de colores
+                legend="brief",
             )
-            plt.title('Dot Plot - Enrichment Analysis', fontsize=14)
-            plt.xlabel('Gene Ratio', fontsize=12)
-            plt.ylabel('Term', fontsize=12)
+            plt.title("Dot Plot - Enrichment Analysis", fontsize=14)
+            plt.xlabel("Gene Ratio", fontsize=12)
+            plt.ylabel("Term", fontsize=12)
             plt.gca().yaxis.set_tick_params(labelsize=10)  # Mejorar tamaño de etiquetas
             plt.tight_layout()
-            
+
             # Guardar o mostrar el gráfico
             if output_file:
                 plt.savefig(output_file, dpi=300)
                 print(f"Gráfico guardado en {output_file}")
-            
+
         except Exception as e:
             print(f"Error en dot_plot: {e}")
 
     @staticmethod
-    def bar_plot(df: pd.DataFrame, output_file:str = None):
+    def bar_plot(df: pd.DataFrame, output_file: str = None):
         """
         Genera un gráfico de barras (Bar Plot) para destacar los términos más enriquecidos.
 
@@ -91,38 +93,46 @@ class FunctionalVisualization:
         """
         try:
             # Ordenar los términos por significancia (los más significativos primero)
-            df = df.sort_values('Adjusted P-value', ascending=True).head(20)
+            df = df.sort_values("Adjusted P-value", ascending=True).head(20)
 
             # Crear el gráfico de barras
             plt.figure(figsize=(12, 8))
             sns.barplot(
                 data=df,
-                x='Adjusted P-value',
-                y='Term',
-                hue='Term',  # Asignar hue al mismo eje y para evitar la advertencia
+                x="Adjusted P-value",
+                y="Term",
+                hue="Term",  # Asignar hue al mismo eje y para evitar la advertencia
                 dodge=False,  # Evitar separación innecesaria de barras
                 errorbar=None,  # Reemplazar ci=None con errorbar=None
-                palette='Spectral',  # Paleta de colores más atractiva
-                legend=False  # No mostrar la leyenda automática generada por hue
+                palette="Spectral",  # Paleta de colores más atractiva
+                legend=False,  # No mostrar la leyenda automática generada por hue
             )
-            plt.xscale('log')  # Escala logarítmica para resaltar diferencias
-            plt.title('Bar Plot - Enrichment Analysis', fontsize=16, fontweight='bold')  # Título con estilo
-            plt.xlabel('Adjusted P-value (log scale)', fontsize=14)  # Etiqueta X mejorada
-            plt.ylabel('Term', fontsize=14)  # Etiqueta Y mejorada
+            plt.xscale("log")  # Escala logarítmica para resaltar diferencias
+            plt.title(
+                "Bar Plot - Enrichment Analysis", fontsize=16, fontweight="bold"
+            )  # Título con estilo
+            plt.xlabel(
+                "Adjusted P-value (log scale)", fontsize=14
+            )  # Etiqueta X mejorada
+            plt.ylabel("Term", fontsize=14)  # Etiqueta Y mejorada
             plt.xticks(fontsize=12)  # Ajustar tamaño de etiquetas en eje X
             plt.yticks(fontsize=12)  # Ajustar tamaño de etiquetas en eje Y
-            plt.grid(axis='x', linestyle='--', alpha=0.7)  # Agregar líneas de referencia
+            plt.grid(
+                axis="x", linestyle="--", alpha=0.7
+            )  # Agregar líneas de referencia
 
             # Guardar o mostrar el gráfico
             if output_file:
-                plt.savefig(output_file, dpi=300, bbox_inches='tight')
+                plt.savefig(output_file, dpi=300, bbox_inches="tight")
                 print(f"Gráfico guardado en {output_file}")
 
         except Exception as e:
             print(f"Error en bar_plot: {e}")
 
     @staticmethod
-    def cnet_plot(df: pd.DataFrame, gene_sets: Dict[str, List[str]], output_file: str = None):
+    def cnet_plot(
+        df: pd.DataFrame, gene_sets: Dict[str, List[str]], output_file: str = None
+    ):
         """
         Genera un gráfico de red (Cnetplot) mostrando las relaciones entre genes y términos enriquecidos.
 
@@ -136,13 +146,15 @@ class FunctionalVisualization:
 
             # Agregar nodos para términos enriquecidos y genes
             for term, genes in gene_sets.items():
-                G.add_node(term, type='term', size=20)
+                G.add_node(term, type="term", size=20)
                 for gene in genes:
-                    G.add_node(gene, type='gene', size=10)
+                    G.add_node(gene, type="gene", size=10)
                     G.add_edge(term, gene)
 
             # Configurar la posición de los nodos para una distribución uniforme
-            pos = nx.spring_layout(G, seed=42, k=0.8)  # k intermedio para balancear repulsión y atracción
+            pos = nx.spring_layout(
+                G, seed=42, k=0.8
+            )  # k intermedio para balancear repulsión y atracción
 
             # Normalizar las posiciones para cubrir uniformemente el área del gráfico
             pos = {node: (x * 10, y * 10) for node, (x, y) in pos.items()}
@@ -150,28 +162,41 @@ class FunctionalVisualization:
             # Dibujar nodos y aristas con estilos mejorados
             plt.figure(figsize=(14, 12))
             nx.draw_networkx_nodes(
-                G, pos,
-                nodelist=[n for n, d in G.nodes(data=True) if d['type'] == 'term'],
-                node_size=800, node_color='skyblue', edgecolors='black', linewidths=1.5, label='Terms'
+                G,
+                pos,
+                nodelist=[n for n, d in G.nodes(data=True) if d["type"] == "term"],
+                node_size=800,
+                node_color="skyblue",
+                edgecolors="black",
+                linewidths=1.5,
+                label="Terms",
             )
             nx.draw_networkx_nodes(
-                G, pos,
-                nodelist=[n for n, d in G.nodes(data=True) if d['type'] == 'gene'],
-                node_size=400, node_color='salmon', edgecolors='black', linewidths=1.5, label='Genes'
+                G,
+                pos,
+                nodelist=[n for n, d in G.nodes(data=True) if d["type"] == "gene"],
+                node_size=400,
+                node_color="salmon",
+                edgecolors="black",
+                linewidths=1.5,
+                label="Genes",
             )
             nx.draw_networkx_edges(G, pos, alpha=0.5)
 
             # Mostrar etiquetas para todos los nodos (términos y genes)
             nx.draw_networkx_labels(
-                G, pos,
-                labels={n: n for n in G.nodes()},  # Mostrar etiquetas para todos los nodos
+                G,
+                pos,
+                labels={
+                    n: n for n in G.nodes()
+                },  # Mostrar etiquetas para todos los nodos
                 font_size=8,
-                font_color='darkblue'
+                font_color="darkblue",
             )
 
             # Agregar título y leyenda mejorada
-            plt.title('Cnetplot - Gene-Term Relationships', fontsize=16)
-            plt.legend(frameon=True, loc='upper left', fontsize=10)
+            plt.title("Cnetplot - Gene-Term Relationships", fontsize=16)
+            plt.legend(frameon=True, loc="upper left", fontsize=10)
             plt.tight_layout()
 
             # Guardar o mostrar el gráfico
@@ -181,7 +206,7 @@ class FunctionalVisualization:
 
         except Exception as e:
             print(f"Error en cnet_plot: {e}")
-        
+
     @staticmethod
     def upset_plot(df: pd.DataFrame, output_file: Optional[str] = None):
         """
@@ -190,32 +215,35 @@ class FunctionalVisualization:
         Este gráfico es útil para analizar la distribución de términos en múltiples clusters,
         identificando solapamientos o patrones específicos.
 
-        :param df: 
+        :param df:
             DataFrame que contiene los datos para generar el gráfico. Debe incluir las siguientes columnas:
                 - 'Term': Nombre de los términos GO analizados.
                 - 'Cluster': Identificador del cluster al que pertenece cada término.
-        :param output_file: 
+        :param output_file:
             Ruta opcional donde se guardará el gráfico generado como archivo PDF. Si no se proporciona,
             el gráfico se mostrará en pantalla.
 
-        :return: 
+        :return:
             None. La función muestra o guarda el gráfico generado.
         """
         try:
             # Verificar que las columnas necesarias estén presentes
-            if not {'Term', 'Cluster'}.issubset(df.columns):
-                raise ValueError("El DataFrame debe contener las columnas 'Term' y 'Cluster'.")
+            if not {"Term", "Cluster"}.issubset(df.columns):
+                raise ValueError(
+                    "El DataFrame debe contener las columnas 'Term' y 'Cluster'."
+                )
 
             # Seleccionar solo las columnas requeridas
-            filtered_data = df[['Term', 'Cluster']]
+            filtered_data = df[["Term", "Cluster"]]
 
             # Agrupar por 'Cluster' y 'Term', contar ocurrencias y reorganizar en una matriz binaria
             binary_data = (
-                filtered_data
-                .groupby(['Cluster', 'Term'])
-                .size()                 # Contar las ocurrencias de cada par (Cluster, Term)
-                .unstack(fill_value=0)  # Expandir 'Term' en columnas, rellenar valores ausentes con 0
-                .astype(bool)           # Convertir las cuentas a valores booleanos
+                filtered_data.groupby(["Cluster", "Term"])
+                .size()  # Contar las ocurrencias de cada par (Cluster, Term)
+                .unstack(
+                    fill_value=0
+                )  # Expandir 'Term' en columnas, rellenar valores ausentes con 0
+                .astype(bool)  # Convertir las cuentas a valores booleanos
             )
 
             # Restablecer el índice para convertir los clusters en una columna
@@ -223,24 +251,24 @@ class FunctionalVisualization:
 
             # Renombrar la columna del índice de cluster como 'count'
             # Esto es necesario porque UpSet utiliza 'count' como marcador de tamaños de subconjunto
-            binary_data = binary_data.rename(columns={'Cluster': 'count'})
+            binary_data = binary_data.rename(columns={"Cluster": "count"})
 
             # Seleccionar columnas que no sean 'count' para establecer el índice
-            index_columns = [col for col in binary_data.columns if col != 'count']
+            index_columns = [col for col in binary_data.columns if col != "count"]
             binary_data = binary_data.set_index(index_columns)
 
             # Crear el gráfico UpSet
             upset_plot = UpSet(
                 binary_data,
-                subset_size='count',    # Especifica que el tamaño de subconjuntos se basa en la columna 'count'
-                show_counts=True        # Muestra conteos en las barras del gráfico
+                subset_size="count",  # Especifica que el tamaño de subconjuntos se basa en la columna 'count'
+                show_counts=True,  # Muestra conteos en las barras del gráfico
             )
 
             # Generar el gráfico
             upset_plot.plot()
 
             # Añadir un título descriptivo al gráfico
-            plt.suptitle('UpSet Plot de Términos GO y Clusters')
+            plt.suptitle("UpSet Plot de Términos GO y Clusters")
 
             # Guardar el gráfico si se proporciona una ruta de archivo
             if output_file:
@@ -249,11 +277,13 @@ class FunctionalVisualization:
 
         except Exception as e:
             print(f"Error en upset_plot: {e}")
-    
+
     @staticmethod
-    def venn_diagram(file_modularity: str, file_enrichment: str, output_file: Optional[str] = None):
+    def venn_diagram(
+        file_modularity: str, file_enrichment: str, output_file: Optional[str] = None
+    ):
         """
-        Genera un diagrama de Venn comparando dos conjuntos de términos enriquecidos de dos métodos de clustering 
+        Genera un diagrama de Venn comparando dos conjuntos de términos enriquecidos de dos métodos de clustering
         (Leiden  con Modularidad Máxima y Leiden con Máximo Puntuaje de Enrequecimiento Funcional ),
         donde los términos se extraen de archivos CSV correspondientes a cada resultado."
 
@@ -261,32 +291,38 @@ class FunctionalVisualization:
         :param file2: Ruta del segundo archivo CSV que contiene una columna 'Term'.
         :param output_file: Ruta opcional para guardar el gráfico generado (en formato PNG).
         """
-        
+
         try:
             # Leer archivos CSV
             data_leiden_max_modularity = pd.read_csv(file_modularity)
             data_leiden_max_enrichment = pd.read_csv(file_enrichment)
 
             # Extraer términos únicos del primer archivo
-            terms_modularity = set(data_leiden_max_modularity['Term'])
-            terms_enrichment = set(data_leiden_max_enrichment['Term'])
+            terms_modularity = set(data_leiden_max_modularity["Term"])
+            terms_enrichment = set(data_leiden_max_enrichment["Term"])
 
             # Obtener la longitud de cada conjunto (opcional para análisis interno)
             len(terms_modularity), len(terms_enrichment)
 
             # Crear el diagrama de Venn comparando los dos conjuntos
-            venn = venn2([terms_modularity, terms_enrichment], 
-                         (f'Leiden (Máxima Modularidad)\nTotal: {len(terms_modularity)}',
-                          f'Leiden (Máximo Puntuaje de Enrequecimiento Funcional)\nTotal: {len(terms_enrichment)}'))
+            venn = venn2(
+                [terms_modularity, terms_enrichment],
+                (
+                    f"Leiden (Máxima Modularidad)\nTotal: {len(terms_modularity)}",
+                    f"Leiden (Máximo Puntuaje de Enrequecimiento Funcional)\nTotal: {len(terms_enrichment)}",
+                ),
+            )
 
             # Añadir un título al diagrama
-            plt.title('Comparación de términos funcionales entre las soluciones \n'
-                      'con el algoritmo de Leiden (Máxima Modularidad vs Máxima Significancia Biológica)')
+            plt.title(
+                "Comparación de términos funcionales entre las soluciones \n"
+                "con el algoritmo de Leiden (Máxima Modularidad vs Máxima Significancia Biológica)"
+            )
 
             # Guardar el gráfico en un archivo si se especifica una ruta
             if output_file:
-                    plt.savefig(output_file, dpi=300)
-                    print(f"Gráfico guardado en {output_file}")
+                plt.savefig(output_file, dpi=300)
+                print(f"Gráfico guardado en {output_file}")
 
         except Exception as e:
             print(f"Error en venn_diagram_from_csv: {e}")

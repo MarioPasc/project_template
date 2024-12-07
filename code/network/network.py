@@ -16,15 +16,17 @@ from matplotlib.patches import Patch
 import matplotlib.cm as cm
 
 import os
+
 VERBOSE: bool = os.environ.get("VERBOSE", "0") == "1"
 import time
+
 
 class Network:
     """
     Class to carry out graph analysis using igraph
     """
 
-    def __init__(self, graph: igraph.Graph, logger: logging.Logger)->None:
+    def __init__(self, graph: igraph.Graph, logger: logging.Logger) -> None:
         """
         Initialize the NetworkAnalysis object
 
@@ -32,14 +34,16 @@ class Network:
             graph (igraph.Graph):  igraph.Graph object
         """
 
-        self.logger: logging.Logger= logger
+        self.logger: logging.Logger = logger
         if not isinstance(graph, igraph.Graph):
             self.logger.error("ValueError: 'graph' needs to be an igraph.Graph object.")
-            raise 
+            raise
 
         self.graph: igraph.Graph = graph
         self.metrics: dict = {}
-        self.logger.info("Network object initialized successfully with a graph of type: igraph.Graph")
+        self.logger.info(
+            "Network object initialized successfully with a graph of type: igraph.Graph"
+        )
 
     def find_critical_nodes(self) -> list:
         """
@@ -50,7 +54,7 @@ class Network:
         """
         # not eficient for large vertex_connectivity
         vertex_connectivity = self.graph.vertex_connectivity()
-        critical_nodes:list = []
+        critical_nodes: list = []
 
         for nodes in combinations(range(self.graph.vcount()), vertex_connectivity):
             copy_graph = self.graph.copy()
@@ -61,7 +65,7 @@ class Network:
 
         return critical_nodes
 
-    def degree(self, result_folder:str, format:str) -> None:
+    def degree(self, result_folder: str, format: str) -> None:
         """
         Analysis of the degree of the nodes. Creates an histograma with the distribution of the degrees
         Args:
@@ -69,14 +73,16 @@ class Network:
             format (str): Format of saved images.
         """
         try:
-            mean, sd  = Metrics.analysis_degree(self.graph, result_folder, format)
+            mean, sd = Metrics.analysis_degree(self.graph, result_folder, format)
         except Exception as e:
             self.logger.error("Exception {e} occur in Metrics.analysis_degree")
         self.metrics["Average degree"] = mean
         self.metrics["Std degree"] = sd
-        self.logger.info(f"Degree analysis complete. Average degree: {mean}, Std degree: {sd}")
+        self.logger.info(
+            f"Degree analysis complete. Average degree: {mean}, Std degree: {sd}"
+        )
 
-    def connectivity(self, result_folder:str, format:str)->None:
+    def connectivity(self, result_folder: str, format: str) -> None:
         """
         Analysis of the connectivity of the network
         Args:
@@ -111,7 +117,7 @@ class Network:
             },
         )
 
-    def density(self)->None:
+    def density(self) -> None:
         """
         Compute density and sparsity of the  network
         Args:
@@ -123,7 +129,7 @@ class Network:
         self.metrics["Sparsity"] = 1 - density
         self.logger.info(f"Density: {density}, Sparsity: {1 - density}")
 
-    def closeness_betweenness(self, result_folder:str, format:str)->None:
+    def closeness_betweenness(self, result_folder: str, format: str) -> None:
         """
         Analysis of closennes and betweenness. And visualization of the network based on these metrics.
         Args:
@@ -140,19 +146,28 @@ class Network:
         self.metrics["Average betweenness"] = statistics.mean(betweenness)
         self.metrics["Std betweenness"] = statistics.stdev(betweenness)
 
-        self.logger.info(f"Closeness: Average = {self.metrics['Average Closeness']}, Std = {self.metrics['Std Closeness']}")
-        self.logger.info(f"Betweenness: Average = {self.metrics['Average betweenness']}, Std = {self.metrics['Std betweenness']}")
+        self.logger.info(
+            f"Closeness: Average = {self.metrics['Average Closeness']}, Std = {self.metrics['Std Closeness']}"
+        )
+        self.logger.info(
+            f"Betweenness: Average = {self.metrics['Average betweenness']}, Std = {self.metrics['Std betweenness']}"
+        )
 
         legend = {
-                "handles": [
-                        Patch(facecolor="white", edgecolor="black", label="Tamaño de los nodos incrementa con la centralidad"),
-                        Patch(facecolor="white", edgecolor="black", label="Color aumenta con la cercanía"), 
-                            ],
-                "labels": [ 
-                        "Tamaño nodos: Betweenness",
-                        "Color nodos: Closeness"
-
-                ]}
+            "handles": [
+                Patch(
+                    facecolor="white",
+                    edgecolor="black",
+                    label="Tamaño de los nodos incrementa con la centralidad",
+                ),
+                Patch(
+                    facecolor="white",
+                    edgecolor="black",
+                    label="Color aumenta con la cercanía",
+                ),
+            ],
+            "labels": ["Tamaño nodos: Betweenness", "Color nodos: Closeness"],
+        }
 
         # visualization
         fig, ax = plt.subplots(figsize=(20, 10))
@@ -165,13 +180,10 @@ class Network:
             ax,
             attributes={
                 "vertex_size": [20 + (v / max(betweenness)) * 40 for v in betweenness],
-                "vertex_color": [
-                    cmap(norm(c)) 
-                    for c in closeness
-                ],
+                "vertex_color": [cmap(norm(c)) for c in closeness],
             },
             title=" Cercanía (closeness) y Centralidad (betweenness)",
-            legend=legend
+            legend=legend,
         )
 
         # add color bar
@@ -180,13 +192,12 @@ class Network:
         cbar = plt.colorbar(sm, ax=ax, orientation="vertical")
         cbar.set_label("Closeness", fontsize=10)
 
-        #save graph
-        output_path=f"{result_folder}/closeness_betwennes_graph.{format}"
+        # save graph
+        output_path = f"{result_folder}/closeness_betwennes_graph.{format}"
         plt.savefig(output_path, format=format, dpi=300, bbox_inches="tight")
         plt.close(fig)
-       
 
-    def clustering_coefficients(self, result_folder:str, format:str)->None:
+    def clustering_coefficients(self, result_folder: str, format: str) -> None:
         """
         Compute local transitivity and global transitivity
         Args:
@@ -222,11 +233,13 @@ class Network:
         # global
         self.metrics["Global transitivity"] = self.graph.transitivity_undirected()
 
-        self.logger.info(f"Average Local Transitivity: {self.metrics['Average Local transitivity']}")
+        self.logger.info(
+            f"Average Local Transitivity: {self.metrics['Average Local transitivity']}"
+        )
         self.logger.info(f"Global Transitivity: {self.metrics['Global transitivity']}")
         self.logger.info(f"Found {len(nan_nodes)} nodes with NaN local transitivity")
 
-    def calculate_metrics(self, result_folder:str, format:str)->None:
+    def calculate_metrics(self, result_folder: str, format: str) -> None:
         """
         Computes various statistical and structural metrics of the graph, as well as representation using these metrics.
         Args:
@@ -236,35 +249,48 @@ class Network:
         self.logger.info("Starting calculation of graph metrics.")
         self.metrics["Number of nodes"] = self.graph.vcount()
         self.metrics["Number of edges"] = self.graph.ecount()
-        self.logger.info(f"Num node:{self.graph.vcount()}  Num edges:{self.graph.ecount()}")
+        self.logger.info(
+            f"Num node:{self.graph.vcount()}  Num edges:{self.graph.ecount()}"
+        )
 
         # Add the time.sleep to not saturate the terminal output
 
-        if VERBOSE: print("Network Stats: Computing degree distribution ...")        
+        if VERBOSE:
+            print("Network Stats: Computing degree distribution ...")
         # Degree Distribution
         self.degree(result_folder, format)
-        if VERBOSE: time.sleep(0.5)
-        
-        if VERBOSE: print("Network Stats: Computing connectivity ...")        
+        if VERBOSE:
+            time.sleep(0.5)
+
+        if VERBOSE:
+            print("Network Stats: Computing connectivity ...")
         # Connectivity
         self.connectivity(result_folder, format)
-        if VERBOSE: time.sleep(0.5)
+        if VERBOSE:
+            time.sleep(0.5)
 
-        if VERBOSE: print("Network Stats: Computing network density ...")
+        if VERBOSE:
+            print("Network Stats: Computing network density ...")
         # Density
         self.density()
-        if VERBOSE: time.sleep(0.5)
+        if VERBOSE:
+            time.sleep(0.5)
 
-        if VERBOSE: print("Network Stats: Computing closeness and betweenness ...")
+        if VERBOSE:
+            print("Network Stats: Computing closeness and betweenness ...")
         # Closeness and betweenness
         self.closeness_betweenness(result_folder, format)
-        if VERBOSE: time.sleep(0.5)
+        if VERBOSE:
+            time.sleep(0.5)
 
-        if VERBOSE: print("Network Stats: Computing clustering coefficients ...")
+        if VERBOSE:
+            print("Network Stats: Computing clustering coefficients ...")
         # Clustering Coeficients
         self.clustering_coefficients(result_folder, format)
-        if VERBOSE: time.sleep(0.5)
-        if VERBOSE: print()
+        if VERBOSE:
+            time.sleep(0.5)
+        if VERBOSE:
+            print()
 
         self.metrics["Assortativity"] = self.graph.assortativity_degree()
 
@@ -277,7 +303,7 @@ class Network:
         attributes: dict = None,
         default_size: int = 35,
         default_color: str = "red",
-        layout: str = "auto"
+        layout: str = "auto",
     ) -> None:
         """
         Visualize the graph using igraph.plot, with options to customize the visualization using a flexible attributes dictionary.
@@ -290,44 +316,48 @@ class Network:
             layout (str, optional): Type of layout of the graph (default: auto)
         """
         num_nodes = len(self.graph.vs)
-        
+
         # Initialize default values
         plot_attributes = {
             "vertex_size": [default_size] * num_nodes,
             "vertex_color": [default_color] * num_nodes,
             "vertex_label": self.graph.vs["name"],
             "vertex_label_size": 8,
-            "edge_width": 0.5
+            "edge_width": 0.5,
         }
 
         # Update default values with attributes passed in the dictionary
         if attributes:
             for key, value in attributes.items():
-                if isinstance(value, list) and len(value) != num_nodes and key.startswith("vertex_"):
-                    self.logger.error(f"The size of '{key}' does not match the number of nodes ({num_nodes}).")
-                    raise ValueError(f"The size of '{key}' does not match the number of nodes ({num_nodes}).")
+                if (
+                    isinstance(value, list)
+                    and len(value) != num_nodes
+                    and key.startswith("vertex_")
+                ):
+                    self.logger.error(
+                        f"The size of '{key}' does not match the number of nodes ({num_nodes})."
+                    )
+                    raise ValueError(
+                        f"The size of '{key}' does not match the number of nodes ({num_nodes})."
+                    )
                 plot_attributes[key] = value
 
         # try if the layout is valid
         try:
             if layout != "auto" and layout != None:
-                graph_layout = self.graph.layout(layout)  
+                graph_layout = self.graph.layout(layout)
             else:
-                graph_layout=self.graph.layout_auto()
+                graph_layout = self.graph.layout_auto()
         except ValueError:
             self.logger.error(f"Invalid layout '{layout}' specified.")
             raise ValueError(f"Invalid layout '{layout}' specified.")
-        #NOTE: drl, kamada_kawai, fruchterman_reingold no van mal
+        # NOTE: drl, kamada_kawai, fruchterman_reingold no van mal
 
         # Plot the graph using igraph
         igraph.plot(
-            self.graph,
-            target=output_path,
-            layout=graph_layout,
-            **plot_attributes
+            self.graph, target=output_path, layout=graph_layout, **plot_attributes
         )
         self.logger.info(f"Visualization saved in {output_path}")
-
 
     def visualize_network_matplotlib_save(
         self,
@@ -335,7 +365,7 @@ class Network:
         attributes: dict = None,
         title: str = None,
         legend: dict = None,
-        layout: str = None
+        layout: str = None,
     ) -> None:
         """
         Visualize the graph using igraph and matplotlib and save it in file
@@ -361,12 +391,12 @@ class Network:
         self.logger.info(f"Visualization saved in {output_path}")
 
     def visualize_network_matplotlib(
-        self, 
-        ax: Axes, 
+        self,
+        ax: Axes,
         attributes: dict = None,
-        title: str = None, 
+        title: str = None,
         legend: dict = None,
-        layout: str = None
+        layout: str = None,
     ) -> plt.Axes:
         """
         Visualize the graph using igraph and matplotlib, with options to customize the size, color of the nodes and edges,
@@ -384,7 +414,7 @@ class Network:
          ax (matplotlib.Axes): visualization
         """
 
-        self.visualize_network(ax, attributes, default_size=25, layout= layout)
+        self.visualize_network(ax, attributes, default_size=25, layout=layout)
 
         if title:
             ax.set_title(title)
@@ -460,4 +490,3 @@ class Network:
             fig.savefig(output_path, format="png", bbox_inches="tight")
 
         return ax
-
