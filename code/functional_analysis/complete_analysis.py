@@ -120,16 +120,25 @@ def main():
             )
         )
 
+        plots_path: str = "plots/functional_analysis"
+        os.makedirs(os.path.join(args.results, plots_path), exist_ok=True)
+
         # Dot Plot
-        dot_plot_file = os.path.join(args.results, f"dot_plot.{args.format}")
+        dot_plot_file = os.path.join(
+            args.results, os.path.join(plots_path, f"dot_plot.{args.format}")
+        )
         FunctionalVisualization.dot_plot(prepared_data, dot_plot_file)
 
         # Bar Plot
-        bar_plot_file = os.path.join(args.results, f"bar_plot.{args.format}")
+        bar_plot_file = os.path.join(
+            args.results, os.path.join(plots_path, f"bar_plot.{args.format}")
+        )
         FunctionalVisualization.bar_plot(prepared_data, bar_plot_file)
 
         # Cnet Plot
-        cnet_plot_file = os.path.join(args.results, f"cnet_plot.{args.format}")
+        cnet_plot_file = os.path.join(
+            args.results, os.path.join(plots_path, f"cnet_plot.{args.format}")
+        )
         FunctionalVisualization.cnet_plot(prepared_data, gene_sets, cnet_plot_file)
 
         logger.info("Visualization completed.")

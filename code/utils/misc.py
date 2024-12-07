@@ -6,6 +6,7 @@ from typing import Union
 
 import igraph
 import pandas as pd
+import json
 
 
 def setup_logger(name: str, log_file: str, level=logging.INFO) -> logging.Logger:
@@ -67,13 +68,27 @@ def network_to_igraph_format(
             directed=False,
             use_vids=False,
         )
-       
+
         return graph
     except FileNotFoundError:
         raise FileNotFoundError(f"File not found: {network_csv}")
     except pd.errors.ParserError:
         raise ValueError(f"File not in the right format:  {network_csv}")
     except KeyError:
-        raise KeyError(f"Columns 'preferredName_A' and 'preferredName_B' not found in file: {network_csv}")
+        raise KeyError(
+            f"Columns 'preferredName_A' and 'preferredName_B' not found in file: {network_csv}"
+        )
     except Exception as e:
         raise Exception(f"Unexpected error: {e}")
+
+
+def load_json(file_path: str) -> dict:
+    """
+    Loads a JSON file and returns its contents as a dictionary.
+
+    :param file_path: Path to the JSON file.
+    :return: Dictionary with the data loaded from the JSON file.
+    """
+    with open(file_path, "r") as f:
+        data = json.load(f)
+    return data

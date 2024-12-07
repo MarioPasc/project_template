@@ -9,33 +9,6 @@ from upsetplot import UpSet
 from matplotlib_venn import venn2
 
 
-def prepare_data_for_visualization_from_df(df: pd.DataFrame):
-    """
-    Prepara los datos del DataFrame generado por FunctionalAnalysis para las gráficas.
-
-    :param df: DataFrame con los resultados del análisis funcional.
-
-    :return:
-        - DataFrame procesado con columnas adicionales ['Observed', 'Total', 'Gene Ratio'] para dot_plot, bar_plot y cnetplot.
-        - Diccionario donde las claves son términos ('Term') y los valores son listas de genes ('Genes') para cnetplot.
-    """
-    try:
-        # Convertir Overlap a Gene Ratio (proporción)
-        df[["Observed", "Total"]] = (
-            df["Overlap"].str.split("/", expand=True).astype(int)
-        )
-        df["Gene Ratio"] = df["Observed"] / df["Total"]
-
-        # Crear un diccionario para cnetplot
-        gene_sets = {row["Term"]: row["Genes"].split(", ") for _, row in df.iterrows()}
-
-        return df, gene_sets
-
-    except Exception as e:
-        print(f"Error en prepare_data_for_visualization_from_df: {e}")
-        return None, None
-
-
 class FunctionalVisualization:
     """
     Clase para generar visualizaciones relacionadas con el análisis funcional.
@@ -44,6 +17,35 @@ class FunctionalVisualization:
     - Bar Plot: Resalta los términos más significativos.
     - Cnetplot: Visualiza las relaciones entre genes y categorías enriquecidas.
     """
+
+    @staticmethod
+    def prepare_data_for_visualization_from_df(df: pd.DataFrame):
+        """
+        Prepara los datos del DataFrame generado por FunctionalAnalysis para las gráficas.
+
+        :param df: DataFrame con los resultados del análisis funcional.
+
+        :return:
+            - DataFrame procesado con columnas adicionales ['Observed', 'Total', 'Gene Ratio'] para dot_plot, bar_plot y cnetplot.
+            - Diccionario donde las claves son términos ('Term') y los valores son listas de genes ('Genes') para cnetplot.
+        """
+        try:
+            # Convertir Overlap a Gene Ratio (proporción)
+            df[["Observed", "Total"]] = (
+                df["Overlap"].str.split("/", expand=True).astype(int)
+            )
+            df["Gene Ratio"] = df["Observed"] / df["Total"]
+
+            # Crear un diccionario para cnetplot
+            gene_sets = {
+                row["Term"]: row["Genes"].split(", ") for _, row in df.iterrows()
+            }
+
+            return df, gene_sets
+
+        except Exception as e:
+            print(f"Error en prepare_data_for_visualization_from_df: {e}")
+            return None, None
 
     @staticmethod
     def dot_plot(df: pd.DataFrame, output_file: str = None):
