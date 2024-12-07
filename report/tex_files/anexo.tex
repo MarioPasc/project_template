@@ -1,2 +1,31 @@
-\section{Anexos}
+\section{Anexo A: KDE mediante ventana deslizante de Parzen-Rosenblatt en el TPE}
+
+\label{sec:anexo_a}
+
+La Estimación de Densidad por Kernel (KDE) mediante el método de ventana deslizante de Parzen-Rosenblatt es una técnica no paramétrica para estimar la función de densidad de probabilidad (PDF) de una variable aleatoria a partir de una muestra de datos. La estimación en un punto \( x \) se realiza sumando las contribuciones de cada dato \( x_i \) mediante una función kernel \( K \) centrada en \( x_i \):
+
+\begin{equation}
+	\hat{f}(x) = \frac{1}{n h} \sum_{i=1}^{n} K\left( \frac{x - x_i}{h} \right)
+\end{equation}
+
+
+Donde \( n \) es el número de muestras, \( h \) es el ancho de banda (parámetro de suavizado) y \( K(u) \) es la función kernel, comúnmente el kernel gaussiano:
+
+\begin{equation}
+	K(u) = \frac{1}{\sqrt{2\pi}} e^{- \frac{u^2}{2}}
+\end{equation}
+
+
+En el contexto del TPE, este método se utiliza para estimar las distribuciones de probabilidad de los hiperparámetros en los conjuntos de buen rendimiento \( \mathcal{C}_1 \) y peor rendimiento \( \mathcal{C}_2 \). Los datos de entrada son los hiperparámetros observados \( \theta_i \) en cada conjunto, y la salida es una estimación suave de las densidades \( l(\theta) \) y \( g(\theta) \):
+
+
+\begin{equation}
+	\begin{aligned}
+		l(\theta) = \frac{1}{|\mathcal{C}_1| h} \sum_{\theta_i \in \mathcal{C}_1} K\left( \frac{\theta - \theta_i}{h} \right) \\
+		g(\theta) = \frac{1}{|\mathcal{C}_2| h} \sum_{\theta_i \in \mathcal{C}_2} K\left( \frac{\theta - \theta_i}{h} \right)
+	\end{aligned}
+\end{equation}
+
+Al utilizar el método de ventana deslizante de Parzen-Rosenblatt con kernel gaussiano, el TPE obtiene una estimación flexible y no paramétrica de las distribuciones de los hiperparámetros. Esto facilita la exploración eficiente del espacio de búsqueda y la identificación de regiones donde es más probable encontrar hiperparámetros que mejoren el rendimiento del modelo.
+
 

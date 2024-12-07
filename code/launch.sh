@@ -1,16 +1,16 @@
 #! /usr/bin/env bash
 
-# Set to true if you want to fine-tune the clustering algorithms. 
+# Set to true if you want to fine-tune the clustering algorithms.
 export OPTIMIZE=false
 
-# If train is true, then set the number of trials to run the Bayesian Optimization Algorithm. 
+# If train is true, then set the number of trials to run the Bayesian Optimization Algorithm.
 # In our original study we executed it for 150 trials.
 export TRIALS=150
 
 # Results folder
 export RESULTS="./results"
 
-# Verbose for execution. We highly recommend setting this to true. This verbose is minimum, 
+# Verbose for execution. We highly recommend setting this to true. This verbose is minimum,
 # all the details are saved in the logs (./logs/{name}.log)
 export VERBOSE=1
 
@@ -37,7 +37,7 @@ awk 'NR > 1{print $2}' $hpo_genes_data > $hpo_genes  # Extract gene names
 network="./code/data/network.tsv"
 
 # Retrieve the Protein-Protein Interaction Network
-./code/utils/obtainPPINetwork.py $hpo_genes $network --filter="700" 
+./code/utils/obtainPPINetwork.py $hpo_genes $network --filter="700"
 
 # Perform Network Analysis
 ./code/network/analysis.py $network $RESULTS
@@ -46,26 +46,26 @@ network="./code/data/network.tsv"
 if [ $OPTIMIZE = true ]; then
     # Optimize Louvain
     ./code/clustering/optimize.py \
-        --config_path code/clustering/configs/multilevel.yaml \
-        --network_csv code/data/network.tsv \
-        --study_name multilevel_optimization \
-        --output_path $RESULTS \
-        --n_trials $TRIALS
-
+    --config_path code/clustering/configs/multilevel.yaml \
+    --network_csv code/data/network.tsv \
+    --study_name multilevel_optimization \
+    --output_path $RESULTS \
+    --n_trials $TRIALS
+    
     # Optimize Leiden
     ./code/clustering/optimize.py \
-        --config_path code/clustering/configs/leiden.yaml \
-        --network_csv code/data/network.tsv \
-        --study_name leiden_optimization \
-        --output_path $RESULTS \
-        --n_trials $TRIALS
+    --config_path code/clustering/configs/leiden.yaml \
+    --network_csv code/data/network.tsv \
+    --study_name leiden_optimization \
+    --output_path $RESULTS \
+    --n_trials $TRIALS
 fi
 
 # Performance analysis on optimization results
 ./code/clustering/bho_analysis.py \
-    $RESULTS
+$RESULTS
 
 # Clustering visualization and final results saving
 ./code/clustering/analysis.py \
-    code/data/network.tsv \
-    $RESULTS
+code/data/network.tsv \
+$RESULTS
