@@ -23,10 +23,25 @@ plt.rcParams["axes.spines.right"] = False
 class FunctionalVisualization:
     """
     Clase para generar visualizaciones relacionadas con el análisis funcional.
-    Incluye:
+    
+    Incluye las siguientes funciones principales:
+    - prepare_data_for_visualization_from_df:
+        Prepara los datos para visualizaciones basadas en un DataFrame con resultados de análisis funcional.
+        Convierte el formato de columnas para cálculos y genera diccionarios para graficar relaciones gene-término.
+
     - Dot Plot: Muestra la significancia y magnitud del enriquecimiento.
+    
     - Bar Plot: Resalta los términos más significativos.
+    
     - Cnetplot: Visualiza las relaciones entre genes y categorías enriquecidas.
+    
+    - upset_plot:
+        Genera un gráfico UpSet que analiza las intersecciones y patrones entre términos enriquecidos y clusters.
+        Este tipo de gráfico es útil para identificar patrones solapados entre conjuntos de datos funcionales.
+
+    - venn_diagram:
+        Genera un diagrama de Venn que compara dos conjuntos de términos enriquecidos provenientes
+        de diferentes métodos de clustering o análisis.
     """
 
     @staticmethod
