@@ -5,7 +5,7 @@ export OPTIMIZE=false
 
 # If train is true, then set the number of trials to run the Bayesian Optimization Algorithm.
 # In our original study we executed it for 150 trials.
-export TRIALS=150
+export TRIALS=100
 
 # Results folder
 export RESULTS="./results"

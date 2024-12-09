@@ -145,6 +145,7 @@ class BHO_Clustering:
             self.logger.critical(
                 f"Error loading hyperparameter configuration. Check example at code/clustering/configs: {e}"
             )
+            return {"": ""}
 
     def _extract_hyperparameters(self, trial: optuna.Trial) -> Dict[str, Any]:
         """
@@ -435,9 +436,9 @@ def main():
         print("Bayesian Hyperparameter Optimization process. Information.")
         print("-" * 91)
         print(f"Study name: {args.study_name}")
-        print(f"Trials: {args.trials}")
+        print(f"Trials: {args.n_trials}")
         print(f"Configuration file: {args.config_path}")
-        print(f"Network file: {args.network}")
+        print(f"Network file: {args.network_csv}")
         print(f"Output path: {args.output_path}")
         print("-" * 91)
         print("WARNING!")

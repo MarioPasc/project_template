@@ -27,18 +27,18 @@ VERBOSE: bool = os.environ.get("VERBOSE", "0") == "1"
 class FunctionalVisualization:
     """
     Clase para generar visualizaciones relacionadas con el análisis funcional.
-    
+
     Incluye las siguientes funciones principales:
     - prepare_data_for_visualization_from_df:
         Prepara los datos para visualizaciones basadas en un DataFrame con resultados de análisis funcional.
         Convierte el formato de columnas para cálculos y genera diccionarios para graficar relaciones gene-término.
 
     - Dot Plot: Muestra la significancia y magnitud del enriquecimiento.
-    
+
     - Bar Plot: Resalta los términos más significativos.
-    
+
     - Cnetplot: Visualiza las relaciones entre genes y categorías enriquecidas.
-    
+
     - upset_plot:
         Genera un gráfico UpSet que analiza las intersecciones y patrones entre términos enriquecidos y clusters.
         Este tipo de gráfico es útil para identificar patrones solapados entre conjuntos de datos funcionales.
@@ -104,7 +104,7 @@ class FunctionalVisualization:
             plt.title("Dot Plot - Enrichment Analysis")
             plt.xlabel("Gene Ratio")
             plt.ylabel("Term")
-            #plt.gca().yaxis.set_tick_params(labelsize=10)  # Mejorar tamaño de etiquetas
+            # plt.gca().yaxis.set_tick_params(labelsize=10)  # Mejorar tamaño de etiquetas
             plt.tight_layout()
 
             # Guardar el gráfico en un archivo si se especifica una ruta
@@ -112,7 +112,7 @@ class FunctionalVisualization:
                 plt.savefig(output_file, dpi=300)
                 if VERBOSE:
                     print(f"Gráfico guardado en {output_file}")
-
+            plt.close()
         except Exception as e:
             print(f"Error en dot_plot: {e}")
 
@@ -159,7 +159,7 @@ class FunctionalVisualization:
                 plt.savefig(output_file, dpi=300, bbox_inches="tight")
                 if VERBOSE:
                     print(f"Gráfico guardado en {output_file}")
-
+            plt.close()
         except Exception as e:
             print(f"Error en bar_plot: {e}")
 
@@ -224,7 +224,7 @@ class FunctionalVisualization:
             # Generate a layout
             layout = graph.layout("fruchterman_reingold")
 
-            graph.vs["frame_color"]=  graph.vs['color']
+            graph.vs["frame_color"] = graph.vs["color"]
 
             # Plot the graph
             plt.figure(figsize=(12, 10))
@@ -239,7 +239,7 @@ class FunctionalVisualization:
                 vertex_label_dist=2,
                 edge_width=0.5,
                 edge_color="gray",
-                frame_color=graph.vs["frame_color"]
+                frame_color=graph.vs["frame_color"],
             )
 
             # Add a legend
@@ -278,7 +278,7 @@ class FunctionalVisualization:
                     print(f"Gráfico guardado en {output_file}")
             else:
                 plt.show()
-
+            plt.close()
         except Exception as e:
             print(f"Error en cnet_plot: {e}")
 
@@ -438,28 +438,30 @@ class FunctionalVisualization:
         file_modularity: str, file_enrichment: str, output_file: Optional[str] = None
     ):
         """
-        Genera un diagrama de Venn comparando dos conjuntos de términos enriquecidos de dos métodos de clustering
-        (Leiden  con Modularidad Máxima y Leiden con Máximo Puntuaje de Enrequecimiento Funcional ),
-        donde los términos se extraen de archivos CSV correspondientes a cada resultado."
+        Generates a Venn diagram comparing GO terms between two optimization results of the same algorithm.
+        Specifically, it compares Leiden clustering results for Maximum Modularity and Maximum Functional Enrichment Score.
 
-        :param file1: Ruta del primer archivo CSV que contiene una columna 'Term'.
-        :param file2: Ruta del segundo archivo CSV que contiene una columna 'Term'.
-        :param output_file: Ruta opcional para guardar el gráfico generado (en formato PNG).
+        :param file_modularity: Path to the first CSV file containing a 'Term' column (Maximum Modularity results).
+        :param file_enrichment: Path to the second CSV file containing a 'Term' column (Maximum Enrichment Score results).
+        :param output_file: Optional path to save the generated diagram as an image file (PNG format).
         """
-
         try:
-            # Leer archivos CSV
+            # Read CSV files
             data_leiden_max_modularity = pd.read_csv(file_modularity)
             data_leiden_max_enrichment = pd.read_csv(file_enrichment)
 
-            # Extraer términos únicos del primer archivo
-            terms_modularity = set(data_leiden_max_modularity["Term"])
-            terms_enrichment = set(data_leiden_max_enrichment["Term"])
+            # Validate the presence of 'Term' column
+            if (
+                "Term" not in data_leiden_max_modularity.columns
+                or "Term" not in data_leiden_max_enrichment.columns
+            ):
+                raise ValueError("Both input files must contain a 'Term' column.")
 
-            # Obtener la longitud de cada conjunto (opcional para análisis interno)
-            len(terms_modularity), len(terms_enrichment)
+            # Extract unique terms from both files
+            terms_modularity = set(data_leiden_max_modularity["Term"].dropna())
+            terms_enrichment = set(data_leiden_max_enrichment["Term"].dropna())
 
-            # Crear el diagrama de Venn comparando los dos conjuntos
+            # Create the Venn diagram
             venn = venn2(
                 [terms_modularity, terms_enrichment],
                 (
@@ -468,17 +470,18 @@ class FunctionalVisualization:
                 ),
             )
 
-            # Añadir un título al diagrama
+            # Add a descriptive title
             plt.title(
                 "Comparación de términos funcionales entre las soluciones \n"
-                "con el algoritmo de Leiden (Máxima Modularidad vs Máxima Significancia Biológica)"
+                "con el algoritmo de Leiden (Max Modularidad vs Max Puntuaje de Enrequecimiento Funcional)"
             )
 
-            # Guardar el gráfico en un archivo si se especifica una ruta
+            # Save the diagram or display it
             if output_file:
                 plt.savefig(output_file, dpi=300)
-                if VERBOSE:
-                    print(f"Gráfico guardado en {output_file}")
+                print(f"Venn diagram saved to {output_file}")
+            else:
+                plt.show()
 
         except Exception as e:
-            print(f"Error en venn_diagram_from_csv: {e}")
+            print(f"Error in venn_diagram: {e}")

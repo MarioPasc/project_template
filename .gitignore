@@ -8,14 +8,14 @@
 
 # Ignorar todos los archivos de datos descargados o generados
 # Ignorar archivos de datos en formato CSV
-*.csv  
+*.csv
 # Ignorar archivos de datos en formato TSV
-*.tsv  
+*.tsv
 # Ignorar archivos de texto
-*.txt 
+*.txt
 # Ignorar diarios de desarrolladores
 *.md
- 
+
 # Ignorar carpetas generadas
 # Ignorar carpeta automática de Py_libs
 Py_libs/
@@ -27,3 +27,5 @@ data/
 results/
 # Ignorar la cache de python
 __pycache__/
+# zip
+*.zip
