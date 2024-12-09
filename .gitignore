@@ -13,8 +13,6 @@
 *.tsv
 # Ignorar archivos de texto
 *.txt
-# Ignorar diarios de desarrolladores
-*.md
 
 # Ignorar carpetas generadas
 # Ignorar carpeta automática de Py_libs
