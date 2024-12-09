@@ -122,7 +122,7 @@ class Network:
             },
             title="Nodos críticos (desconectan el grafo si son eliminados)",
             legend={
-                "handles": [Patch(facecolor="red", edgecolor="black")],
+                "handles": [Patch(facecolor="red", edgecolor="red")],
                 "labels": ["Nodos críticos"],
             },
         )
@@ -166,13 +166,13 @@ class Network:
         legend = {
             "handles": [
                 Patch(
-                    facecolor="white",
+                    facecolor="black",
                     edgecolor="black",
                     label="Tamaño de los nodos incrementa con la centralidad",
                 ),
                 Patch(
-                    facecolor="white",
-                    edgecolor="black",
+                    facecolor="red",
+                    edgecolor="red",
                     label="Color aumenta con la cercanía",
                 ),
             ],
@@ -229,7 +229,7 @@ class Network:
             },
             title="Transitividad Local",
             legend={
-                "handles": [Patch(facecolor="red", edgecolor="black")],
+                "handles": [Patch(facecolor="red", edgecolor="red")],
                 "labels": ["Nodo con transitividad local NaN"],
             },
         )
@@ -335,6 +335,7 @@ class Network:
             "vertex_label_size": 8,
             "edge_width": 0.5,
             "margin": 50,
+            "vertex_frame_width": 0 
         }
 
         # Update default values with attributes passed in the dictionary
@@ -398,7 +399,7 @@ class Network:
         self.visualize_network_matplotlib(ax, attributes, title, legend, layout)
 
         if output_path:
-            plt.savefig(output_path, bbox_inches="tight")
+            fig.savefig(output_path, bbox_inches="tight")
         self.logger.info(f"Visualization saved in {output_path}")
 
     def visualize_network_matplotlib(

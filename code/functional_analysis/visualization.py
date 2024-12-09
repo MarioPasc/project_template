@@ -218,6 +218,8 @@ class FunctionalVisualization:
             # Generate a layout
             layout = graph.layout("fruchterman_reingold")
 
+            graph.vs["frame_color"]=  graph.vs['color']
+
             # Plot the graph
             plt.figure(figsize=(12, 10))
             ig.plot(
@@ -228,8 +230,10 @@ class FunctionalVisualization:
                 vertex_color=graph.vs["color"],
                 vertex_label=graph.vs["label"],
                 vertex_label_size=8,
+                vertex_label_dist=2,
                 edge_width=0.5,
                 edge_color="gray",
+                frame_color=graph.vs["frame_color"]
             )
 
             # Add a legend
