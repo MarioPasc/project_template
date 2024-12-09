@@ -265,7 +265,7 @@ def plot_pareto_from_multiple_csvs(
 
     # Labels and legend
     ax.set_xlabel("Modularidad (Q)")
-    ax.set_ylabel("Coeficiente de Significancia Biológica (QBS)")
+    ax.set_ylabel("Puntuaje de Enriquecimiento Funcional (FES)")
     ax.set_title(title)
     ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.17), ncol=len(csv_files))
 
@@ -487,7 +487,7 @@ def main() -> None:
         legend_names=legend_names,
         metric_column={
             "values_0": "Modularidad (Q)",
-            "values_1": "Coeficiente de Significancia Biológica (QBS)",
+            "values_1": "Puntuaje de Enriquecimiento Funcional (FES)",
         },  # Eje Y
         colors=colors,
         alpha=0.8,

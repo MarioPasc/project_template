@@ -451,7 +451,9 @@ class Network:
         layout: str = None,
     ) -> plt.Axes:
         """
-        Displays the network with different colors for each cluster.
+        Displays the network with different colors for each cluster. The color of each cluster
+        is determined by the cluster's representative node (lowest ID node in the cluster),
+        ensuring consistent cluster coloring across different clustering methods.
 
         Args:
             output_path (str): Path where the network image will be saved.
@@ -459,19 +461,34 @@ class Network:
             title (str, optional): Title of the figure.
             legend (dict, optional): Dictionary of legend elements.
             attributes (dict, optional): Attributes dictionary for visual customization.
-            layout (str, optionl): Network layout (drl, kamada_kawai, fruchterman_reingold )
+            layout (str, optional): Network layout (drl, kamada_kawai, fruchterman_reingold )
 
         Returns:
             plt.Axes: The matplotlib Axes object for the visualization.
         """
-        num_clusters = len(clusters)
-        color_palette = plt.cm.get_cmap("tab20", num_clusters)
+        # Determine the representative nodes (lowest ID in each cluster)
+        representative_nodes = [min(cluster) for cluster in clusters]
 
-        # Create color mapping for nodes
-        vertex_color = [0] * self.graph.vcount()
-        for num, cluster in enumerate(clusters):
+        # Get a sorted list of unique representative nodes to map them consistently to colors
+        unique_representatives = sorted(set(representative_nodes))
+
+        # Choose a fixed colormap. "tab10" provides up to 10 distinct colors.
+        # If you have more than 10 clusters, consider "tab20" or another larger palette.
+        color_map = plt.cm.get_cmap("tab10", len(unique_representatives))
+
+        # Create a dictionary mapping representative_node -> color
+        rep_color_dict = {
+            rep_node: mcolors.to_hex(color_map(i))
+            for i, rep_node in enumerate(unique_representatives)
+        }
+
+        # Create a vertex_color list based on cluster representative colors
+        vertex_color = [None] * self.graph.vcount()
+        for cluster in clusters:
+            rep_node = min(cluster)
+            cluster_color = rep_color_dict[rep_node]
             for node in cluster:
-                vertex_color[node] = mcolors.to_hex(color_palette(num))
+                vertex_color[node] = cluster_color
 
         # If attributes dictionary is provided, append vertex_color
         if attributes is None:
@@ -494,7 +511,8 @@ class Network:
         if legend:
             ax.legend(
                 handles=legend["handles"],
-                loc="lower right",
+                loc="lower center",  # Place the legend at the top center relative to the anchor
+                bbox_to_anchor=(0.5, -0.05),  # Shift the legend box below the plot
                 fontsize=10,
                 frameon=False,
             )
