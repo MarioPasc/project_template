@@ -14,8 +14,8 @@ class FunctionalAnalysis:
     """
     The FunctionalAnalysis class provides methods for performing functional enrichment analysis on gene clusters.
 
-    This class uses a graph structure (igraph.Graph) to store clusters and genes as nodes and integrates with the Enrichr 
-    service for enrichment analysis. It supports saving the analysis results to a CSV file and filtering the results based 
+    This class uses a graph structure (igraph.Graph) to store clusters and genes as nodes and integrates with the Enrichr
+    service for enrichment analysis. It supports saving the analysis results to a CSV file and filtering the results based
     on various criteria such as adjusted p-value, Combined Score, or overlap percentage.
 
     Key Features:
@@ -29,7 +29,7 @@ class FunctionalAnalysis:
     - perform_analysis(clustering_data, output_file, algorithm): Performs enrichment analysis on clusters and saves results.
     - filter_results(input_file, output_file, p_value_threshold, combined_score_min, overlap_percentage_min): Filters and saves results.
     """
-    
+
     def __init__(self, graph: igraph.Graph, logger: logging.Logger):
         """
         Initializes the class with a graph containing the clusters.
@@ -38,11 +38,12 @@ class FunctionalAnalysis:
         """
         self.logger: logging.Logger = logger
         if not isinstance(graph, igraph.Graph):
-            self.logger.error("The 'graph' argument must be an object of type igraph.Graph.")
+            self.logger.error(
+                "The 'graph' argument must be an object of type igraph.Graph."
+            )
             raise
         self.graph = graph
 
-    @staticmethod
     def _perform_enrichment_analysis(self, genes: List[str]) -> pd.DataFrame:
         """
         Performs a functional enrichment analysis for a list of genes.
@@ -60,9 +61,9 @@ class FunctionalAnalysis:
             enr = gp.enrichr(
                 gene_list=genes,
                 gene_sets="GO_Biological_Process_2021",  # Functional database
-                organism="Human",                        # Organism
-                outdir=None,                             # Do not save results to disk.
-                no_plot=True,                            # Do not generate plots.
+                organism="Human",  # Organism
+                outdir=None,  # Do not save results to disk.
+                no_plot=True,  # Do not generate plots.
             )
 
             # Return results if there is data
@@ -74,7 +75,9 @@ class FunctionalAnalysis:
             return enr.results
 
         except Exception as e:
-            self.logger.error(f"Error in _perform_enrichment_analysis for genes {genes}: {e}")
+            self.logger.error(
+                f"Error in _perform_enrichment_analysis for genes {genes}: {e}"
+            )
             return pd.DataFrame()
 
     def perform_analysis(
@@ -90,7 +93,9 @@ class FunctionalAnalysis:
 
         try:
             if not isinstance(clustering_data, dict):
-                self.logger.error("The 'clustering_data' argument must be a dictionary.")
+                self.logger.error(
+                    "The 'clustering_data' argument must be a dictionary."
+                )
                 raise
 
             all_results = []
@@ -98,7 +103,9 @@ class FunctionalAnalysis:
             # Filter by algorithm if specified
             if algorithm:
                 if algorithm not in clustering_data:
-                    self.logger.error(f"The algorithm '{algorithm}' is not present in the clustering data.")
+                    self.logger.error(
+                        f"The algorithm '{algorithm}' is not present in the clustering data."
+                    )
                     raise
                 clustering_data = {algorithm: clustering_data[algorithm]}
 
@@ -107,8 +114,10 @@ class FunctionalAnalysis:
                     genes = cluster_info.get("Genes", [])
 
                     if VERBOSE:
-                        print(f"Performing functional analysis for {key} - {cluster_id}...")
-                    enrichment_results = self._perform_enrichment_analysis(genes)
+                        print(
+                            f"Performing functional analysis for {key} - {cluster_id}..."
+                        )
+                    enrichment_results = self._perform_enrichment_analysis(genes=genes)
 
                     if enrichment_results.empty:
                         if VERBOSE:
@@ -124,6 +133,10 @@ class FunctionalAnalysis:
             if all_results:
                 final_results = pd.concat(all_results, ignore_index=True).drop(
                     columns=["Old P-value", "Old Adjusted P-value"], errors="ignore"
+                )
+                # Convert 'Genes' column to list format
+                final_results["Genes"] = final_results["Genes"].apply(
+                    lambda x: str(x).split(";")
                 )
                 final_results.to_csv(output_file, index=False)
                 if VERBOSE:
@@ -164,7 +177,9 @@ class FunctionalAnalysis:
                 and combined_score_min is None
                 and overlap_percentage_min is None
             ):
-                self.logger.error("You must provide at least one filtering criterion (p_value_threshold, combined_score_min, or overlap_percentage_min).")
+                self.logger.error(
+                    "You must provide at least one filtering criterion (p_value_threshold, combined_score_min, or overlap_percentage_min)."
+                )
                 raise
 
             # Calculate the Overlap Percentage if needed

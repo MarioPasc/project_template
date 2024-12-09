@@ -28,6 +28,7 @@ def functional_analysis_pipeline(
     adjusted_p_value_threshold: float,
     combined_score_threshold: float,
     overlap_percentage_threshold: float,
+    logger: logging.Logger,
 ) -> LiteralString:
     """
     Executes the functional analysis pipeline:
@@ -49,7 +50,7 @@ def functional_analysis_pipeline(
     )
     try:
         # Initialize FunctionalAnalysis and load clustering data
-        fa = FunctionalAnalysis(graph)
+        fa = FunctionalAnalysis(graph=graph, logger=logger)
         clustering_data = utils.load_json(clustering_json)
 
         # Perform the functional analysis
@@ -170,6 +171,7 @@ def main():
         adjusted_p_value_threshold=args.adjusted_p_value_threshold,
         overlap_percentage_threshold=args.overlap_percentage_threshold,
         combined_score_threshold=args.combined_score_threshold,
+        logger=logger,
     )
 
     # Visualization
@@ -177,7 +179,7 @@ def main():
         filtered_data = pd.read_csv(filtered_results)
         prepared_data, gene_sets = (
             FunctionalVisualization.prepare_data_for_visualization_from_df(
-                filtered_data
+                filtered_data, logger=logger
             )
         )
 
@@ -186,15 +188,20 @@ def main():
 
         # Generate plots
         FunctionalVisualization.dot_plot(
-            prepared_data, os.path.join(plots_path, f"dot_plot.{args.format}")
+            df=prepared_data,
+            output_file=os.path.join(plots_path, f"dot_plot.{args.format}"),
+            logger=logger,
         )
         FunctionalVisualization.bar_plot(
-            prepared_data, os.path.join(plots_path, f"bar_plot.{args.format}")
+            df=prepared_data,
+            output_file=os.path.join(plots_path, f"bar_plot.{args.format}"),
+            logger=logger,
         )
         FunctionalVisualization.cnet_plot_igraph(
-            prepared_data,
-            gene_sets,
-            os.path.join(plots_path, f"cnet_plot.{args.format}"),
+            df=prepared_data,
+            gene_sets=gene_sets,
+            output_file=os.path.join(plots_path, f"cnet_plot.{args.format}"),
+            logger=logger,
         )
 
         # Venn diagram
@@ -208,6 +215,7 @@ def main():
             adjusted_p_value_threshold=args.adjusted_p_value_threshold,
             overlap_percentage_threshold=args.overlap_percentage_threshold,
             combined_score_threshold=args.combined_score_threshold,
+            logger=logger,
         )
 
         # Visualization
@@ -216,6 +224,7 @@ def main():
             file_enrichment=filtered_results,
             file_modularity=filtered_results_max_modularity,
             output_file=venn_file,
+            logger=logger,
         )
 
         logger.info("Visualization completed successfully.")

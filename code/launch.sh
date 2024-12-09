@@ -27,7 +27,7 @@ mkdir -p ./code/data
 # Download the HPO genes file using wget instead of curl, which is not installed by default in most Linux distros
 hpo_genes_data="./code/data/hpoGenes.tsv"
 
-#wget -q --header='Accept: application/json' 'https://ontology.jax.org/api/network/annotation/HP%3A0002145/download/gene' -O $hpo_genes_data
+wget -q --header='Accept: application/json' 'https://ontology.jax.org/api/network/annotation/HP%3A0002145/download/gene' -O $hpo_genes_data
 
 hpo_genes="./code/data/hpoGenesNames.tsv"
 
@@ -37,10 +37,10 @@ awk 'NR > 1{print $2}' $hpo_genes_data > $hpo_genes  # Extract gene names
 network="./code/data/network.tsv"
 
 # Retrieve the Protein-Protein Interaction Network
-#./code/utils/obtainPPINetwork.py $hpo_genes $network --filter="700"
+./code/utils/obtainPPINetwork.py $hpo_genes $network --filter="700"
 
 # Perform Network Analysis
-#./code/network/analysis.py $network $RESULTS
+./code/network/analysis.py $network $RESULTS
 
 # Run optimization only if 'train' is true
 if [ $OPTIMIZE = true ]; then
@@ -63,9 +63,9 @@ if [ $OPTIMIZE = true ]; then
 fi
 
 # Performance analysis on optimization results
-#./code/clustering/bho_analysis.py $RESULTS
+./code/clustering/bho_analysis.py $RESULTS
 
 # Clustering visualization and final results saving
-#./code/clustering/analysis.py code/data/network.tsv $RESULTS
+./code/clustering/analysis.py code/data/network.tsv $RESULTS
 
 ./code/functional_analysis/complete_analysis.py $network $RESULTS $RESULTS/clustering_results.json -f pdf -a leiden_max_enrichment -p 0.005 -c 2000 -o 0.1
