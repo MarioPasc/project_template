@@ -67,15 +67,29 @@ Para el análisis funcional y la construcción de redes genéticas en este estud
 
 \subsection{Análisis de enriquecimiento de vías biológicas}
 
-El análisis de enriquecimiento permite identificar vías biológicas o pathways que están significativamente representados en una lista de genes de interés, por medio de prubas estadísticas. Un pathway es un conjunto de genes que trabajan en conjunto para llevar a cabo un proceso biológico específico.\cite{Reimand2019}
+El análisis de enriquecimiento permite identificar vías biológicas o pathways que están significativamente representados en una lista de genes de interés, por medio de pruebas estadísticas. Un pathway es un conjunto de genes que trabajan en conjunto para llevar a cabo un proceso biológico específico.\cite{Reimand2019}
 
-Se realizó un análisis de enriquecimiento mediante la API de STRINGdb. Mediante el mapeo de las anotaciones funcionales de los genes en ontologías como Gene Ontology (GO), UniProt, Reactome y KEGG y comparando la distribución de estos términos en el conjunto de genes de interés con su distribución en un conjunto de referencia, se identificaron estadísticamente los términos sobrerrepresentados en la lista de genes asociados a la enfermedad. \cite{Tipney2010}
+En este estudio, se realizó un análisis de enriquecimiento para las agrupaciones de genes derivadas del algoritmo de clustering que ha generado un mejor resultado.
 
-STRINGdb, por tanto, permite analizar diversas categorías de anotaciones funcionales, incluyendo los términos de Gene Ontology (procesos biológicos, funciones moleculares y componentes celulares), rutas de KEGG y Reactome \cite{szklarczyk2023stringdb}. Se realizó un filtrado según el tipo de término para obtener los diferentes enriquecimientos funcionales de interés.
+Las herramientas de análisis funcional mapean las listas de genes de interés a terminos biólógicos anotados, como los términos GO y utilizan métodos estadísticos, como el test de Ficher o test hipergeométricos,
+para evaluar el enriquecimiento.\cite{10.1093/nar/gkn923} En particular, el test hipergeométrico evalúa si la representación de cada término funcional en el conjunto de genes de interés 
+es mayor que la esperada por azar. 
 
-Para calcular el enriquecimiento, STRINGdb utiliza un test hipergeométrico que evalúa si la representación de cada término funcional en el conjunto de genes de interés es mayor que la esperada por azar. Para controlar el error debido a comparaciones múltiples, se aplica la corrección de Benjamini-Hochberg para ajustar la tasa de descubrimiento falso (FDR) \cite{szklarczyk2023stringdb}.
 
-El análisis de enriquecimiento se realizó tanto en el conjunto completo de genes asociados a la enfermedad, extraído de términos de HPO, como en los genes agrupados en clústeres. 
+Para la realización de este análisis funcional se ha hecho uso del módulo \textit{enrich} de biblioteca de Python \textit{GSEAPY} que permite la realización de un 
+análisis de enriquecimiento de una lista de genes mediante la utilización de la API de Enrich. Esta herramienta evalúa si un conjunto de genes de entrada se superpone significativamente con conjuntos de genes previamente anotados. 
+El análisis se ha realiza utilizando la base de datos  GO_Biological_Process_2021, que recopila información sobre procesos biológicos. Sin embargo, la utilización de otras ontologías como 
+Gene Ontology (GO), UniProt, Reactome o KEGG podrían  información complementaria sobre diferentes tipos de términos funcionales.
+
+Enrich va a proporcionar varias métricasa a cerca de los resultados del enriquecimiento: p-valor, p-valor ajustado, odds ratio y combined score.
+El p-valor, calculado las pruebas estadísticas anteriormente mencionadas evalúa la significancia estadística de la superposición entre los genes de interés y los anotados en los términos. El p-valor ajustado
+utilizando el método de Benjamini-Hochberg para controlar la tasa de falsos positivo. La métrica de odds ratio mide la proporción entre los genes superpuestos observados y los esperados bajo una distribución aleatoria.
+Finalmente, combined score combina el p-value y el odds ratio en una métrica única. \cite{maayanlab_enrichr_help}
+
+Finalmente, se aplicaron filtros para seleccionar únicamente los términos funcionales más relevantes en los resultados obtenidos. Estos filtros han sido el p-valor ajustado a  0.005,
+combined score a  2000 y el porcentaje de overlap que se ha definico como  el número de genes de la lista de interés que se suporponen con los genes anotados del término entre el total de genes anotados en el término a 0.1.
+
+
 
 
 \subsection{Clustering}
@@ -84,7 +98,7 @@ Al aplicar algoritmos de clustering, nuestro objetivo es descubrir comunidades f
 
 \subsubsection{Red}
 
-En la red de interacción proteína-proteína (PPI) obtenida mediante la API de STRINGdb, cada nodo representa un gen y cada arista representa una interacción entre genes, ponderada por un puntaje de confianza otorgado por STRINGdb \cite{szklarczyk2023stringdb}. Para enfocarnos en interacciones más sólidas y confiables, se aplicó un umbral mínimo de confianza en las aristas, lo que permitió refinar la red y mejorar la relevancia de los clústeres detectados 
+En la red de interacción proteína-proteína (PPI) obtenida mediante la API de STRINGdb, cada nodo representa un gen y cada arista representa una interacción entre genes, ponderada por un puntaje de confianza otorgado por STRINGdb \cite{szklarczyk2023stringdb}. Para enfocarnos en interacciones más sólidas y confiables, se aplicó un umbral mínimo de confianza en las aristas, lo que permitió refinar la red y mejorar la relevancia de los clústeres detectados. 
 
 % (\textbf{NOTA:} Se debe ahondar en esto si al final se hace: ¿Por qué ese umbral? ¿Y si fueran otros umbrales?).
 
