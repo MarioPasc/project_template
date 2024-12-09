@@ -7,6 +7,8 @@ import networkx as nx
 from typing import List, Dict, Optional
 from upsetplot import UpSet
 from matplotlib_venn import venn2
+import igraph as ig
+from matplotlib.lines import Line2D
 
 
 class FunctionalVisualization:
@@ -130,6 +132,120 @@ class FunctionalVisualization:
 
         except Exception as e:
             print(f"Error en bar_plot: {e}")
+
+    @staticmethod
+    def cnet_plot_igraph(
+        df: pd.DataFrame, gene_sets: Dict[str, List[str]], output_file: str = None
+    ):
+        """
+        Genera un gráfico de red (Cnetplot) mostrando las relaciones entre genes y términos enriquecidos usando igraph.
+
+        :param df: DataFrame con columnas ['Term', 'Genes'].
+        :param gene_sets: Diccionario donde las claves son términos enriquecidos y los valores son listas de genes.
+        :param output_file: Ruta para guardar el gráfico (opcional).
+        """
+        try:
+            # Initialize an iGraph object
+            graph = ig.Graph()
+
+            # Add nodes for terms and genes, avoiding duplicates
+            term_nodes = [
+                {"name": term, "type": "term", "size": 20} for term in gene_sets.keys()
+            ]
+            gene_nodes = [
+                {
+                    "name": gene.replace("[", "").replace("]", "").replace('"', ""),
+                    "type": "gene",
+                    "size": 10,
+                }
+                for genes in gene_sets.values()
+                for gene in genes
+            ]
+
+            # Combine nodes and remove duplicates by "name"
+            all_nodes = {node["name"]: node for node in term_nodes + gene_nodes}
+            graph.add_vertices([node["name"] for node in all_nodes.values()])
+
+            # Add edges between terms and genes
+            edges = []
+            for term, genes in gene_sets.items():
+                for gene in genes:
+                    cleaned_gene = (
+                        gene.replace("[", "").replace("]", "").replace('"', "")
+                    )
+                    edges.append((term, cleaned_gene))
+            graph.add_edges(edges)
+
+            # Set node attributes (size and type)
+            graph.vs["size"] = [all_nodes[v["name"]]["size"] for v in graph.vs]
+            graph.vs["type"] = [all_nodes[v["name"]]["type"] for v in graph.vs]
+
+            # Define color mapping: terms -> blue, genes -> red
+            graph.vs["color"] = [
+                "skyblue" if v["type"] == "term" else "salmon" for v in graph.vs
+            ]
+
+            # Modify term labels: name in two rows (split by '\n')
+            graph.vs["label"] = [
+                v["name"].replace("(", "\n(") if v["type"] == "term" else v["name"]
+                for v in graph.vs
+            ]
+
+            # Generate a layout
+            layout = graph.layout("fruchterman_reingold")
+
+            # Plot the graph
+            plt.figure(figsize=(12, 10))
+            ig.plot(
+                graph,
+                target=plt.gca(),
+                layout=layout,
+                vertex_size=graph.vs["size"],
+                vertex_color=graph.vs["color"],
+                vertex_label=graph.vs["label"],
+                vertex_label_size=8,
+                edge_width=0.5,
+                edge_color="gray",
+            )
+
+            # Add a legend
+            legend_elements = [
+                Line2D(
+                    [0],
+                    [0],
+                    marker="o",
+                    color="w",
+                    markerfacecolor="skyblue",
+                    markersize=10,
+                    label="Terms",
+                ),
+                Line2D(
+                    [0],
+                    [0],
+                    marker="o",
+                    color="w",
+                    markerfacecolor="salmon",
+                    markersize=10,
+                    label="Genes",
+                ),
+            ]
+            plt.legend(
+                handles=legend_elements, loc="upper left", fontsize=10, frameon=True
+            )
+
+            # Add title
+            plt.title("Cnetplot - Gene-Term Relationships (iGraph)", fontsize=16)
+            plt.tight_layout()
+
+            # Save the output
+            if output_file:
+                plt.savefig(output_file, dpi=300)
+                print(f"Gráfico guardado en {output_file}")
+            else:
+                plt.show()
+
+        except Exception as e:
+            print(f"Error en cnet_plot: {e}")
 
     @staticmethod
     def cnet_plot(

@@ -155,7 +155,9 @@ def main():
         cnet_plot_file = os.path.join(
             args.results, os.path.join(plots_path, f"cnet_plot.{args.format}")
         )
-        FunctionalVisualization.cnet_plot(prepared_data, gene_sets, cnet_plot_file)
+        FunctionalVisualization.cnet_plot_igraph(
+            prepared_data, gene_sets, cnet_plot_file
+        )
 
         logger.info("Visualization completed.")
     except Exception as e:
