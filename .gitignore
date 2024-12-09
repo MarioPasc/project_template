@@ -11,8 +11,6 @@
 *.csv  
 # Ignorar archivos de datos en formato TSV
 *.tsv  
-# Ignorar archivos de texto
-*.txt 
 # Ignorar diarios de desarrolladores
 *.md
  
