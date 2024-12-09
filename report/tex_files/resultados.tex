@@ -55,24 +55,33 @@ El proceso de optimización de hiperparámetros mediante el BHO se analizará mo
 
 \subsection{Análisis Funcional}
 
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=.75\textwidth]{../results/plots/functional_analysis/venn_plot.pdf}
+	\caption{Este diagrama de Venn compara los términos funcionales identificados al aplicar el algoritmo de Leiden utilizando dos criterios: máxima modularidad y máximo puntaje de enriquecimiento funcional. La superposición indica los términos compartidos entre ambas soluciones, lo que proporciona una visión de la robustez y consistencia de los procesos identificados. Esta comparación ayuda a validar los resultados del análisis de clustering y enriquecimiento funcional​}
+	\label{fig:venn_plot}
+\end{figure}
+
+
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=.75\textwidth]{../results/plots/functional_analysis/bar_plot.pdf}
-	\caption{Representación de los procesos biológicos enriquecidos ordenados por p-valor ajustado.}
+	\caption{Este gráfico de barras muestra aquellos procesos biológicos enriquecidos del fenotipo de demencia frontotemporal (DFT). Los términos GO (Gene Ontology) más relevantes están ordenados por el p-valor ajustado en una escala logarítmica. La longitud de las barras indica la magnitud del enriquecimiento, mientras que el p-valor ajustado refleja la significancia estadística de cada proceso identificado​.}
 	\label{fig:bar_plot}
 \end{figure}
 
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=.75\textwidth]{../results/plots/functional_analysis/dot_plot.pdf}
-	\caption{Relación entre Procesos Biológicos, Gene Ratio y Significancia en la DFT.}
+	\caption{Este gráfico de puntos visualiza los términos GO enriquecidos junto con el Gene Ratio y el p-valor ajustado. El Gene Ratio indica la proporción de genes asociados a cada proceso respecto al total de genes en la lista de entrada. El tamaño del punto representa el número de genes implicados en cada término, mientras que el color refleja el p-valor ajustado.}
 	\label{fig:dot_plot}
 \end{figure}
 
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=.75\textwidth]{../results/plots/functional_analysis/cnet_plot.pdf}
-	\caption{Red de Interacción entre Genes y Procesos Biológicos en la DFT.}
+	\caption{Este gráfico muestra la relación entre genes específicos y los procesos biológicos enriquecidos en la DFT. Cada término GO está conectado con los genes que participan en dicho proceso. Esta visualización permite identificar genes que actúan como puntos de convergencia funcional.}
 	\label{fig:cnet_plot}
 \end{figure}
 
