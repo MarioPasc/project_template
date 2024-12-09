@@ -10,6 +10,15 @@ from matplotlib_venn import venn2
 import igraph as ig
 from matplotlib.lines import Line2D
 
+import scienceplots
+
+# Style
+plt.style.use(["science", "ieee", "std-colors"])
+plt.rcParams["font.size"] = 10
+plt.rcParams.update({"figure.dpi": "300"})
+plt.rcParams["axes.spines.top"] = False
+plt.rcParams["axes.spines.right"] = False
+
 
 class FunctionalVisualization:
     """
@@ -73,13 +82,13 @@ class FunctionalVisualization:
                 palette="coolwarm",  # Mejorar contraste de colores
                 legend="brief",
             )
-            plt.title("Dot Plot - Enrichment Analysis", fontsize=14)
-            plt.xlabel("Gene Ratio", fontsize=12)
-            plt.ylabel("Term", fontsize=12)
-            plt.gca().yaxis.set_tick_params(labelsize=10)  # Mejorar tamaño de etiquetas
+            plt.title("Dot Plot - Enrichment Analysis")
+            plt.xlabel("Gene Ratio")
+            plt.ylabel("Term")
+            #plt.gca().yaxis.set_tick_params(labelsize=10)  # Mejorar tamaño de etiquetas
             plt.tight_layout()
 
-            # Guardar o mostrar el gráfico
+            # Guardar el gráfico en un archivo si se especifica una ruta
             if output_file:
                 plt.savefig(output_file, dpi=300)
                 print(f"Gráfico guardado en {output_file}")
@@ -125,7 +134,7 @@ class FunctionalVisualization:
                 axis="x", linestyle="--", alpha=0.7
             )  # Agregar líneas de referencia
 
-            # Guardar o mostrar el gráfico
+            # Guardar el gráfico en un archivo si se especifica una ruta
             if output_file:
                 plt.savefig(output_file, dpi=300, bbox_inches="tight")
                 print(f"Gráfico guardado en {output_file}")
@@ -317,7 +326,7 @@ class FunctionalVisualization:
             plt.legend(frameon=True, loc="upper left", fontsize=10)
             plt.tight_layout()
 
-            # Guardar o mostrar el gráfico
+            # Guardar el gráfico en un archivo si se especifica una ruta
             if output_file:
                 plt.savefig(output_file, dpi=300)
                 print(f"Gráfico guardado en {output_file}")
