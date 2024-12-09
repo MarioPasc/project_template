@@ -50,10 +50,24 @@ def main():
     )
     parser.add_argument(
         "-p",
-        "--p_value_threshold",
+        "--adjusted_p_value_threshold",
         type=float,
         default=0.05,
         help="Threshold for filtering results by p-value (default: 0.05).",
+    )
+    parser.add_argument(
+        "-c",
+        "--combined_score_threshold",
+        type=float,
+        default=2000,
+        help="Threshold for filtering results by p-value (default: 2000).",
+    )
+    parser.add_argument(
+        "-o",
+        "--overlap_percentage_threshold",
+        type=float,
+        default=0.1,
+        help="Threshold for filtering results by overlapping (default: 0.1).",
     )
 
     args = parser.parse_args()
@@ -104,7 +118,9 @@ def main():
         fa.filter_results(
             input_file=functional_analysis_results,
             output_file=filtered_results,
-            p_value_threshold=args.p_value_threshold,
+            p_value_threshold=args.adjusted_p_value_threshold,
+            combined_score_min=args.combined_score_threshold,
+            overlap_percentage_min=args.overlap_percentage_threshold,
         )
         logger.info(f"Filtered results saved to {filtered_results}.")
     except Exception as e:

@@ -63,9 +63,9 @@ if [ $OPTIMIZE = true ]; then
 fi
 
 # Performance analysis on optimization results
-./code/clustering/bho_analysis.py $RESULTS
+#./code/clustering/bho_analysis.py $RESULTS
 
 # Clustering visualization and final results saving
-./code/clustering/analysis.py code/data/network.tsv $RESULTS
+#./code/clustering/analysis.py code/data/network.tsv $RESULTS
 
-./code/functional_analysis/complete_analysis.py $network $RESULTS $RESULTS/clustering_results.json -f pdf -a leiden_max_enrichment -p 0.005
+./code/functional_analysis/complete_analysis.py $network $RESULTS $RESULTS/clustering_results.json -f pdf -a leiden_max_enrichment -p 0.005 -c 2000 -o 0.1
