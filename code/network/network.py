@@ -437,6 +437,7 @@ class Network:
         title: str = None,
         legend: dict = None,
         attributes: dict = None,
+        layout: str = None
     ) -> plt.Axes:
         """
         Displays the network with different colors for each cluster.
@@ -447,6 +448,7 @@ class Network:
             title (str, optional): Title of the figure.
             legend (dict, optional): Dictionary of legend elements.
             attributes (dict, optional): Attributes dictionary for visual customization.
+            layout (str, optionl): Network layout (drl, kamada_kawai, fruchterman_reingold )
 
         Returns:
             plt.Axes: The matplotlib Axes object for the visualization.
@@ -474,6 +476,7 @@ class Network:
             attributes=attributes,  # Pass the updated attributes
             title=title,
             legend=None,  # Legend handled below
+            layout=layout
         )
 
         # Add legend if provided
