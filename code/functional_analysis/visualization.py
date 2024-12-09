@@ -19,6 +19,10 @@ plt.rcParams.update({"figure.dpi": "300"})
 plt.rcParams["axes.spines.top"] = False
 plt.rcParams["axes.spines.right"] = False
 
+import os
+
+VERBOSE: bool = os.environ.get("VERBOSE", "0") == "1"
+
 
 class FunctionalVisualization:
     """
@@ -106,7 +110,8 @@ class FunctionalVisualization:
             # Guardar el gráfico en un archivo si se especifica una ruta
             if output_file:
                 plt.savefig(output_file, dpi=300)
-                print(f"Gráfico guardado en {output_file}")
+                if VERBOSE:
+                    print(f"Gráfico guardado en {output_file}")
 
         except Exception as e:
             print(f"Error en dot_plot: {e}")
@@ -152,7 +157,8 @@ class FunctionalVisualization:
             # Guardar el gráfico en un archivo si se especifica una ruta
             if output_file:
                 plt.savefig(output_file, dpi=300, bbox_inches="tight")
-                print(f"Gráfico guardado en {output_file}")
+                if VERBOSE:
+                    print(f"Gráfico guardado en {output_file}")
 
         except Exception as e:
             print(f"Error en bar_plot: {e}")
@@ -264,7 +270,8 @@ class FunctionalVisualization:
             # Save the output
             if output_file:
                 plt.savefig(output_file, dpi=300)
-                print(f"Gráfico guardado en {output_file}")
+                if VERBOSE:
+                    print(f"Gráfico guardado en {output_file}")
             else:
                 plt.show()
 
@@ -344,7 +351,8 @@ class FunctionalVisualization:
             # Guardar el gráfico en un archivo si se especifica una ruta
             if output_file:
                 plt.savefig(output_file, dpi=300)
-                print(f"Gráfico guardado en {output_file}")
+                if VERBOSE:
+                    print(f"Gráfico guardado en {output_file}")
 
         except Exception as e:
             print(f"Error en cnet_plot: {e}")
@@ -415,7 +423,8 @@ class FunctionalVisualization:
             # Guardar el gráfico si se proporciona una ruta de archivo
             if output_file:
                 plt.savefig(output_file, dpi=300)
-                print(f"Gráfico guardado en {output_file}")
+                if VERBOSE:
+                    print(f"Gráfico guardado en {output_file}")
 
         except Exception as e:
             print(f"Error en upset_plot: {e}")
@@ -464,7 +473,8 @@ class FunctionalVisualization:
             # Guardar el gráfico en un archivo si se especifica una ruta
             if output_file:
                 plt.savefig(output_file, dpi=300)
-                print(f"Gráfico guardado en {output_file}")
+                if VERBOSE:
+                    print(f"Gráfico guardado en {output_file}")
 
         except Exception as e:
             print(f"Error en venn_diagram_from_csv: {e}")

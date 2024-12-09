@@ -6,6 +6,8 @@ import gseapy as gp
 from typing import Any, List, Dict, Union
 import igraph
 
+VERBOSE: bool = os.environ.get("VERBOSE", "0") == "1"
+
 
 class FunctionalAnalysis:
     def __init__(self, graph: igraph.Graph):
@@ -83,13 +85,15 @@ class FunctionalAnalysis:
                 for cluster_id, cluster_info in clusters.items():
                     genes = cluster_info.get("Genes", [])
 
-                    print(f"Realizando análisis funcional para {key} - {cluster_id}...")
+                    if VERBOSE:
+                        print(f"Realizando análisis funcional para {key} - {cluster_id}...")
                     enrichment_results = self._perform_enrichment_analysis(genes)
 
                     if enrichment_results.empty:
-                        print(
-                            f"No se encontraron resultados de enriquecimiento para {key} - {cluster_id}."
-                        )
+                        if VERBOSE:
+                            print(
+                                f"No se encontraron resultados de enriquecimiento para {key} - {cluster_id}."
+                            )
                         continue
 
                     enrichment_results["Algorithm"] = key
@@ -101,9 +105,11 @@ class FunctionalAnalysis:
                     columns=["Old P-value", "Old Adjusted P-value"], errors="ignore"
                 )
                 final_results.to_csv(output_file, index=False)
-                print(f"Resultados guardados en {output_file}.")
+                if VERBOSE:
+                    print(f"Resultados guardados en {output_file}.")
             else:
-                print("No se encontraron resultados significativos para los clústeres.")
+                if VERBOSE:
+                    print("No se encontraron resultados significativos para los clústeres.")
 
         except Exception as e:
             print(f"Error en perform_analysis: {e}")
@@ -161,7 +167,8 @@ class FunctionalAnalysis:
 
             # Save the filtered results
             data.to_csv(output_file, index=False)
-            print(f"Resultados filtrados guardados en {output_file}.")
+            if VERBOSE:
+                print(f"Resultados filtrados guardados en {output_file}.")
 
         except Exception as e:
             print(f"Error al filtrar resultados: {e}")
