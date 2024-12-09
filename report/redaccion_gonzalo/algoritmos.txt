@@ -5,15 +5,6 @@ A continuación, se detallan los tres algoritmos de clustering, proporcionados p
 
 \begin{itemize}
     \item \textbf{Fast Greedy}: es un algoritmo de clustering jerárquico que optimiza directamente la modularidad, lo que le confiere una gran utilidad en biología de sistemas, ya que la esta captura la idea de que los nodos dentro de una comunidad son más conexos entre sí que con nodos de otras comunidades.
-
-    La modularidad \( Q \), definida en la Ecuación \ref{eq:modularity}, es un valor escalar entre \(-1\) y \(1\) que representa la diferencia entre la densidad de aristas dentro de las comunidades y la densidad de aristas esperada si fuese una red aleatoria con la misma distribución de grados. Esta se define como:
-
-    \begin{equation}
-    \label{eq:modularity}
-    Q = \frac{1}{2m} \sum_{i,j} \left[ A_{ij} - \frac{k_i k_j}{2m} \right] \delta(c_i, c_j),
-    \end{equation}
-
-    \noindent donde \( A_{ij} \) es el peso de la arista entre los nodos \( i \) y \( j \), \( k_i \) y \( k_j \) son las sumas de los pesos de las aristas conectadas a los nodos \( i \) y \( j \), \( c_i \) y \( c_j \) representan las comunidades a las que pertenecen los nodos \( i \) y \( j \), y \( \delta(c_i, c_j) \) es una función delta de Kronecker que es 1 si \( c_i = c_j \) y 0 en caso contrario. El término \( m \) es la suma total de los pesos de las aristas en la red.
     
     La estrategia que sigue Fast Greedy es voraz, es decir que toma decisiones locales en cada iteración para optimizar la modularidad. Sigue los siguientes pasos: inicialización (considera que cada nodo es un cluster), fusión (en cada iteración fusiona las comunidades que aumenten en mayor medida la modularidad) y terminación (el algoritmo termina cuando no se pueda incrementar más la modularidad) \ref{clauset2004finding}.
 
@@ -33,15 +24,16 @@ A continuación, se detallan los tres algoritmos de clustering, proporcionados p
 
     Se ajustó el parámetro de resolución, que controla el tamaño final de las comunidades. El resto de parámetros se dejaron con sus valores por defecto.
     
-    \item \textbf{Algoritmo de Leiden}: este algoritmo se diseñó para mejorar las limitaciones del algoritmo de Louvain, particularmente en términos de garantizar comunidades bien conectadas. 
+    \item \textbf{Algoritmo de Leiden}: este algoritmo se diseñó para mejorar las limitaciones del algoritmo de Louvain, particularmente en términos de garantizar comunidades bien conectadas. Sigue los siguintes pasos:
+
+    \begin{itemize}
+        \item \textit{Movimiento local de nodos}: Cada nodo del grafo comienza en su propia comunidad. El algoritmo evalúa si mover un nodo a la comunidad de uno de sus vecinos incrementa la modularidad. Si es así, el nodo se mueve. Este proceso se repite hasta que ningún movimiento adicional mejore la modularidad.
+
+        \item \textit{División interna de comunidades}: Dentro de cada comunidad, el algoritmo verifica si estas son completamente conexas. Si no lo son, divide las comunidades en subcomunidades más pequeñas para garantizar que todas sean subgrafos conexos.
+
+        \item \textit{Agregación y simplificación del grafo}: Cada comunidad identificada se trata como un solo nodo, y se construye un nuevo grafo 'resumido'. Luego, se repiten los pasos anteriores con este nuevo grafo \cite{traag2019leiden}.
+    \end{itemize}
     
-    Se basa en optimizar el Constant Potts Model (CPM) de la red \cite{traag2019leiden,constantplottsmodel}. Esta función, mostrada en la Ecuación \ref{eq:cpm}, evalúa la calidad de una partición en comunidades considerando un balance entre la densidad interna de cada clúster y el parámetro de resolución \(\gamma\), que controla el tamaño preferido de las comunidades finales. El término \(n_c\) se refiere al número de nodos, mientras que \(e_c\) es el número de aristas internas, ambos referidos a la comunidad \(c\).
-
-    \begin{equation}
-    	\label{eq:cpm}
-    	\mathcal{H} = \sum_{c} \left[ e_c - \gamma \left( \frac{n_c (n_c - 1)}{2} \right) \right]
-    \end{equation}
-
     Se ajustó el parámetro \(\gamma\), así como el número de iteraciones del algoritmo, permitiendo que el Leiden refinara iterativamente la partición. El resto de parámetros se fijaron a su valor por defecto. 
 
 \end{itemize}

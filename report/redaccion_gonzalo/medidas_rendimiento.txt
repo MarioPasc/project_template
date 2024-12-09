@@ -13,7 +13,7 @@ Las medidas de rendimiento usadas para la evaluación de los resultados de clust
 
     \noindent donde \( A_{ij} \) es el peso de la arista entre los nodos \( i \) y \( j \), \( k_i \) y \( k_j \) son las sumas de los pesos de las aristas conectadas a los nodos \( i \) y \( j \), \( c_i \) y \( c_j \) representan las comunidades a las que pertenecen los nodos \( i \) y \( j \), y \( \delta(c_i, c_j) \) es una función delta de Kronecker que es 1 si \( c_i = c_j \) y 0 en caso contrario. El término \( m \) es la suma total de los pesos de las aristas en la red.
 
-    \textbf{Puntuaje de Enriquecimiento Funcional (PEF)}: esta métrica ha sido ideada con la finalidad de cuantificar el sentido biológico de un clustering. Para ello, se ha ha realizado un enriquecimiento funcional de cada cluster usando la API de StringDB. Para cada cluster, se calcula el PEF local usando estas dos medidas:
+    \item \textbf{Puntuaje de Enriquecimiento Funcional (PEF)}: esta métrica ha sido ideada con la finalidad de cuantificar el sentido biológico de un clustering. Para ello, se ha ha realizado un enriquecimiento funcional de cada cluster usando la API de StringDB. Para cada cluster, se calcula el PEF local usando estas dos medidas:
 
     \begin{itemize}
         \item \textit{P-valor}: de cada término enriquecido, se obtiene el p-valor asociado, que es un valor entre 0 y 1 que mide la confianza que hay en dicho término.
