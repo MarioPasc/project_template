@@ -76,7 +76,12 @@ def main():
     # network metrics
     analyzer.calculate_metrics(network_path_plots, args.format)
     # plot network
-    analyzer.visualize_network(f"{network_path_plots}/network.{args.format}")
+    analyzer.visualize_network(
+        output_path=f"{network_path_plots}/network.{args.format}",
+        attributes={"vertex_label_size": 7, "vertex_size": 30},
+        layout="auto",
+        default_color="#30ABF5",
+    )
 
     metrics = analyzer.metrics
 

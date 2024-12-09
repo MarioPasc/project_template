@@ -5,6 +5,15 @@ from typing import Tuple
 
 import igraph
 import plotly.graph_objects as go
+import matplotlib.pyplot as plt
+import scienceplots
+
+# Style
+plt.style.use(["science", "ieee", "std-colors"])
+plt.rcParams["font.size"] = 10
+plt.rcParams.update({"figure.dpi": "300"})
+plt.rcParams["axes.spines.top"] = False
+plt.rcParams["axes.spines.right"] = False
 
 
 class Metrics:

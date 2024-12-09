@@ -14,6 +14,16 @@ import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
 from matplotlib.patches import Patch
 import matplotlib.cm as cm
+import matplotlib.pyplot as plt
+import scienceplots
+
+# Style
+plt.style.use(["science", "ieee", "std-colors"])
+plt.rcParams["font.size"] = 10
+plt.rcParams.update({"figure.dpi": "300"})
+plt.rcParams["axes.spines.top"] = False
+plt.rcParams["axes.spines.right"] = False
+
 
 import os
 
@@ -324,6 +334,7 @@ class Network:
             "vertex_label": self.graph.vs["name"],
             "vertex_label_size": 8,
             "edge_width": 0.5,
+            "margin": 50,
         }
 
         # Update default values with attributes passed in the dictionary
@@ -437,7 +448,7 @@ class Network:
         title: str = None,
         legend: dict = None,
         attributes: dict = None,
-        layout: str = None
+        layout: str = None,
     ) -> plt.Axes:
         """
         Displays the network with different colors for each cluster.
@@ -476,7 +487,7 @@ class Network:
             attributes=attributes,  # Pass the updated attributes
             title=title,
             legend=None,  # Legend handled below
-            layout=layout
+            layout=layout,
         )
 
         # Add legend if provided

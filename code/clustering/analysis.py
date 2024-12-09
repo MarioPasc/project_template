@@ -407,6 +407,7 @@ def main() -> None:
                 title="",
                 legend=legend,
                 attributes={"vertex_label_size": 7, "vertex_size": 90},
+                layout="auto",
             )
 
             # Store the saved image path
@@ -477,6 +478,7 @@ def main() -> None:
         title="",
         legend=fastgreedy_legend,
         attributes={"vertex_label_size": 7, "vertex_size": 90},
+        layout="auto",
     )
 
     # Log the results for "Fast Greedy"
