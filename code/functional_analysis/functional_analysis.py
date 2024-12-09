@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import logging
 import os
 import pandas as pd
 import gseapy as gp
@@ -29,20 +30,20 @@ class FunctionalAnalysis:
     - filter_results(input_file, output_file, p_value_threshold, combined_score_min, overlap_percentage_min): Filters and saves results.
     """
     
-    def __init__(self, graph: igraph.Graph):
+    def __init__(self, graph: igraph.Graph, logger: logging.Logger):
         """
         Initializes the class with a graph containing the clusters.
 
         :param graph: Graph object that already includes the clusters and genes as nodes.
         """
+        self.logger: logging.Logger = logger
         if not isinstance(graph, igraph.Graph):
-            raise TypeError(
-                "The 'graph' argument must be an object of type igraph.Graph."
-            )
+            self.logger.error("The 'graph' argument must be an object of type igraph.Graph.")
+            raise
         self.graph = graph
 
     @staticmethod
-    def _perform_enrichment_analysis(genes: List[str]) -> pd.DataFrame:
+    def _perform_enrichment_analysis(self, genes: List[str]) -> pd.DataFrame:
         """
         Performs a functional enrichment analysis for a list of genes.
 
@@ -52,7 +53,8 @@ class FunctionalAnalysis:
 
         try:
             if not genes:
-                raise ValueError("The genes list is empty.")
+                self.logger.error("The genes list is empty.")
+                raise
 
             # Functional analysis using Enrichr
             enr = gp.enrichr(
@@ -72,7 +74,7 @@ class FunctionalAnalysis:
             return enr.results
 
         except Exception as e:
-            print(f"Error in _perform_enrichment_analysis for genes {genes}: {e}")
+            self.logger.error(f"Error in _perform_enrichment_analysis for genes {genes}: {e}")
             return pd.DataFrame()
 
     def perform_analysis(
@@ -88,18 +90,16 @@ class FunctionalAnalysis:
 
         try:
             if not isinstance(clustering_data, dict):
-                raise ValueError(
-                    "The 'clustering_data' argument must be a dictionary."
-                )
+                self.logger.error("The 'clustering_data' argument must be a dictionary.")
+                raise
 
             all_results = []
 
             # Filter by algorithm if specified
             if algorithm:
                 if algorithm not in clustering_data:
-                    raise ValueError(
-                        f"The algorithm '{algorithm}' is not present in the clustering data."
-                    )
+                    self.logger.error(f"The algorithm '{algorithm}' is not present in the clustering data.")
+                    raise
                 clustering_data = {algorithm: clustering_data[algorithm]}
 
             for key, clusters in clustering_data.items():
@@ -133,7 +133,7 @@ class FunctionalAnalysis:
                     print("No significant results found for the clusters.")
 
         except Exception as e:
-            print(f"Error in perform_analysis: {e}")
+            self.logger.error(f"Error in perform_analysis: {e}")
 
     def filter_results(
         self,
@@ -164,9 +164,8 @@ class FunctionalAnalysis:
                 and combined_score_min is None
                 and overlap_percentage_min is None
             ):
-                raise ValueError(
-                    "You must provide at least one filtering criterion (p_value_threshold, combined_score_min, or overlap_percentage_min)."
-                )
+                self.logger.error("You must provide at least one filtering criterion (p_value_threshold, combined_score_min, or overlap_percentage_min).")
+                raise
 
             # Calculate the Overlap Percentage if needed
             if overlap_percentage_min is not None:
@@ -193,4 +192,4 @@ class FunctionalAnalysis:
                 print(f"Filtered results saved in {output_file}.")
 
         except Exception as e:
-            print(f"Error filtering results: {e}")
+            self.logger.error(f"Error filtering results: {e}")
