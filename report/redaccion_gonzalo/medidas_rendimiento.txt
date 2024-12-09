@@ -1,0 +1,37 @@
+\subsubsection{Medidas de Rendimiento}
+\label{sec:metricas}
+
+Las medidas de rendimiento usadas para la evaluación de los resultados de clustering usando los algoritmos de la sección anterior, son las siguientes:
+
+\begin{itemize}
+    \item \textbf{Modularidad (Q)}: esta medida, definida en la Ecuación \ref{eq:modularity}, es un valor escalar entre \(-1\) y \(1\) que representa la diferencia entre la densidad de aristas dentro de las comunidades y la densidad de aristas esperada si fuese una red aleatoria con la misma distribución de grados. Esta se define como:
+
+    \begin{equation}
+    \label{eq:modularity}
+    Q = \frac{1}{2m} \sum_{i,j} \left[ A_{ij} - \frac{k_i k_j}{2m} \right] \delta(c_i, c_j),
+    \end{equation}
+
+    \noindent donde \( A_{ij} \) es el peso de la arista entre los nodos \( i \) y \( j \), \( k_i \) y \( k_j \) son las sumas de los pesos de las aristas conectadas a los nodos \( i \) y \( j \), \( c_i \) y \( c_j \) representan las comunidades a las que pertenecen los nodos \( i \) y \( j \), y \( \delta(c_i, c_j) \) es una función delta de Kronecker que es 1 si \( c_i = c_j \) y 0 en caso contrario. El término \( m \) es la suma total de los pesos de las aristas en la red.
+
+    \textbf{Puntuaje de Enriquecimiento Funcional (PEF)}: esta métrica ha sido ideada con la finalidad de cuantificar el sentido biológico de un clustering. Para ello, se ha ha realizado un enriquecimiento funcional de cada cluster usando la API de StringDB. Para cada cluster, se calcula el PEF local usando estas dos medidas:
+
+    \begin{itemize}
+        \item \textit{P-valor}: de cada término enriquecido, se obtiene el p-valor asociado, que es un valor entre 0 y 1 que mide la confianza que hay en dicho término.
+
+        \item \textit{Profundidad}: usando la API de Gene Ontology (GO), se obtiene la profundidad de cada término en la ontología. Este valor se encuentra entre el intervalo [0, 20]. Cuanto más profundo es un término, mayor es normalmente la cantidad de información que ofrece. Esto no siempre se cumple ya que para un mismo valor de profundidad, dos términos GO puede tener una cantidad de información distinta. Esto es una limitación de la métrica, que podría tenerse en cuenta a la hora de proponer otra versión que ofrezca una mejor aproximación.
+    \end{itemize}
+
+    Una vez obtenidas estas dos medidas de cada termino enriquecido, se usa la ecuación \ref{eq:pef} para obtener el valor de PEF.
+
+    \begin{equation}
+    \label{eq:pef}
+    PEF = \frac{-\log_{10}(\text{p-valor}) \cdot \text{profundidad}}{c},
+    \end{equation}
+
+    El objetivo de esta ecuación es combinar de la mejor manera las dos medidas. Por un lado, al p-valor se le calcula el logaritmo en base 10, que equivale al valor del exponente del mismo en notación científica. Además al ser este un valor negativo, se positiviza multiplicándolo por -1. De esta manera, un valor más pequeño del p-valor resultará en un mayor PEF. El logaritmo se usa para estabilizar los valores de la métrica, debido a que los p-valores pueden estar en escalas muy pequeñas, por lo que a veces cambios muy pequeños en este, podría resultar en un gran cambio del PEF. Por último, este valor se multiplica por la profundidad y se divide por una constante $c$. Esta constante es un supuesto máximo valor teórico para la métrica, que hemos fijado en 600 (-log10(p-valor) = 60, profundidad = 10). Tiene como finalidad ajustar el rango de valores entre 0 y 1, para que se comparable con la modularidad en la optimización multi-objetivo.
+
+    Una vez calculado el PEF de un término, se promedian todos los PEFs de cada cluster, y finalmente los de cada cluster para obtener el valor final.
+
+    Cuantificar el sentido biológico es una tarea difícil, a la cual pueden haber muchas aproximaciones. Esta propuesta tiene limitaciones, ya que se trata de una primera aproximación a un problema bastante complejo. No obstante, ofrece una aproximación decente y rápida, sirviendo como punto de partida para futuras mejoras.
+    
+\end{itemize}
