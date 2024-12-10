@@ -6,7 +6,7 @@ A continuación, se detallan los tres algoritmos de clustering, proporcionados p
 \begin{itemize}
     \item \textbf{Fast Greedy}: es un algoritmo de clustering jerárquico que optimiza directamente la modularidad, lo que le confiere una gran utilidad en biología de sistemas, ya que la esta captura la idea de que los nodos dentro de una comunidad son más conexos entre sí que con nodos de otras comunidades.
     
-    La estrategia que sigue Fast Greedy es voraz, es decir que toma decisiones locales en cada iteración para optimizar la modularidad. Sigue los siguientes pasos: inicialización (considera que cada nodo es un cluster), fusión (en cada iteración fusiona las comunidades que aumenten en mayor medida la modularidad) y terminación (el algoritmo termina cuando no se pueda incrementar más la modularidad) \ref{clauset2004finding}.
+    La estrategia que sigue Fast Greedy es voraz, es decir que toma decisiones locales en cada iteración para optimizar la modularidad. Sigue los siguientes pasos: inicialización (considera que cada nodo es un cluster), fusión (en cada iteración fusiona las comunidades que aumenten en mayor medida la modularidad) y terminación (el algoritmo termina cuando no se pueda incrementar más la modularidad) \cite{clauset2004finding}.
 
     Este algoritmo no precisa del ajuste de ningún hiperparámetro, por lo que los resultados del mismo se han tomado como referencia y punto de partida para los demás algoritmos.
     
@@ -20,7 +20,7 @@ A continuación, se detallan los tres algoritmos de clustering, proporcionados p
         \item \textit{Construcción de la red}: una vez los nodos están en comunidades correspondientes, se agrupan las comunidades en un nuevo “supernodo” y se construye una nueva red en la que los nodos son las comunidades encontradas. Se vuelve a calcular la modularidad y se repite el proceso hasta que no se pueda mejorar más la modularidad.
     \end{itemize}
 
-    Este proceso jerárquico permite detectar comunidades a diferentes escalas de la red \cite{Blondel2008}.
+    Este proceso jerárquico permite detectar comunidades a diferentes escalas de la red \cite{Blondel2008Louvain}.
 
     Se ajustó el parámetro de resolución, que controla el tamaño final de las comunidades. El resto de parámetros se dejaron con sus valores por defecto.
     

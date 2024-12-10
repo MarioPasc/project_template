@@ -18,6 +18,7 @@
 \usepackage{booktabs}  % Paquete instalado
 \usepackage{caption}   % Paquete instalado
 \usepackage{multirow}
+\usepackage{float}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                          %%
@@ -52,7 +53,7 @@
 			\author[
 			addressref={aff1},
 			email={pascualgonzalez.mario@uma.es}
-			]{\inits{M.Pascual}\fnm{Mario} \snm{Pascual González}}
+			]{\inits{M.P.G}\fnm{Mario} \snm{Pascual González}}
 			\author[
 			  addressref={aff1},
 			  email={ainhoasb@uma.es}
@@ -64,7 +65,7 @@
 			\author[
 			addressref={aff1},
 			email={gonzalo.mesas.aranda@uma.es}
-			]{\inits{G.Mesas}\fnm{Gonzalo} \snm{Mesas Aranda}}
+			]{\inits{G.M.A}\fnm{Gonzalo} \snm{Mesas Aranda}}
 			\author[
 			addressref={aff1},
 			email={ainhoapergon@uma.es}
@@ -127,37 +128,23 @@
 	\begin{backmatter}
 	
 		\section*{Abreviaciones}%% if any
-			EA $\rightarrow$ Enfermedad de Alzheimer
-		
-			FTD $\rightarrow$ Demencia Frontotemporal
-			
-			bvFTD $\rightarrow$ Variante del Comportamiento de la Demencia Frontotemporal
-			
-			PPA $\rightarrow$ Afasia Progresiva Primaria
-			
-			nfvPPA $\rightarrow$ Variante no fluente/agramática de la PPA
-			
-			svPPA $\rightarrow$ Variante semántica de la PPA
-			
-			lvPPA $\rightarrow$ Variante logopénica de la PPA
-			
-			MND $\rightarrow$ Enfermedad de la Motoneurona
-			
-			ELA $\rightarrow$ Esclerosis Lateral Amiotrófica
-			
-			FTLD $\rightarrow$ Degeneración Lobar Frontotemporal
-			
-			MRI $\rightarrow$ Imagen por Resonancia Magnética
-			
-			PET $\rightarrow$ Tomografía por emisión de positrones
-			
-			SPECT $\rightarrow$ Tomografía por Emisión de Fotón Único
-			
-			FDA $\rightarrow$ Administración de Alimentos y Medicamentos
-			
-			GRN $\rightarrow$ Gen precursor de granulina
-			
-			GO $\rightarrow$ Gene Ontology
+			AD $\rightarrow$ Alzheimer’s Disease (Enfermedad de Alzheimer)\\
+			FTD $\rightarrow$ Frontotemporal Dementia (Demencia Frontotemporal)\\
+			bvFTD $\rightarrow$ Behavioral variant Frontotemporal Dementia (Variante del Comportamiento de la Demencia Frontotemporal)\\
+			PPA $\rightarrow$ Primary Progressive Aphasia (Afasia Progresiva Primaria)\\
+			nfvPPA $\rightarrow$ Nonfluent/Agrammatic variant of PPA (Variante no fluente/agramática de la PPA)\\
+			svPPA $\rightarrow$ Semantic variant of PPA (Variante semántica de la PPA)\\
+			lvPPA $\rightarrow$ Logopenic variant of PPA (Variante logopénica de la PPA)\\
+			MND $\rightarrow$ Motor Neuron Disease (Enfermedad de la Motoneurona)\\
+			ELA $\rightarrow$ Amyotrophic Lateral Sclerosis (Esclerosis Lateral Amiotrófica)\\
+			FTLD $\rightarrow$ Frontotemporal Lobar Degeneration (Degeneración Lobar Frontotemporal)\\
+			MRI $\rightarrow$ Magnetic Resonance Imaging (Imagen por Resonancia Magnética)\\
+			PET $\rightarrow$ Positron Emission Tomography (Tomografía por Emisión de Positrones)\\
+			SPECT $\rightarrow$ Single Photon Emission Computed Tomography (Tomografía por Emisión de Fotón Único)\\
+			FDA $\rightarrow$ Food and Drug Administration (Administración de Alimentos y Medicamentos)\\
+			GRN $\rightarrow$ Granulin precursor gene (Gen precursor de granulina)\\
+			GO $\rightarrow$ Gene Ontology (Gene Ontology)
+
 			
 			FDR $\rightarrow$ Funtional False Discovery (tasa de descubrimiento falso)
 			
@@ -171,6 +158,11 @@
 			https://github.com/MarioPasc/project\_template.git
 		
 		\section*{Contribución de los autores}
+		
+			G.M.A : (Redacción) Análisis Genético del Fenotipo, Introducción; Medidas de Rendimiento, Métodos; Algoritmos, Métodos; Flujo de Trabajo, Diagrama. (Código) Metricas de Rendimiento, Modulo Clustering; Algoritmos de Clústering, Modulo Clustering. 
+			
+			C.R.G : (Redacción) Relación del Fenotipo con Enfermedades, Introducción; Análisis de enriquecimiento de vías biológicas, Métodos; Red PPI y sus propiedades, Resultados; 
+		
 			Usando las iniciales que habéis definido al comienzo del documento, debeis indicar la contribución al proyecto en el estilo:
 			J.E : Encargado del análisis de coexpresión con R, escritura de resultados; J.R.S : modelado de red con python y automatizado del código, escritura de métodos; ...
 			OJO: que sea realista con los registros que hay en vuestros repositorios de github. 

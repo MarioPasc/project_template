@@ -108,12 +108,6 @@ combined score a  2000 y el porcentaje de overlap que se ha definico como  el n�
 
 Al aplicar algoritmos de clustering, nuestro objetivo es descubrir comunidades funcionales dentro de la red de genes asociada a la demencia frontotemporal. Estas comunidades, módulos, o \textit{clusters} funcionales pueden representar procesos biológicos específicos, vías celulares, o mecanismos asociados al fenotipo FTD. Encontrar estos clusters podría revelar posibles dianas terapéuticas o grupos de biomarcadores dentro del conjunto de genes, lo cual podría abrir las puertas a nuevos tratamientos para los pacientes de FTD.
 
-\subsubsection{Red}
-
-En la red de interacción proteína-proteína (PPI) obtenida mediante la API de STRINGdb, cada nodo representa un gen y cada arista representa una interacción entre genes, ponderada por un puntaje de confianza otorgado por STRINGdb \cite{szklarczyk2023stringdb}. Para enfocarnos en interacciones más sólidas y confiables, se aplicó un umbral mínimo de confianza en las aristas, lo que permitió refinar la red y mejorar la relevancia de los clústeres detectados. 
-
-% (\textbf{NOTA:} Se debe ahondar en esto si al final se hace: ¿Por qué ese umbral? ¿Y si fueran otros umbrales?).
-
 \input{tex_files/medidas_rendimiento.tex}
 \input{tex_files/algoritmos.tex}
 
