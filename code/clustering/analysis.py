@@ -18,6 +18,7 @@ import shutil
 import argparse
 import json
 import time
+import random
 
 import matplotlib.pyplot as plt
 from matplotlib.image import imread
@@ -41,17 +42,18 @@ VERBOSE: bool = os.environ.get("VERBOSE", "0") == "1"
 
 def get_extreme_configurations(
     csv_path: Union[str, os.PathLike]
-) -> Dict[Tuple[float, float], Tuple[float, str]]:
+) -> Tuple[Dict[Tuple[float, float], Tuple[float, str]], pd.DataFrame]:
     """
-    Extract extreme configurations from the Pareto front, maximizing values_0 and values_1,
-    and dynamically identify the relevant params_* column.
+    Extract extreme configurations and the Pareto front, maximizing values_0 and values_1.
 
     Args:
         csv_path (Union[str, os.PathLike]): Path to the CSV file containing the dataset.
 
     Returns:
-        Dict[Tuple[float, float], Tuple[float, str]]: A dictionary where keys are tuples of extreme (values_0, values_1)
-                                                      and values are tuples of (hyperparameter value, column name).
+        Tuple[
+            Dict[Tuple[float, float], Tuple[float, str]],
+            pd.DataFrame
+        ]: A dictionary of extreme configurations and the Pareto front DataFrame.
     """
     # Load the dataset
     data: pd.DataFrame = pd.read_csv(csv_path)
@@ -93,22 +95,22 @@ def get_extreme_configurations(
     # Get the extreme configurations and their params values
     extremes: Dict[Tuple[float, float], Tuple[float, str]] = {
         (
-            data.loc[max_modularity_index, "values_0"],
-            data.loc[max_modularity_index, "values_1"],
+            pareto_points.loc[max_modularity_index, "values_0"],
+            pareto_points.loc[max_modularity_index, "values_1"],
         ): (
-            data.loc[max_modularity_index, params_column],
+            pareto_points.loc[max_modularity_index, params_column],
             params_column,
         ),
         (
-            data.loc[max_enrichment_index, "values_0"],
-            data.loc[max_enrichment_index, "values_1"],
+            pareto_points.loc[max_enrichment_index, "values_0"],
+            pareto_points.loc[max_enrichment_index, "values_1"],
         ): (
-            data.loc[max_enrichment_index, params_column],
+            pareto_points.loc[max_enrichment_index, params_column],
             params_column,
         ),
     }
 
-    return extremes
+    return extremes, pareto_points
 
 
 def save_clustering_results_as_json(
@@ -271,7 +273,9 @@ def main() -> None:
     ]
 
     # Now, we can extract the most extreme configurations of the clustering algorithm
-    configurations: Dict[str, Dict[Tuple[float, float], Tuple[float, str]]] = {}
+    configurations: Dict[
+        str, Tuple[Dict[Tuple[float, float], Tuple[float, str]], pd.DataFrame]
+    ] = {}
     for csv_file in csv_files:
         algorithm_name: str = (
             os.path.basename(csv_file).replace("results_", "").replace(".csv", "")
@@ -308,15 +312,57 @@ def main() -> None:
     results_dict: Dict[str, List[List[int]]] = {}
 
     # Loop through each algorithm and its extreme configurations
-    for algorithm_name, extreme_configurations in configurations.items():
+    for algorithm_name, (
+        extreme_configurations,
+        pareto_front,
+    ) in configurations.items():
         # Initialize dictionary for saved paths if the algorithm name is not present
         if algorithm_name not in saved_clustering_paths:
             saved_clustering_paths[algorithm_name] = {}
 
-        # Ensure there are exactly two configurations for each algorithm
-        if len(extreme_configurations) != 2:
+        num_configs = len(extreme_configurations)
+
+        if num_configs == 0:
             raise ValueError(
-                f"Expected exactly two extreme configurations for {algorithm_name}, found {len(extreme_configurations)}."
+                f"No extreme configurations found for '{algorithm_name}'. This is impossible."
+            )
+        elif num_configs == 1:
+            # Keep the existing extreme configuration
+            existing_config = list(extreme_configurations.items())[0]
+            existing_point = existing_config[0]
+
+            # Filter the Pareto front to exclude the existing configuration
+            pareto_front_excl = pareto_front[
+                (pareto_front["values_0"] != existing_point[0])
+                | (pareto_front["values_1"] != existing_point[1])
+            ]
+
+            if pareto_front_excl.empty:
+                print(
+                    f"WARNING: Pareto front contains only one unique point for '{algorithm_name}'. "
+                    "Duplicating the existing configuration to fill the other extreme configuration."
+                )
+                # Duplicate the existing configuration
+                extreme_configurations[existing_point] = existing_config[1]
+            else:
+                # Randomly select another configuration
+                random_config = pareto_front_excl.sample(1).iloc[0]
+                random_point = (random_config["values_0"], random_config["values_1"])
+                random_params = (
+                    random_config[pareto_front.columns[-1]],
+                    pareto_front.columns[-1],
+                )
+
+                # Add the random configuration to extreme configurations
+                extreme_configurations[random_point] = random_params
+                print(
+                    f"INFO: Only one extreme configuration found for '{algorithm_name}'. "
+                    f"Randomly selected another from Pareto front: {random_point}."
+                )
+        elif num_configs > 2:
+            raise ValueError(
+                f"Expected exactly two extreme configurations for '{algorithm_name}', "
+                f"found {num_configs}. This is impossible."
             )
 
         # Extract configurations and determine roles
