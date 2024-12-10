@@ -1,11 +1,11 @@
 #! /usr/bin/env bash
 
 # Set to true if you want to fine-tune the clustering algorithms.
-export OPTIMIZE=true
+OPTIMIZE=${OPTIMIZE:-true}  # Valor por defecto: true
 
 # If train is true, then set the number of trials to run the Bayesian Optimization Algorithm.
 # In our original study we executed it for 150 trials.
-export TRIALS=100
+TRIALS=${TRIALS:-100}        # Valor por defecto: 100
 
 # Results folder
 export RESULTS="./results"
