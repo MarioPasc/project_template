@@ -83,8 +83,9 @@ cd /app/report || exit 1
 
 # Comple the tex file using pdflatex
 pdflatex -interaction=nonstopmode report.tex
-biber report
+bibtex report
 pdflatex -interaction=nonstopmode report.tex
 pdflatex -interaction=nonstopmode report.tex
 
-echo "Report generated: ./report/report.pdf"
+echo "Report generated: /app/report/report.pdf"
+
