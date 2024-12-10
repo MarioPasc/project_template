@@ -1,0 +1,5 @@
+# Exclude all HTML files from language statistics
+*.html linguist-vendored
+
+# Exclude all TeX files from language statistics
+*.tex linguist-vendored
