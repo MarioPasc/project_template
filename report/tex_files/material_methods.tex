@@ -91,7 +91,7 @@ Como se explicó en la Sección \ref{sec:algoritmos}, Louvain y Leiden son algor
 
 La estadística bayesiana es un enfoque probabilístico que utiliza el teorema de Bayes para actualizar las creencias sobre un modelo a medida que se incorporan nuevos datos. El ajuste bayesiano de hiperparámetros (BHO) aplica este enfoque para optimizar los parámetros de un modelo, construyendo y actualizando iterativamente un modelo probabilístico de la función objetivo en función de los hiperparámetros. Este modelo probabilístico sugiere los hiperparámetros a probar en cada iteración, permitiendo enfocar eficientemente la búsqueda en las regiones más prometedoras del espacio de hiperparámetros.
 
-Existen diversos algoritmos basados en BHO, cada uno caracterizado por el modelo probabilístico que construye. En este proyecto, hemos optado por el Tree-structured Parzen Estimator (TPE). En el TPE, consideramos que \( y \) es el valor obtenido al evaluar la función objetivo utilizando un conjunto de hiperparámetros \( \theta \). Definimos un umbral \( y^* \) que nos permite dividir nuestros datos en dos conjuntos: los hiperparámetros que resultan en un rendimiento mejor que \( y^* \) y los que resultan en un rendimiento peor. Es decir:
+Existen diversos algoritmos basados en BHO, cada uno caracterizado por el modelo probabilístico que construye. En este proyecto, se ha optado por el Tree-structured Parzen Estimator (TPE). En el TPE, se considera que \( y \) es el valor obtenido al evaluar la función objetivo utilizando un conjunto de hiperparámetros \( \theta \). Se define un umbral \( y^* \) que permite dividir nuestros datos en dos conjuntos: los hiperparámetros que resultan en un rendimiento mejor que \( y^* \) y los que resultan en un rendimiento peor:
 
 \begin{equation}
 	\begin{aligned}
@@ -100,7 +100,7 @@ Existen diversos algoritmos basados en BHO, cada uno caracterizado por el modelo
 	\end{aligned}
 \end{equation}
 
-Utilizando estimación de densidad por kernel (KDE), en este caso, el método de ventana deslizante de Parzen-Rosenblatt -ver detalles en Sección \ref{sec:anexo_a}- estimamos las distribuciones de probabilidad para estos dos conjuntos:
+Usando el método de ventana deslizante de Parzen-Rosenblatt para estimar la función de probabilidad de densidad, se estiman las distribuciones de probabilidad para estos dos conjuntos de hiperparámetros - para más detalles sobre el método de Parzen-Rosenblatt, revisar la Sección \ref{sec:anexo_a}:
 
 \begin{equation}
 	\begin{aligned}
@@ -115,22 +115,11 @@ El objetivo es seleccionar nuevos hiperparámetros \( \theta \) que maximicen el
 	\mathrm{EI}(\theta) \propto \frac{l(\theta)}{g(\theta)}
 \end{equation}
 
-Al maximizar \( \mathrm{EI}(\theta) \), favorecemos los hiperparámetros que son más probables en el conjunto de buen rendimiento \( \mathcal{C}_1 \) y menos probables en el conjunto de peor rendimiento \( \mathcal{C}_2 \). Este proceso se repite iterativamente; en cada iteración, los nuevos datos de rendimiento actualizan \( l(\theta) \) y \( g(\theta) \), permitiendo explorar eficientemente el espacio de hiperparámetros.
+Al maximizar \( \mathrm{EI}(\theta) \), se favorecen los hiperparámetros que son más probables en el conjunto de buen rendimiento \( \mathcal{C}_1 \) y menos probables en el conjunto de peor rendimiento \( \mathcal{C}_2 \). Este proceso se repite iterativamente; en cada iteración, los nuevos datos de rendimiento actualizan \( l(\theta) \) y \( g(\theta) \), permitiendo explorar eficientemente el espacio de hiperparámetros.
 
 Para Louvain y Leiden, se han ejecutado, respectivamente, \(150\) iteraciones, explorando resoluciones entre \(0.1\) y \(2.0\) que maximicen tanto el coeficiente Q como el puntuaje FES, descritos en la Sección \ref{sec:metricas}. Los datos se han almacenado en una base de datos SQLite, lo que permite extraer informes tabulados y reanudar el ajuste desde el punto de guardado si se desea, facilitando la gestión y continuidad del proceso.
 
-
-Como se comentó anteriormente, el principal objetivo del clustering en nuestra red PPI es determinar las comunidades funcionales subyacentes con la finalidad de identificar rutas metabólicas compatibles con la elaboración de dianas o biomarcadores para el tratamiento de la FTD. Por esto, no se debe perder la interpretabilidad biológica de la red, a la vez que se intenta maximizar la calidad del clustering aplicado. Dadas estas condiciones, se propone una optimización multiobjetivo, repartiendo las tareas de significancia biológica y calidad del clustering entre las siguientes métricas:
-
-\begin{itemize}
-	\item \textit{Modularidad (Q)}. Destinada a la evaluación de la calidad del clustering aplicado. Valores altos indican una conectividad interna densa dentro de los clústeres y conexiones dispersas entre ellos. La alta modularidad sugiere comunidades bien definidas.
-	
-	\item \textit{Puntaje de Enriquecimiento Funcional}: Para cada clúster, se realizó un análisis de enriquecimiento funcional mediante STRINGdb. Este puntaje refleja la significancia estadística de pathways, términos de la Ontología de Genes u otras anotaciones funcionales enriquecidas dentro de los clústeres. Un puntaje alto indica mayor relevancia biológica, ya que los clústeres enriquecidos en términos específicos probablemente representan procesos biológicos significativos.
-\end{itemize}
-
-
-\subsubsection*{Optimización}
-Se generaron varias configuraciones de modelos al ajustar sistemáticamente los parámetros de los algoritmos y evaluamos cada configuración en base a modularidad y puntaje de enriquecimiento funcional. Al trazar estos puntajes en un frente de Pareto, identificamos las configuraciones que representan el mejor equilibrio entre coherencia estructural (modularidad) y relevancia biológica (enriquecimiento funcional) \cite{goodarzi2014PARETOFRONT1,jahan2013multiPARETOFRONT2,costa2015paretoPARETOFRONT3}. Las configuraciones a lo largo de esta frontera representan soluciones Pareto-eficientes de clustering, donde mejorar una métrica no compromete significativamente la otra, permitiendo explorar soluciones con un balance diferente de las métricas de rendimiento elegidas.
+Se generaron varias configuraciones de modelos al ajustar sistemáticamente los parámetros de los algoritmos y evaluamos cada configuración en base a modularidad y puntaje de Enriquecimiento Funcional. Al trazar estos puntajes en un frente de Pareto, identificamos las configuraciones que representan el mejor equilibrio entre coherencia estructural (modularidad) y relevancia biológica (enriquecimiento funcional) \cite{goodarzi2014PARETOFRONT1,jahan2013multiPARETOFRONT2,costa2015paretoPARETOFRONT3}. Las configuraciones a lo largo de esta frontera representan soluciones Pareto-eficientes de clustering, donde mejorar una métrica no compromete significativamente la otra, permitiendo explorar soluciones con un balance diferente de las métricas de rendimiento elegidas.
 
 
 \subsection{Análisis de enriquecimiento de vías biológicas}
