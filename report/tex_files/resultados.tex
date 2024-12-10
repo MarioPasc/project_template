@@ -1,2 +1,93 @@
-
 \section{Resultados}
+En esta sección se exponen las visualizaciones y tablas generadas a partir de los resultados de análisis de la red, optimización del clustering, y análisis funcional de las comunidades obtenidas. 
+
+\subsection{Red PPI y sus propiedades}
+
+\input{tex_files/red.tex}
+
+\newpage
+
+\subsection{Optimización de Hiperparámetros}
+
+El proceso de optimización de hiperparámetros mediante el BHO se analizará mostrando el frente de pareto de ambos algoritmos y una visualización del rendimiento marginal de ambas métricas en base al valor de resolución (\(\gamma\)) evaluado.
+
+
+\subsection{Clustering}
+
+Se presentan los resultados de los algoritmos de clustering. Se tiene el baseline, Fast-Greedy, y las soluciones extremas Pareto-Óptimas de Leiden y Louvain.
+
+\subsection{Análisis Funcional}
+
+Se ha realizado un análisis funcional inicial que ha identificado más de 1200 términos GO asociados con el fenotipo de demencia frontotemporal (DFT), utilizando el algoritmo Leiden y optimizando la modularidad máxima. Tras aplicar un filtro de p-valor ajustado \textless{} 0.005, el número de términos se redujo a aproximadamente 25 procesos significativamente enriquecidos. Estos términos incluyen procesos relacionados con el metabolismo del \(\beta\)-amiloide, la inflamación microglial, el procesamiento del receptor Notch y diversas rutas metabólicas y de transporte neuronal.
+
+También se ha realizado un análisis funcional adicional empleando el algoritmo Leiden y maximizando el puntaje de enriquecimiento funcional, lo que ha permitido realizar una comparación detallada entre este análisis funcional y el realizado anteriormente, ambos basados en el algoritmo Leiden, pero con diferentes enfoques el primero para optimizar la modularidad máxima y el segundo para optimizar el puntuaje de enrequecimiento máximo. El resultado de esta comparación se observa el diagrama de Venn (Figura~\ref{fig:venn_plot}).
+
+A continuación, se muestran representaciones gráficas del análisis funcional realizado tras aplicar el filtro de p-valor ajustado. Estas representaciones incluyen un diagrama de Venn (Figura~\ref{fig:venn_plot}), que permite visualizar las intersecciones entre los conjuntos de genes asociados a diferentes procesos; un gráfico de barras (Figura~\ref{fig:bar_plot}), que muestra los términos significativamente enriquecidos y su nivel de significancia; un gráfico de puntos (Figura ~\ref{fig:dot_plot}), que relaciona los términos con su proporción y puntuación de enriquecimiento; y un gráfico de concentración y dispersión (Figura ~\ref{fig:cnet_plot}), que destaca la distribución de genes clave en los procesos identificados. Estas gráficas ilustran los hallazgos, proporcionando una visión integral tanto de la relevancia estadística de los términos identificados como de las conexiones funcionales entre los genes y los procesos biológicos correspondientes.
+
+\newpage
+
+\begin{figure}[htbp!]
+	\centering
+	\includegraphics[width=.96\textwidth]{../results/plots/optimization/pareto_comparison.pdf}
+	\caption{Frente de Pareto obtenido tras maximizar el puntuaje de FES y el coeficiente Q para Leiden y Louvain. Se puede observar que, para las soluciones Pareto-eficientes que conforman el extremo de la frontera, Leiden obtiene un puntuaje superior en cuanto a la modularidad, mientras que ambos algoritmos están igualados en cuanto al puntuaje de enriquecimiento funcional, diferenciándose por pocos decimales.}
+	\label{fig:pareto}
+\end{figure}
+
+\begin{figure}[htbp!]
+	\centering
+	\includegraphics[width=.96\textwidth]{../results/plots/optimization/hyperparameter_vs_metric.pdf}
+	\caption{Valores de resolución (\(\gamma\)) explorados por algoritmo, frente al rendimiento evaluado sobre el clustering obtenido. Leiden obtiene por un margen considerable la mejor modularidad, mientras que Louvain obtiene el mejor valor del FES por una diferencia despreciable.}
+	\label{fig:slice_plot}
+\end{figure}
+
+\begin{figure}[htbp!]
+	\centering
+	\includegraphics[width=.85\textwidth]{../results/plots/clustering/fast greedy_clustering.pdf}
+	\caption{Resultados de clustering para el algoritmo Fast-Greedy. Este clustering será considerado como nuestra base. No se ha ajustado ningún hiperparámetro para este método.}
+	\label{fig:fastgreedy_clustering}
+\end{figure}
+
+\begin{figure}[htbp!]
+	\centering
+	\includegraphics[width=.98\textwidth]{../results/plots/clustering/leiden_clustering.pdf}
+	\caption{Resultados de clustering para el algoritmo Leiden. Se presentan dos resultados, que corresponden a las soluciones Pareto-óptimas extremas (\(max(Q)\) ó \(max(FES)\)).}
+	\label{fig:leiden_clustering}
+\end{figure}
+
+\begin{figure}[htbp!]
+	\centering
+	\includegraphics[width=.98\textwidth]{../results/plots/clustering/louvain_clustering.pdf}
+	\caption{Resultados de clustering para el algoritmo Louvain. Se presentan dos resultados, que corresponden a las soluciones Pareto-óptimas extremas (\(max(Q)\) ó \(max(FES)\)).}
+	\label{fig:louvain_clustering}
+\end{figure}
+
+\begin{figure}[htbp!]
+	\centering
+	\includegraphics[width=.95\textwidth]{../results/plots/functional_analysis/venn_plot.pdf}
+	\caption{Este diagrama de Venn compara los términos funcionales identificados al aplicar el algoritmo de Leiden utilizando dos criterios: máxima modularidad y máximo puntaje de enriquecimiento funcional. La superposición indica los términos compartidos entre ambas soluciones, lo que proporciona una visión de la robustez y consistencia de los procesos identificados. Esta comparación ayuda a validar los resultados del análisis de clustering y enriquecimiento funcional}
+	\label{fig:venn_plot}
+\end{figure}
+
+
+\begin{figure}[htbp!]
+	\centering
+	\includegraphics[width=.95\textwidth]{../results/plots/functional_analysis/bar_plot.pdf}
+	\caption{Este gráfico de barras muestra aquellos procesos biológicos enriquecidos del fenotipo de demencia frontotemporal (DFT). Los términos GO (Gene Ontology) más relevantes están ordenados por el p-valor ajustado en una escala logarítmica. La longitud de las barras indica la magnitud del enriquecimiento, mientras que el p-valor ajustado refleja la significancia estadística de cada proceso identificado.}
+	\label{fig:bar_plot}
+\end{figure}
+
+\begin{figure}[htbp!]
+	\centering
+	\includegraphics[width=.95\textwidth]{../results/plots/functional_analysis/dot_plot.pdf}
+	\caption{Este gráfico de puntos visualiza los términos GO enriquecidos junto con el Gene Ratio y el p-valor ajustado. El Gene Ratio indica la proporción de genes asociados a cada proceso respecto al total de genes en la lista de entrada. El tamaño del punto representa el número de genes implicados en cada término, mientras que el color refleja el p-valor ajustado.}
+	\label{fig:dot_plot}
+\end{figure}
+
+\begin{figure}[htbp!]
+	\centering
+	\includegraphics[width=.95\textwidth]{../results/plots/functional_analysis/cnet_plot.pdf}
+	\caption{Este gráfico muestra la relación entre genes específicos y los procesos biológicos enriquecidos en la DFT. Cada término GO está conectado con los genes que participan en dicho proceso. Esta visualización permite identificar genes que actúan como puntos de convergencia funcional.}
+	\label{fig:cnet_plot}
+\end{figure}
+
+

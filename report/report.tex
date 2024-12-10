@@ -17,6 +17,7 @@
 \usepackage{array}
 \usepackage{booktabs}  % Paquete instalado
 \usepackage{caption}   % Paquete instalado
+\usepackage{multirow}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -52,7 +53,7 @@
 			\author[
 			addressref={aff1},
 			email={pascualgonzalez.mario@uma.es}
-			]{\inits{M.Pascual}\fnm{Mario} \snm{Pascual González}}
+			]{\inits{M.P.G}\fnm{Mario} \snm{Pascual González}}
 			\author[
 			  addressref={aff1},
 			  email={ainhoasb@uma.es}
@@ -64,7 +65,7 @@
 			\author[
 			addressref={aff1},
 			email={gonzalo.mesas.aranda@uma.es}
-			]{\inits{G.Mesas}\fnm{Gonzalo} \snm{Mesas Aranda}}
+			]{\inits{G.M.A}\fnm{Gonzalo} \snm{Mesas Aranda}}
 			\author[
 			addressref={aff1},
 			email={ainhoapergon@uma.es}
@@ -90,7 +91,9 @@
 			%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 			%% RESUMEN BREVE DE NO MAS DE 100 PALABRAS   %%
 			%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
-			
+			En este trabajo se ha construido una red de interacción proteína-proteína a partir de los genes asociados a dicho fenotipo en la ontología HPO. Sobre esta red se han aplicado tres algoritmos de agrupamiento (Leiden, Louvain y Fast Greedy) para identificar módulos funcionales.
+
+			La evaluación del rendimiento de estos algoritmos y la optimización de sus parámetros se ha realizado empleando la modularidad, junto con una métrica que permite cuantificar la relevancia biológica de los clústeres generados. Finalmente, a partir de los módulos resultantes, se llevó a cabo un análisis de enriquecimiento funcional con el objetivo de identificar procesos biológicos clave relacionados con la demencia frontotemporal.
 			\end{abstract}
 			
 			%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -114,9 +117,12 @@
 	
 	\input{tex_files/introduction.tex}
 	\input{tex_files/material_methods.tex}
+	\newpage
 	\input{tex_files/resultados.tex}
+	\newpage
 	\input{tex_files/discusion.tex}
 	\input{tex_files/conclusiones.tex}
+	\input{tex_files/anexo.tex}
 	
 	
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -126,50 +132,50 @@
 	\begin{backmatter}
 	
 		\section*{Abreviaciones}%% if any
-			EA $\rightarrow$ Enfermedad de Alzheimer
-		
-			FTD $\rightarrow$ Demencia Frontotemporal
-			
-			bvFTD $\rightarrow$ Variante del Comportamiento de la Demencia Frontotemporal
-			
-			PPA $\rightarrow$ Afasia Progresiva Primaria
-			
-			nfvPPA $\rightarrow$ Variante no fluente/agramática de la PPA
-			
-			svPPA $\rightarrow$ Variante semántica de la PPA
-			
-			lvPPA $\rightarrow$ Variante logopénica de la PPA
-			
-			MND $\rightarrow$ Enfermedad de la Motoneurona
-			
-			ELA $\rightarrow$ Esclerosis Lateral Amiotrófica
-			
-			FTLD $\rightarrow$ Degeneración Lobar Frontotemporal
-			
-			MRI $\rightarrow$ Imagen por Resonancia Magnética
-			
-			PET $\rightarrow$ Tomografía por emisión de positrones
-			
-			SPECT $\rightarrow$ Tomografía por Emisión de Fotón Único
-			
-			FDA $\rightarrow$ Administración de Alimentos y Medicamentos
-			
-			GRN $\rightarrow$ Gen precursor de granulina
-			
-			GO $\rightarrow$ Gene Ontology
+			AD $\rightarrow$ Alzheimer’s Disease (Enfermedad de Alzheimer)\\
+			FTD $\rightarrow$ Frontotemporal Dementia (Demencia Frontotemporal)\\
+			bvFTD $\rightarrow$ Behavioral variant Frontotemporal Dementia (Variante del Comportamiento de la Demencia Frontotemporal)\\
+			PPA $\rightarrow$ Primary Progressive Aphasia (Afasia Progresiva Primaria)\\
+			nfvPPA $\rightarrow$ Nonfluent/Agrammatic variant of PPA (Variante no fluente/agramática de la PPA)\\
+			svPPA $\rightarrow$ Semantic variant of PPA (Variante semántica de la PPA)\\
+			lvPPA $\rightarrow$ Logopenic variant of PPA (Variante logopénica de la PPA)\\
+			MND $\rightarrow$ Motor Neuron Disease (Enfermedad de la Motoneurona)\\
+			ELA $\rightarrow$ Amyotrophic Lateral Sclerosis (Esclerosis Lateral Amiotrófica)\\
+			FTLD $\rightarrow$ Frontotemporal Lobar Degeneration (Degeneración Lobar Frontotemporal)\\
+			MRI $\rightarrow$ Magnetic Resonance Imaging (Imagen por Resonancia Magnética)\\
+			PET $\rightarrow$ Positron Emission Tomography (Tomografía por Emisión de Positrones)\\
+			SPECT $\rightarrow$ Single Photon Emission Computed Tomography (Tomografía por Emisión de Fotón Único)\\
+			FDA $\rightarrow$ Food and Drug Administration (Administración de Alimentos y Medicamentos)\\
+			GRN $\rightarrow$ Granulin precursor gene (Gen precursor de granulina)\\
+			GO $\rightarrow$ Gene Ontology (Gene Ontology) \\
+			RQ $\rightarrow$ Research Question (Preguntas de investigación) \\
+			SRQ $\rightarrow$ Secondary Research Question (Preguntas de investigación secundaria)			\\
 			
 			FDR $\rightarrow$ Funtional False Discovery (tasa de descubrimiento falso)
 			
+			BHO $\rightarrow$ Bayesian Hyperparameter Optimization (ajuste bayesiano de hiperparámetros)	
+			
+			PDF $\rightarrow$ Probability Density Function (Función de Densidad de Probabilidad)
+			
+			KDE $\rightarrow$ Kernel Density Estimation (Estimación de la PDF mediante Kernel)
+			
 		
 		\section*{Disponibilidad de datos y materiales}%% if any
-			https://github.com/MarioPasc/project\_template.git
+			Los datos y materiales se pueden encontrar en el siguiente repositorio de GitHub: https://github.com/MarioPasc/project\_template
 		
 		\section*{Contribución de los autores}
-			Usando las iniciales que habéis definido al comienzo del documento, debeis indicar la contribución al proyecto en el estilo:
-			J.E : Encargado del análisis de coexpresión con R, escritura de resultados; J.R.S : modelado de red con python y automatizado del código, escritura de métodos; ...
-			OJO: que sea realista con los registros que hay en vuestros repositorios de github. 
 		
-		
+			G.M.A : (Redacción) Análisis Genético del Fenotipo, Introducción; Medidas de Rendimiento, Métodos; Algoritmos, Métodos; Flujo de Trabajo, Diagrama. (Código) Metricas de Rendimiento, Modulo Clustering; Algoritmos de Clústering, Modulo Clustering; Visualización del Frente de Pareto y Visualización Ajuste de Hiperparámetros, Modulo Clustering. 
+			
+			C.R.G : (Redacción) Relación del Fenotipo con Enfermedades, Introducción; Análisis de enriquecimiento de vías biológicas, Métodos; Red PPI y sus propiedades, Resultados; (Código) Módulo Network Completo; Obtención Proteínas en utils; Cambio de red .tsv a formato iGraph, utils; Creación del fichero original setup.sh y launch.sh; 
+			
+			A.N.S.B : (Redacción) Definición de Demencia, subtipos, relación con FTD, Introducción; HPO, StringDB, Datos de Entrada, Métodos; Análisis Funcional, Resultados, Discusión; (Código) Revisión del Análisis Funcional y Filtrado, Módulo Análisis funcional; Visualización de los resultados del Análisis Funcional, Módulo Análisis funcional. 
+			
+			M.P.G : (Redacción) Variantes clínicas de la FTD, Introducción; Objetivos, Objetivos; Optimización, Métodos; (Código) Optimización de los algoritmos, módulo clustering; Visualización de los resultados de clústering, módulo clústering; Revisión continua del código; Modificación continua de launch.sh; Despliegue de la imagen Docker. 
+			
+			A.P.G. : (Redacción) Tratamientos farmacológicos y terapias, Introducción; Software, paquetes de Python, Métodos; Análisis Funcional, Resultados, Discusión; (Código), Análisis Funcional y filtrado, módulo análisis funcional; Visualización de los términos GO más significativos, módulo de análisis funcional.
+	
+	
 		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 		%% BIBLIOGRAFIA: no teneis que tocar nada, solo sustituir el archivo bibliography.bib %%
 		%% por el que hayais generado vosotros                                                %%

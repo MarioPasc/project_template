@@ -1,0 +1,6 @@
+algorithm: multilevel
+parameters:
+  - name: resolution
+    type: float
+    min: 0.1
+    max: 2.0

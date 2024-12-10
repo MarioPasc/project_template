@@ -2,10 +2,10 @@
 
 % Parte de Ainhoa
 La demencia se define como un síndrome caracterizado por un deterioro cognitivo que produce alteraciones en la memoria, el pensamiento y el comportamiento de una persona. Esto dificulta la capacidad del paciente para realizar sus actividades sociales o laborales. \cite{Formiga2009} Se estima que hay alrededor de 44 millones de personas con demencia, se prevé que esta cifra será más del triple para 2050. \cite{Long2023}.
-La \textit{Enfermedad de Alzheimer} (EA), es la enfermedad más común donde se presenta este síndrome (45-55\%), seguida de la demencia vascular y la demencia por cuerpos de Lewy. La demencia frontotemporal no supera el 5\% en las frecuencias relativas. \cite{GOODMAN201728, GarreOlmo2016}. En este proyecto se estudiará un fenotipo concreto presente en varios casos de demencia, la denominada \textit{Demencia Frontotemporal} (FTD).
+La \textit{Enfermedad de Alzheimer} (AD), es la enfermedad más común donde se presenta este síndrome (45-55\%), seguida de la demencia vascular y la demencia por cuerpos de Lewy. La demencia frontotemporal no supera el 5\% en las frecuencias relativas. \cite{GOODMAN201728, GarreOlmo2016}. En este proyecto se estudiará un fenotipo concreto presente en varios casos de demencia, la denominada \textit{Demencia Frontotemporal} (FTD).
 
 % Parte de Mario
-La FTD es un fenotipo clínico caracterizado por la degeneración progresiva de funciones cognitivas relacionadas con el comportamiento, la personalidad, y el lenguaje, resultado de procesos neurodegenerativos que afectan principalmente a los lóbulos frontal y temporal del cerebro \cite{snowden2002frontotemporal, ratnavalli2002prevalence, piguet2011behavioural}. Es una de las principales causas de demencia en personas menores de 65 años, presentándose con mayor frecuencia entre los 45 y 65 años \cite{snowden2002frontotemporal, ratnavalli2002prevalence}. Las variantes clínicas más comunes de la FTD son la variante conductual (bvFTD), experimentada por el 70\% de los pacientes y que afecta la regulación del comportamiento y las emociones \cite{snowden2002frontotemporal, piguet2011behavioural}, y la afasia progresiva primaria (PPA), que afecta las habilidades del lenguaje y se subdivide en variantes no fluente/agramática (nfvPPA), semántica (svPPA) y logopénica (lvPPA) \cite{gorno2011classification}.
+La FTD es un fenotipo clínico caracterizado por la degeneración progresiva de funciones cognitivas relacionadas con el comportamiento, la personalidad, y el lenguaje, resultado de procesos neurodegenerativos que afectan principalmente a los lóbulos frontal y temporal del cerebro \cite{snowden2002frontotemporal, ratnavalli2002prevalence, piguet2011behavioural}. Es una de las principales causas de demencia en personas menores de 65 años, presentándose con mayor frecuencia entre los 45 y 65 años \cite{snowden2002frontotemporal,  ratnavalli2002prevalence}. Las variantes clínicas más comunes de la FTD son la variante conductual (bvFTD), experimentada por el 70\% de los pacientes y que afecta la regulación del comportamiento y las emociones \cite{snowden2002frontotemporal, piguet2011behavioural}, y la afasia progresiva primaria (PPA), que afecta las habilidades del lenguaje y se subdivide en variantes no fluente/agramática (nfvPPA), semántica (svPPA) y logopénica (lvPPA) \cite{gorno2011classification}.
 
 % Parte de Carmen
 La FTD, al tratarse de un conjunto heterogéneo de fenotipos, muestra conexiones significativas con otras enfermedades neurodegenerativas. En estudios de coocurrencia de términos, \textit{Esclerosis Lateral Amiotrófica} (ELA) y EA son conceptos frecuentemente asociados con FTD, lo que sugiere una relación estrecha \cite{fneur.2024.1399600}. % Sigue parte de Mario
@@ -29,8 +29,6 @@ Cabe destacar que la esperanza de vida promedio de un paciente que presenta los 
 
 Entre los tratamientos farmacológicos más prometedores destacan las terapias génicas, como PBFT02, que corrige mutaciones en el GRN \cite{PassageBio2023}, y otros medicamentos experimentales dirigidos a pacientes con mutaciones en granulina, como el FRM-0334 \cite{MayoClinic2023}. También se emplean estimulantes del sistema nervioso central y antipsicóticos atípicos para manejar los síntomas conductuales \cite{NINDS2023}. En cuanto a las terapias no farmacológicas, se incluyen intervenciones en el estilo de vida y terapias ocupacionales, del habla y físicas para mejorar la funcionalidad y la comunicación de los pacientes.
 
-En este estudio se busca desentrañar las bases moleculares que subyacen a este fenotipo utilizando enfoques propios de la biología de sistemas, como el análisis de redes biológicas. Nuestro objetivo es identificar interacciones clave y procesos biológicos implicados, con el fin de proponer posibles nuevas estrategias terapéuticas.
-
 
 \begin{figure}[h]
 	\centering
@@ -38,4 +36,15 @@ En este estudio se busca desentrañar las bases moleculares que subyacen a este 
 	\caption{Comparación entre los patrones de atrofia cerebral y el hipometabolismo en diferentes variantes de FTD. En la columna izquierda, reconstrucciones 3D de MRI, que muestran las áreas de atrofia cerebral (en rojo) en tres subtipos de FTD: bvFTD, svPPA, y nfvPPA. En la columna derecha, reconstrucciones 3D de FDG-PET, las cuales indican el hipometabolismo cerebral (en colores) en las mismas regiones afectadas, reflejando la disminución del metabolismo en las áreas afectadas. Los colores cálidos (rojo/amarillo) indican mayor hipometabolismo, mientras que los colores fríos (verde/azul) indican menor hipometabolismo. Imagen tomada de \cite{peet2021neuroimaging}.}
 	\label{fig:comparacion_imagenes_diagnostico}
 \end{figure}
+
+\section{Objetivos}
+
+Se plantean los siguientes objetivos para este estudio:
+
+\begin{enumerate}
+	\item \textbf{RQ1}. ¿Es posible identificar los procesos biológicos implicados en la Demencia Frontotemporal mediante el análisis de la red de interacción proteína-proteína asociado?.
+	\item \textbf{RQ2}. ¿Es posible implementar una detección de comunidades sobre la red de interacción proteína-proteína tal que detecte las interacciones clave del fenotipo?
+	
+	\item \textbf{SRQ1}. Bajo el marco de la biología de sistemas, integrar el conocimiento estadístico de la red, los resultados de la detección de comunidades, y el análisis funcional para cumplir con los objetivos expuestos.
+\end{enumerate}
 

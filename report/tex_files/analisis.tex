@@ -1,0 +1,57 @@
+En este estudio se ha llevado a cabo un análisis de clustering con dos configuraciones del algoritmo de Leiden: una optimizada para máxima modularidad y otra para máximo puntaje de enriquecimiento funcional. Para demostrar que ambas configuraciones producen resultados muy similares, se han comparado los resultados utilizando un diagrama de Venn (Figura~\ref{fig:venn_plot}). Este diagrama destaca los procesos biológicos comunes entre ambas configuraciones, así como los exclusivos de cada enfoque.
+
+Se observa la existencia de 22 términos compartidos entre los 24 identificados para cada configuración del algoritmo de Leiden, lo que refuerza los hallazgos del análisis funcional. Los procesos comunes representan rutas biológicas esenciales que son robustas frente a las variaciones metodológicas, sugiriendo que reflejan aspectos centrales del fenotipo estudiado. Esto no solo valida la calidad de los resultados obtenidos, sino que también  subraya la importancia de integrar diferentes enfoques para obtener una visión más completa y confiable del sistema biológico en análisis.
+
+En esta sección, se han discutido los resultados obtenidos del análisis funcional que ha sido realizado únicamente con la configuración de máximo puntaje de enriquecimiento funcional. Dado que, como se ha señalado previamente, el diagrama de Venn (Figura~\ref{fig:venn_plot}) refuerza la confianza de los siguientes hallazgos, ya que muestra una gran similitud con los resultados obtenidos bajo la configuración de máxima modularidad. Por esta razón, la elección de una única configuración asegura una interpretación robusta y confiable.
+
+A partir de los resultados obtenidos y representados mediante gráficos de enriquecimiento (Figura~\ref{fig:bar_plot}, Figura~\ref{fig:dot_plot} y Figura~\ref{fig:cnet_plot}), es posible identificar procesos clave relacionados con la neurodegeneración, la inflamación y el metabolismo neuronal. A continuación, se discuten los hallazgos más relevantes y su relación con estudios previos, evaluando sus implicaciones para la comprensión de la patogénesis de la DFT.
+
+\subsection{Procesos Relacionados con el \(\beta\)-Amiloide}
+
+Uno de los hallazgos más destacados del análisis es la implicación de procesos relacionados con el \(\beta\)-amiloide, como la formación (GO:0034205) y el metabolismo del \(\beta\)-amiloide (GO:0050435). Estos procesos, evidentes en las Figuras~\ref{fig:bar_plot} y~\ref{fig:dot_plot}, son relevantes por su alta significancia estadística y el número de genes implicados.
+
+Aunque la acumulación de \(\beta\)-amiloide es característica de la enfermedad de Alzheimer, estudios recientes han identificado su presencia en subtipos específicos de DFT y en casos mixtos \cite{hardy2002amyloid, ling2010frontotemporal}. La disfunción en el metabolismo del \(\beta\)-amiloide podría contribuir al daño neuronal y a la disfunción sináptica, agravando los síntomas de la DFT \cite{selkoe2002alzheimers}.
+
+Además, procesos de aclaramiento del \(\beta\)-amiloide (GO:1900221) observados en la Figura~\ref{fig:cnet_plot} sugieren fallos en la eliminación de estos péptidos tóxicos \cite{heneka2015neuroinflammation}. La alteración en el aclaramiento puede estar asociada a una activación microglial crónica y a una respuesta inflamatoria exacerbada, que potencian la neurodegeneración \cite{chen2016microglia}.
+
+Estos resultados resaltan la posible convergencia patogénica entre la EA y la DFT, sugiriendo que modular el metabolismo y aclaramiento del \(\beta\)-amiloide podría ser una estrategia terapéutica a considerar para ciertos subtipos de DFT.
+
+
+\subsection{Inflamación y Activación Microglial}
+
+El análisis revela una implicación significativa de procesos relacionados con la activación de células microgliales (GO:0001774) y la regulación positiva de la fagocitosis (GO:0060100), como se muestra en las Figuras~\ref{fig:bar_plot} y~\ref{fig:dot_plot}. La activación microglial crónica es una característica común en la DFT y otras taupatías, contribuyendo a la progresión de la neurodegeneración \cite{heneka2015neuroinflammation, rajendran2009microglia}.
+
+En este estudio, genes como TREM2 destacan en la Figura~\ref{fig:cnet_plot} por su papel central en la activación microglial y la respuesta inmunitaria innata. Mutaciones en TREM2 están asociadas con un mayor riesgo de DFT y otras enfermedades neurodegenerativas, facilitando una respuesta inflamatoria desregulada \cite{yeh2016trem2, ulland2017trem2}.
+
+La activación prolongada de la microglía puede conducir a la liberación de citocinas proinflamatorias como IL-1\(\beta\), IL-6 y TNF-\(alpha\), lo que exacerba el daño neuronal y sináptico \cite{block2007microglia}. Además, la fagocitosis microglial desregulada puede interferir con el aclaramiento de proteínas tóxicas, contribuyendo a la acumulación de agregados proteicos y promoviendo la neuroinflamación crónica \cite{lull2010microglial}.
+
+Estos hallazgos sugieren que modular la actividad microglial o reducir la inflamación crónica podría representar una estrategia terapéutica prometedora para mitigar el daño neuronal en la DFT.
+
+
+\subsection{Procesamiento del Receptor Notch}
+
+El análisis también identifica procesos relacionados con el procesamiento del receptor Notch (GO:0035333), como se observa en las Figuras~\ref{fig:bar_plot} y~\ref{fig:dot_plot}. La vía de señalización Notch desempeña un papel fundamental en la diferenciación neuronal, la proliferación celular y el mantenimiento de la homeostasis cerebral \cite{kopan2009canonical}. La disfunción en esta vía puede comprometer la estabilidad estructural y funcional de las neuronas, contribuyendo a la neurodegeneración observada en la DFT \cite{abbott2019notch}.
+
+En la Figura~\ref{fig:cnet_plot}, genes como PSEN1 y PSEN2 están claramente implicados en estos procesos. Estas proteínas forman parte del complejo de la  \(\gamma\)-secretasa, responsable del corte proteolítico del receptor Notch \cite{de2002presenilins}. Mutaciones en PSEN1 y PSEN2 no solo afectan el metabolismo del \(\beta\)-amiloide, sino que también interfieren en el procesamiento del receptor Notch, lo que puede llevar a una alteración en la señalización celular y a una disfunción neuronal progresiva \cite{sherrington1995cloning}.
+
+Además, una señalización Notch alterada puede impactar negativamente en la neurogénesis y en la capacidad de reparación neuronal, procesos críticos para contrarrestar la neurodegeneración \cite{ables2011notch}. La convergencia de estos mecanismos patológicos sugiere que la disfunción del procesamiento Notch es una característica importante en la patogénesis de la DFT y podría ser un objetivo terapéutico potencial.
+
+
+\subsection{Alteraciones Metabólicas y de Transporte Neuronal}
+
+En el análisis se observaron procesos relacionados con el transporte axo-dendrítico (GO:0008088) y el transporte de ácidos nucleicos (GO:0050657), representados en las Figuras~\ref{fig:dot_plot} y~\ref{fig:cnet_plot}. Estos procesos son esenciales para el correcto funcionamiento de las neuronas, facilitando la distribución de proteínas, ARNm y organelos a lo largo de los axones y dendritas \cite{goldstein2001axonal}.
+
+Las alteraciones en estos mecanismos pueden provocar una acumulación de proteínas mal plegadas y una disfunción sináptica, contribuyendo a la neurodegeneración observada en la DFT \cite{moreno2016axonal}. En particular, genes asociados con el citosqueleto y motores moleculares (como KIF5A y DYNC1H1) están implicados en estas vías y se destacan en la Figura~\ref{fig:cnet_plot} \cite{reid2019kif5a}.
+
+Además, se observan alteraciones en procesos metabólicos como el catabolismo de compuestos aromáticos (GO:0019439) y el catabolismo de ácidos orgánicos (GO:0016054) en la Figura~\ref{fig:bar_plot}. Estos procesos son críticos para el mantenimiento del equilibrio energético y la eliminación de metabolitos tóxicos \cite{mccabe2001metabolism}. La disfunción en el metabolismo neuronal puede generar estrés oxidativo y acumular productos tóxicos, exacerbando la degeneración neuronal en la DFT \cite{seelaar2011clinical}.
+
+Estos hallazgos sugieren que las estrategias terapéuticas dirigidas a mejorar el transporte neuronal y modular el metabolismo celular podrían ser beneficiosas para frenar la progresión de la DFT.
+
+
+\subsection{Rol de la Paraoxonasa 1 (PON1)}
+
+El análisis identifica a PON1 (Paraoxonasa 1) como un gen clave en los procesos metabólicos y de transporte neuronal, específicamente en el catabolismo de compuestos aromáticos (GO:0019439) y el catabolismo de ácidos orgánicos (GO:0016054), como se observa en la Figura~\ref{fig:cnet_plot}. La proteína PON1 participa en la detoxificación de compuestos oxidativos y en el metabolismo de lípidos, contribuyendo a proteger las neuronas del estrés oxidativo \cite{costa2005paraoxonase}.
+
+La disfunción de PON1 puede conducir a una acumulación de productos tóxicos y a un aumento del daño oxidativo, procesos implicados en la neurodegeneración característica de la DFT \cite{kim2006paraoxonase}. Además, estudios sugieren que niveles bajos de actividad de PON1 están asociados con un mayor riesgo de enfermedades neurodegenerativas, debido a su incapacidad para neutralizar los radicales libres \cite{brophy2001paraoxonase}.
+
+La red de interacción proteína-proteína (PPI) muestra que PON1 es un nodo central, lo que sugiere su participación en múltiples rutas metabólicas. Este papel destacado implica que modular la actividad de PON1 podría ser una estrategia terapéutica para reducir el daño oxidativo y mejorar la función metabólica en pacientes con DFT \cite{james2009paraoxonase}.

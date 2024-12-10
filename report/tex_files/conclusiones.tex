@@ -1,1 +1,9 @@
 \section{Conclusiones}
+
+A lo largo de este proyecto se ha adoptado un acercamiento desde la biología de sistemas a la caracterización de rutas metabógicas y genes críticos relacionados con el fenotipo de la demencia frontotemporal. Para ello, se ha hecho uso de bases de datos como HPO para la obtención de los genes asociados al fenotipo, o STRINGdb para la adquisición de la red de interacción Proteína-Proteína. Se reconoce que el uso de STRINGdb tiene sus limitaciones, ya que asume de manera sutíl que el paradigma de la biología no se cumple, al relacionar un gen con una -familia de- proteínas, pudiendo obtener una red de interacción entre los genes del fenotipo, a partir de la red de proteínas. 
+
+Posteriormente, se procedió con la detección de comunidades mediante tres algoritmos de clústering que, internamente, optimizan la modularidad: Fast-Greedy, Leiden, y Louvain. Para estos dos últimos, se ha empleado un algoritmo de ajuste de hiperparámetros bayesiano, con la finalidad de maximizar las coherencia estructural (modularidad) y biológica (puntuaje de enriquecimiento funcional) del clustering. 
+
+Finalmente, se realizó un estudio de análisis funcional sobre las comunidades obtenidas para la configuración de Leiden que maximizaba el puntuaje de enriquecimiento funcional. El resultado del análisis relacionó los genes estudiados con algunas funciones biológicas consistentes con estudios previos, como procesos relacionados con la $\beta$-amiloide, inflamación y activación microglial, etc. Esto demuestra que se pueden identificar procesos biológicos empleando la metodología usada. Además, se ha identificado un gen clave el PON1, cuya alteración está relacionada con un mayor riesgo de enfermedades neurodegenerativas. 
+
+Se puede concluir entonces que todos los objetivos presentados al inicio del documento se han cumplido satisfactoriamente.
