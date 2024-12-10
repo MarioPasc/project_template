@@ -74,4 +74,17 @@ fi
 # Clustering visualization and final results saving
 ./code/clustering/analysis.py code/data/network.tsv $RESULTS
 
+# Functional Analysis
 ./code/functional_analysis/complete_analysis.py $network $RESULTS $RESULTS/clustering_results.json -f pdf -a leiden_max_enrichment -p 0.005 -c 2000 -o 0.1
+
+# Generate latex report
+echo "Generating LaTeX report..."
+cd /app/report || exit 1
+
+# Comple the tex file using pdflatex
+pdflatex -interaction=nonstopmode report.tex
+biber report
+pdflatex -interaction=nonstopmode report.tex
+pdflatex -interaction=nonstopmode report.tex
+
+echo "Report generated: ./report/report.pdf"

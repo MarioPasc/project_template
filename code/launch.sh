@@ -16,7 +16,9 @@ mkdir -p "$(pwd)/results"
 docker run --rm \
 -v "$(pwd)/results:/app/results" \
 -v "$(pwd)/code/data:/app/code/data" \
+-v "$(pwd)/report:/app/report" \
 -e OPTIMIZE="$OPTIMIZE" \
 -e TRIALS="$TRIALS" \
 --name "$CONTAINER_NAME" \
 mpascualg/biosist_ftd:latest
+

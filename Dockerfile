@@ -7,15 +7,18 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHON_LIB=/app/Py_libs \
     PYTHONPATH="/app/code:/app/Py_libs"
 
-# Instalar dependencias del sistema
+# Instalar dependencias del sistema (LaTeX añadido aquí)
 RUN apt-get update && apt-get install -y \
     wget \
     gawk \
     texlive-latex-recommended \
     texlive-fonts-recommended \
     texlive-fonts-extra \
+    texlive-latex-extra \
     dvipng \
-    cm-super && \
+    cm-super \
+    biber \
+    make && \
     apt-get clean
 
 # Crear directorio para bibliotecas locales
