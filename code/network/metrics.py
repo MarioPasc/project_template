@@ -74,7 +74,7 @@ class Metrics:
 
             # fig.show()
             fig.write_html(f"{result_folder}/degree_distribution.html")
-            fig.write_image(f"{result_folder}/degree_distribution.{format}")
+            fig.write_image(f"{result_folder}/degree_distribution.png") #en formato png o svg no sale lo de loading en la imagen
             return mean_degree, sd_degree
         except ValueError as v:
             raise f"ValueError: {v}"

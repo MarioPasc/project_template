@@ -39,43 +39,69 @@ La base de datos STRING (Search Tool for the Retrieval of Interacting Genes/Prot
 
 \subsection{Software}
 
-Para el análisis funcional y la construcción de redes genéticas en este estudio, se seleccionaron herramientas especializadas que permiten tanto la exploración bioinformática como la visualización de datos complejos. Dado que el objetivo principal es investigar la interacción entre genes y módulos específicos asociados a la demencia frontotemporal, se ha optado por una combinación de paquetes en Python y R que ofrecen un balance entre precisión analítica y capacidades visuales avanzadas.
+Para el análisis funcional y la construcción de redes genéticas en este estudio, se seleccionaron herramientas especializadas que permiten tanto la exploración bioinformática como la visualización de datos complejos. Dado que el objetivo principal es investigar la interacción entre genes y módulos específicos asociados a la demencia frontotemporal, se ha optado por una combinación de paquetes en Python que ofrecen un balance entre precisión analítica y capacidades visuales avanzadas.
 
 \subsection*{Paquetes de Python para el análisis funcional y otras funciones}
 
 \begin{itemize}
+	\item \textbf{NumPy (versión 1.26.0)}: Esta librería proporciona soporte para arrays multidimensionales y funciones matemáticas de alto rendimiento. Es fundamental para realizar cálculos numéricos eficientes y operaciones matemáticas en grandes conjuntos de datos \cite{numpy}.
 	\item \textbf{Pandas (versión 2.2.3)}: Este paquete proporciona estructuras de datos eficientes y flexibles, como DataFrames, que facilitan el procesamiento y manipulación de datos complejos. En el contexto de este estudio, Pandas permite organizar, filtrar y procesar resultados de enriquecimiento funcional, simplificando el manejo de grandes volúmenes de datos bioinformáticos \cite{pandas}.
-	\item \textbf{Matplotlib (versión 3.8.1)}: Matplotlib es una librería de visualización muy versátil que soporta múltiples tipos de gráficos en 2D, lo que resulta útil para representar tendencias y relaciones entre genes en gráficos de líneas, barras, dispersión, y más. Este paquete se utilizará para visualizar los resultados de enriquecimiento y las interacciones génicas \cite{matplotlib}.
-	\item \textbf{Scienceplots (versión 2.1.1)}: Este paquete extiende Matplotlib proporcionando estilos de gráficos estéticamente optimizados para publicaciones científicas. Con Scienceplots, se puede lograr una presentación visual de alta calidad, ideal para gráficos que requieren una apariencia profesional \cite{scienceplots}.
+	\item \textbf{Stringdb (versión 1.1.0)}: Un paquete que facilita el acceso a la base de datos STRING para recuperar información sobre interacciones proteicas y realizar análisis de enriquecimiento \cite{stringdb}.
 	\item \textbf{Requests (versión 2.31.0)}: Requests es una biblioteca para realizar solicitudes HTTP de manera simple y efectiva. En este estudio, se utiliza para conectar con APIs externas como la de STRINGdb, permitiendo la descarga automatizada de datos de redes y enriquecimiento \cite{requests}.
-	\item \textbf{GOATOOLS (versión 1.2.3)}: Este paquete permite realizar análisis de enriquecimiento funcional en términos de Gene Ontology (GO), lo que facilita la identificación de términos GO sobre-representados en conjuntos de genes. Es una herramienta clave para comprender funciones biológicas asociadas a los genes estudiados \cite{goatools}.
-	\item \textbf{G:Profiler (versión 1.4.0)}: G:Profiler realiza análisis de enriquecimiento funcional abarcando varias bases de datos (GO, KEGG, Reactome, entre otras). La versatilidad de este paquete lo convierte en una excelente opción para explorar las funciones biológicas de conjuntos de genes con una amplia cobertura de recursos \cite{gprofiler}.
-	\item \textbf{Statsmodels (versión 0.14.0)}: Statsmodels es una biblioteca de estadística que permite aplicar ajustes de p-valor, como el método de Benjamini-Hochberg, para reducir el impacto de falsos positivos en los resultados de enriquecimiento. Esto asegura una interpretación estadísticamente robusta de los resultados \cite{statsmodels}.
+	\item \textbf{GSEAPY (versión 1.0.5)}: GSEAPY permite realizar análisis de enriquecimiento funcional y análisis de vías de manera sencilla, integrando métodos como GSEA y prerank para conjuntos de genes. Es fundamental para identificar procesos biológicos relevantes en los genes analizados \cite{gseapy}.
+	\item \textbf{Igraph (versión 0.10.8)}: Una biblioteca para la creación, manipulación y visualización de grafos y redes complejas. Es esencial para representar y analizar redes de interacciones génicas y otros tipos de grafos en el contexto de estudios bioinformáticos \cite{igraph}.
+	\item \textbf{NetworkX (versión 3.1)}: Esta librería facilita el análisis y visualización de estructuras de grafos y redes complejas. Se aplica para modelar y visualizar redes de interacciones génicas \cite{networkx}.
+	\item \textbf{Matplotlib (versión 3.8.1)}: Matplotlib es una librería de visualización muy versátil que soporta múltiples tipos de gráficos en 2D, lo que resulta útil para representar tendencias y relaciones entre genes en gráficos de líneas, barras, dispersión, y más. Se pondrán en uso extensiones como las de Colors, CM, Axes, Patches. Este paquete se utilizará para visualizar los resultados de enriquecimiento y las interacciones génicas \cite{matplotlib}.
+	\item \textbf{Matplotlib-Venn (versión 0.11.9)}: Esta librería permite crear diagramas de Venn con Matplotlib para representar gráficamente las relaciones entre conjuntos de datos \cite{matplotlibvenn}.
+	\item \textbf{UpSetPlot (versión 0.8.0)}: UpSetPlot es una herramienta para crear gráficos de tipo UpSet, que permiten visualizar intersecciones entre conjuntos de datos, útil en el análisis de enriquecimiento funcional \cite{upsetplot}.
+	\item \textbf{Seaborn (versión 0.12.2)}: Seaborn es una librería de visualización basada en Matplotlib que permite crear gráficos estadísticos atractivos y con estilo. Se utiliza para explorar y visualizar patrones y relaciones en los datos \cite{seaborn}.
+	\item \textbf{Plotly (versión 5.18.0)}: Plotly es una biblioteca interactiva para crear gráficos y visualizaciones avanzadas. Se utiliza para representar redes e interacciones complejas de forma dinámica y visualmente atractiva \cite{plotly}.
+	\item \textbf{Scienceplots (versión 2.1.1)}: Este paquete extiende Matplotlib proporcionando estilos de gráficos estéticamente optimizados para publicaciones científicas. Con Scienceplots, se puede lograr una presentación visual de alta calidad, ideal para gráficos que requieren una apariencia profesional \cite{scienceplots}.
+	\item \textbf{Argparse (versión 1.4.0)}: Argparse es una librería estándar para analizar argumentos en la línea de comandos, facilitando la ejecución flexible de scripts y automatización de tareas \cite{argparse}.
+	\item \textbf{Logging (versión 0.5.1.2)}: Logging es un módulo estándar que permite registrar mensajes y eventos durante la ejecución de los scripts, lo que facilita el seguimiento y depuración del proceso de análisis \cite{logging}.
+	\item \textbf{Shutil (módulo estándar)}: Permite realizar operaciones con archivos y directorios, como copiar, mover o eliminar, facilitando el manejo del sistema de archivos en los scripts \cite{shutil}.
+	\item \textbf{JSON (módulo estándar)}: Este módulo facilita la manipulación y el intercambio de datos en formato JSON, útil para procesar configuraciones y respuestas de APIs \cite{json}.
+	\item \textbf{Time (módulo estándar)}: Proporciona funciones para medir el tiempo de ejecución y realizar pausas en los scripts, lo que facilita el control del flujo de trabajo \cite{time}.
+	\item \textbf{Re (módulo estándar)}: Este módulo permite realizar operaciones con expresiones regulares, facilitando la búsqueda y manipulación de cadenas de texto \cite{re}.
+	\item \textbf{Platform (módulo estándar)}: Proporciona información sobre el sistema operativo y el entorno de ejecución, útil para adaptar el comportamiento de los scripts según el entorno \cite{platform}.
+	\item \textbf{Random (módulo estándar)}: Facilita la generación de números aleatorios, útil en procesos de muestreo o simulación \cite{random}.
+	\item \textbf{Psutil (versión 5.9.5)}: Permite monitorizar el uso de recursos del sistema, como memoria y CPU, lo cual es útil para optimizar el rendimiento de los scripts \cite{psutil}.
+	\item \textbf{YAML (versión 6.0)}: Facilita la lectura y escritura de archivos YAML, útil para manejar configuraciones en un formato legible y estructurado \cite{pyyaml}.
+	\item \textbf{Optuna (versión 3.5.0)}: Una librería para la optimización automática de hiperparámetros en modelos y algoritmos, mejorando el rendimiento del análisis \cite{optuna}.
+	\item \textbf{Math (módulo estándar)}: Proporciona funciones matemáticas básicas como logaritmos y raíces cuadradas, necesarias para realizar cálculos en el análisis funcional \cite{math}.
+	\item \textbf{Itertools (módulo estándar)}: Proporciona funciones para crear iteradores eficientes, como combinaciones y permutaciones, útiles para el análisis de redes y conjuntos de datos \cite{itertools}.
+	\item \textbf{Jinja2 (versión 3.1.3)}: Un motor de plantillas para Python que permite generar contenido dinámico, útil para personalizar informes y representaciones visuales \cite{jinja2}.
+	\item \textbf{Kaleido (versión 0.2.1)}: Una herramienta para exportar gráficos de Plotly a formatos estáticos como PNG, PDF y SVG, facilitando la creación de visualizaciones de alta calidad \cite{kaleido}.
+	
+
 \end{itemize}
 
-\subsection*{Paquetes de R para clustering y visualización de redes}
-
-\begin{itemize}
-	\item \textbf{Cluster (versión 2.1.5)}: Este paquete ofrece una variedad de algoritmos clásicos de clustering (como k-means y clustering jerárquico), facilitando la agrupación de genes según patrones de expresión similares, lo cual es fundamental para identificar posibles módulos relacionados con la demencia frontotemporal \cite{cluster}.
-	\item \textbf{Factoextra (versión 1.0.8)}: Factoextra permite una visualización clara y accesible de resultados de clustering, proporcionando gráficos intuitivos para explorar la estructura de los datos y resaltar posibles módulos o patrones de coexpresión \cite{factoextra}.
-	\item \textbf{WGCNA (versión 1.71)}: Este paquete es ideal para detectar módulos de genes coexpresados mediante la construcción de redes de coexpresión genética ponderada, lo cual es útil en estudios de expresión génica complejos como el de la demencia frontotemporal \cite{wgcna}.
-	\item \textbf{Igraph (versión 1.5.0)}: Igraph facilita la construcción, manipulación y visualización de redes genéticas y módulos de coexpresión. Este paquete es útil para analizar la conectividad y relación entre genes en un contexto de red \cite{igraph}.
-	\item \textbf{STRINGdb (versión 2.10.0)}: STRINGdb es un paquete que conecta con la base de datos STRING, permitiendo realizar enriquecimiento funcional en redes y visualizar interacciones proteicas y genéticas. Es útil para identificar las relaciones funcionales entre genes \cite{stringdb}.
-	\item \textbf{Pathview (versión 1.36.0)}: Este paquete permite integrar datos de expresión génica en rutas de KEGG, ofreciendo representaciones gráficas que muestran la implicación de los genes en rutas metabólicas y de señalización, lo cual es relevante para entender su rol en la enfermedad \cite{pathview}.
-	\item \textbf{ClusterProfiler (versión 4.15.0)}: ClusterProfiler permite realizar análisis de enriquecimiento funcional de alta precisión en términos de GO, KEGG y Reactome. Ofrece opciones avanzadas de visualización y ajuste de p-valores, facilitando la interpretación de los resultados \cite{clusterprofiler}.
-\end{itemize}
 
 \subsection{Análisis de enriquecimiento de vías biológicas}
 
-El análisis de enriquecimiento permite identificar vías biológicas o pathways que están significativamente representados en una lista de genes de interés, por medio de prubas estadísticas. Un pathway es un conjunto de genes que trabajan en conjunto para llevar a cabo un proceso biológico específico.\cite{Reimand2019}
+El análisis de enriquecimiento permite identificar vías biológicas o pathways que están significativamente representados en una lista de genes de interés, por medio de pruebas estadísticas. Un pathway es un conjunto de genes que trabajan en conjunto para llevar a cabo un proceso biológico específico.\cite{Reimand2019}
 
-Se realizó un análisis de enriquecimiento mediante la API de STRINGdb. Mediante el mapeo de las anotaciones funcionales de los genes en ontologías como Gene Ontology (GO), UniProt, Reactome y KEGG y comparando la distribución de estos términos en el conjunto de genes de interés con su distribución en un conjunto de referencia, se identificaron estadísticamente los términos sobrerrepresentados en la lista de genes asociados a la enfermedad. \cite{Tipney2010}
+En este estudio, se realizó un análisis de enriquecimiento para las agrupaciones de genes derivadas del algoritmo de clustering que ha generado un mejor resultado.
 
-STRINGdb, por tanto, permite analizar diversas categorías de anotaciones funcionales, incluyendo los términos de Gene Ontology (procesos biológicos, funciones moleculares y componentes celulares), rutas de KEGG y Reactome \cite{szklarczyk2023stringdb}. Se realizó un filtrado según el tipo de término para obtener los diferentes enriquecimientos funcionales de interés.
+Las herramientas de análisis funcional mapean las listas de genes de interés a terminos biólógicos anotados, como los términos GO y utilizan métodos estadísticos, como el test de Ficher o test hipergeométricos,
+para evaluar el enriquecimiento.\cite{10.1093/nar/gkn923} En particular, el test hipergeométrico evalúa si la representación de cada término funcional en el conjunto de genes de interés 
+es mayor que la esperada por azar. 
 
-Para calcular el enriquecimiento, STRINGdb utiliza un test hipergeométrico que evalúa si la representación de cada término funcional en el conjunto de genes de interés es mayor que la esperada por azar. Para controlar el error debido a comparaciones múltiples, se aplica la corrección de Benjamini-Hochberg para ajustar la tasa de descubrimiento falso (FDR) \cite{szklarczyk2023stringdb}.
 
-El análisis de enriquecimiento se realizó tanto en el conjunto completo de genes asociados a la enfermedad, extraído de términos de HPO, como en los genes agrupados en clústeres. 
+Para la realización de este análisis funcional se ha hecho uso del módulo \textit{enrich} de biblioteca de Python \textit{GSEAPY} que permite la realización de un 
+análisis de enriquecimiento de una lista de genes mediante la utilización de la API de Enrich. Esta herramienta evalúa si un conjunto de genes de entrada se superpone significativamente con conjuntos de genes previamente anotados. 
+El análisis se ha realiza utilizando la base de datos  GO\_Biological\_Process\_2021, que recopila información sobre procesos biológicos. Sin embargo, la utilización de otras ontologías como 
+Gene Ontology (GO), UniProt, Reactome o KEGG podrían  información complementaria sobre diferentes tipos de términos funcionales.
+
+Enrich va a proporcionar varias métricasa a cerca de los resultados del enriquecimiento: p-valor, p-valor ajustado, odds ratio y combined score.
+El p-valor, calculado las pruebas estadísticas anteriormente mencionadas evalúa la significancia estadística de la superposición entre los genes de interés y los anotados en los términos. El p-valor ajustado
+utilizando el método de Benjamini-Hochberg para controlar la tasa de falsos positivo. La métrica de odds ratio mide la proporción entre los genes superpuestos observados y los esperados bajo una distribución aleatoria.
+Finalmente, combined score combina el p-value y el odds ratio en una métrica única. \cite{maayanlab_enrichr_help}
+
+Finalmente, se aplicaron filtros para seleccionar únicamente los términos funcionales más relevantes en los resultados obtenidos. Estos filtros han sido el p-valor ajustado a  0.005,
+combined score a  2000 y el porcentaje de overlap que se ha definico como  el número de genes de la lista de interés que se suporponen con los genes anotados del término entre el total de genes anotados en el término a 0.1.
+
+
 
 
 \subsection{Clustering}
@@ -84,7 +110,7 @@ Al aplicar algoritmos de clustering, nuestro objetivo es descubrir comunidades f
 
 \subsubsection{Red}
 
-En la red de interacción proteína-proteína (PPI) obtenida mediante la API de STRINGdb, cada nodo representa un gen y cada arista representa una interacción entre genes, ponderada por un puntaje de confianza otorgado por STRINGdb \cite{szklarczyk2023stringdb}. Para enfocarnos en interacciones más sólidas y confiables, se aplicó un umbral mínimo de confianza en las aristas, lo que permitió refinar la red y mejorar la relevancia de los clústeres detectados 
+En la red de interacción proteína-proteína (PPI) obtenida mediante la API de STRINGdb, cada nodo representa un gen y cada arista representa una interacción entre genes, ponderada por un puntaje de confianza otorgado por STRINGdb \cite{szklarczyk2023stringdb}. Para enfocarnos en interacciones más sólidas y confiables, se aplicó un umbral mínimo de confianza en las aristas, lo que permitió refinar la red y mejorar la relevancia de los clústeres detectados. 
 
 % (\textbf{NOTA:} Se debe ahondar en esto si al final se hace: ¿Por qué ese umbral? ¿Y si fueran otros umbrales?).
 
