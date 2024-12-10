@@ -129,7 +129,7 @@ El análisis de enriquecimiento permite identificar vías biológicas o pathways
 En este estudio, se realizó un análisis de enriquecimiento para las agrupaciones de genes derivadas del algoritmo de clustering que ha generado un mejor resultado.
 
 Las herramientas de análisis funcional mapean las listas de genes de interés a terminos biólógicos anotados, como los términos GO y utilizan métodos estadísticos, como el test de Ficher o test hipergeométricos,
-para evaluar el enriquecimiento.\cite{10.1093/nar/gkn923} En particular, el test hipergeométrico evalúa si la representación de cada término funcional en el conjunto de genes de interés 
+para evaluar el enriquecimiento\cite{10.1093/nar/gkn923}. En particular, el test hipergeométrico evalúa si la representación de cada término funcional en el conjunto de genes de interés 
 es mayor que la esperada por azar. 
 
 
@@ -138,13 +138,13 @@ análisis de enriquecimiento de una lista de genes mediante la utilización de l
 El análisis se ha realiza utilizando la base de datos  GO\_Biological\_Process\_2021, que recopila información sobre procesos biológicos. Sin embargo, la utilización de otras ontologías como 
 Gene Ontology (GO), UniProt, Reactome o KEGG podrían  información complementaria sobre diferentes tipos de términos funcionales.
 
-Enrich va a proporcionar varias métricasa a cerca de los resultados del enriquecimiento: p-valor, p-valor ajustado, odds ratio y combined score.
+Enrich va a proporcionar varias métricas sobre los resultados del enriquecimiento: p-valor, p-valor ajustado, odds ratio y combined score.
 El p-valor, calculado las pruebas estadísticas anteriormente mencionadas evalúa la significancia estadística de la superposición entre los genes de interés y los anotados en los términos. El p-valor ajustado
 utilizando el método de Benjamini-Hochberg para controlar la tasa de falsos positivo. La métrica de odds ratio mide la proporción entre los genes superpuestos observados y los esperados bajo una distribución aleatoria.
-Finalmente, combined score combina el p-value y el odds ratio en una métrica única. \cite{maayanlab_enrichr_help}
+Finalmente, combined score combina el p-valor y el odds ratio en una métrica única. \cite{maayanlab_enrichr_help}
 
 Finalmente, se aplicaron filtros para seleccionar únicamente los términos funcionales más relevantes en los resultados obtenidos. Estos filtros han sido el p-valor ajustado a  0.005,
-combined score a  2000 y el porcentaje de overlap que se ha definico como  el número de genes de la lista de interés que se superponen con los genes anotados del término entre el total de genes anotados en el término a 0.1.
+combined score a  2000 y el porcentaje de overlap que se ha definido como  el número de genes de la lista de interés que se superponen con los genes anotados del término entre el total de genes anotados en el término a 0.1.
 
 % \textbf{NOTA:} Podríamos aplicar algún algoritmo interesante de ajuste de los hiperparámetros, yo (Mario) tengo experiencia aplicando Tree-structured Parzen Estimator y otros algoritmos de ajuste Bayesiano en Python.
 

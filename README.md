@@ -83,9 +83,9 @@ Si quieres construir la imagen tú mismo a partir del **Dockerfile**, sigue esto
 
 ---
 
-#### **2. Ejecución Manual sin Docker**
+#### **2. Ejecución Manual sin Docker (No recomendado)**
 
-Si no puedes usar Docker, también puedes instalar las dependencias y ejecutar el pipeline directamente en tu máquina local:
+Si no se puede usar Docker, también se pueden instalar las dependencias y ejecutar el pipeline directamente en su máquina local:
 
 1. **Instalación de Dependencias**  
    Ejecutar el script `setup.sh` para instalar todas las dependencias de Python localmente:
@@ -100,6 +100,9 @@ Si no puedes usar Docker, también puedes instalar las dependencias y ejecutar e
    ```bash
    ./code/execute.sh
    ```
+
+> [!CAUTION]
+> Es muy probable que la generación del PDF no funcione con esta vía de ejecución, ya que esa parte del flujo ha sido programada ad hoc para Docker
 
 ---
 
