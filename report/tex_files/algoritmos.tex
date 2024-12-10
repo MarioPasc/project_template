@@ -1,0 +1,39 @@
+\subsubsection{Algoritmos}
+\label{sec:algoritmos}
+
+A continuación, se detallan los tres algoritmos de clustering, proporcionados por la librería \textit{iGraph}, elegidos para este estudio, los cuales pretenden cubrir diferentes enfoques teóricos en la detección de comunidades funcionales \cite{igraph}.  
+
+\begin{itemize}
+    \item \textbf{Fast Greedy}: es un algoritmo de clustering jerárquico que optimiza directamente la modularidad, lo que le confiere una gran utilidad en biología de sistemas, ya que la esta captura la idea de que los nodos dentro de una comunidad son más conexos entre sí que con nodos de otras comunidades.
+    
+    La estrategia que sigue Fast Greedy es voraz, es decir que toma decisiones locales en cada iteración para optimizar la modularidad. Sigue los siguientes pasos: inicialización (considera que cada nodo es un cluster), fusión (en cada iteración fusiona las comunidades que aumenten en mayor medida la modularidad) y terminación (el algoritmo termina cuando no se pueda incrementar más la modularidad) \ref{clauset2004finding}.
+
+    Este algoritmo no precisa del ajuste de ningún hiperparámetro, por lo que los resultados del mismo se han tomado como referencia y punto de partida para los demás algoritmos.
+    
+    % (\textbf{NOTA:} Hay un parámetro intersante, \textit{initial\_membership} el cual son nodos 'semilla' que se pasan como argumento, y el algoritmo intenta mejorar las comunidades alrededor de estos nodos. Podríamos usar genes del análisis funcional como semilla y ver qué pasa.)
+    
+    \item \textbf{Algoritmo Louvain}: este algoritmo es uno de los más utilizados para la detección de comunidades en redes. Al igual que el algoritmo Fast Greedy, se basa en optimizar la modularidad de manera jerárquica. Tiene dos fases claves en su funcionamiento:
+
+    \begin{itemize}
+        \item \textit{Optimización local de modularidad}: al inicio, se asigna a cada nodo su propio cluster. En cada iteración, se evalúa si mover un nodo a la comunidad de uno de sus vecinos incrementa la modularidad de la red. El nodo se mueve a la comunidad que maximiza la modularidad local.
+
+        \item \textit{Construcción de la red}: una vez los nodos están en comunidades correspondientes, se agrupan las comunidades en un nuevo “supernodo” y se construye una nueva red en la que los nodos son las comunidades encontradas. Se vuelve a calcular la modularidad y se repite el proceso hasta que no se pueda mejorar más la modularidad.
+    \end{itemize}
+
+    Este proceso jerárquico permite detectar comunidades a diferentes escalas de la red \cite{Blondel2008}.
+
+    Se ajustó el parámetro de resolución, que controla el tamaño final de las comunidades. El resto de parámetros se dejaron con sus valores por defecto.
+    
+    \item \textbf{Algoritmo de Leiden}: este algoritmo se diseñó para mejorar las limitaciones del algoritmo de Louvain, particularmente en términos de garantizar comunidades bien conectadas. Sigue los siguintes pasos:
+
+    \begin{itemize}
+        \item \textit{Movimiento local de nodos}: Cada nodo del grafo comienza en su propia comunidad. El algoritmo evalúa si mover un nodo a la comunidad de uno de sus vecinos incrementa la modularidad. Si es así, el nodo se mueve. Este proceso se repite hasta que ningún movimiento adicional mejore la modularidad.
+
+        \item \textit{División interna de comunidades}: Dentro de cada comunidad, el algoritmo verifica si estas son completamente conexas. Si no lo son, divide las comunidades en subcomunidades más pequeñas para garantizar que todas sean subgrafos conexos.
+
+        \item \textit{Agregación y simplificación del grafo}: Cada comunidad identificada se trata como un solo nodo, y se construye un nuevo grafo 'resumido'. Luego, se repiten los pasos anteriores con este nuevo grafo \cite{traag2019leiden}.
+    \end{itemize}
+    
+    Se ajustó el parámetro \(\gamma\), así como el número de iteraciones del algoritmo, permitiendo que el Leiden refinara iterativamente la partición. El resto de parámetros se fijaron a su valor por defecto. 
+
+\end{itemize}
