@@ -19,4 +19,4 @@ docker run --rm \
 -e OPTIMIZE="$OPTIMIZE" \
 -e TRIALS="$TRIALS" \
 --name "$CONTAINER_NAME" \
-mariopasc/biosist_ftd:latest
+mpascualg/biosist_ftd:latest

@@ -136,6 +136,12 @@ En el script **`execute.sh`**, se encuentran las siguientes variables:
 > OPTIMIZE=true TRIALS=100 ./code/launch.sh
 > ```
 
+> [!CAUTION]
+> Si se fija `OPTIMIZE=false`, entonces se debe renombrar la carpeta `original_results` a `results`, para que tome los resultados guardados ahí. Esto se puede hacer fácilmente con:
+> ```bash
+> mv ./original_results ./results
+> ```
+
 > [!IMPORTANT]
 > Si `results/` está vacío y `OPTIMIZE=true`, el ajuste se iniciará desde cero. Si los archivos `.db` existen, se reanudará el ajuste.
 

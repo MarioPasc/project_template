@@ -7,6 +7,7 @@ OPTIMIZE=${OPTIMIZE:-true}  # Valor por defecto: true
 # In our original study we executed it for 150 trials.
 TRIALS=${TRIALS:-100}        # Valor por defecto: 100
 
+
 # Results folder
 export RESULTS="./results"
 
@@ -20,6 +21,11 @@ export PYTHONPATH=$PYTHON_LIB:./code:$PYTHONPATH  # Include both Py_libs and ./c
 
 # Print sesion info
 ./code/utils/sesion_info.py
+
+echo "Your execution settings: "
+echo "OPTIMIZE: $OPTIMIZE"
+echo "TRIALS: $TRIALS"
+echo " "
 
 # Create the data directory if it doesn't exist
 mkdir -p ./code/data
@@ -43,14 +49,14 @@ network="./code/data/network.tsv"
 ./code/network/analysis.py $network $RESULTS
 
 # Run optimization only if 'train' is true
-if [ $OPTIMIZE = true ]; then
+if [ "$OPTIMIZE" = true ]; then
     # Optimize Louvain
     ./code/clustering/optimize.py \
     --config_path code/clustering/configs/multilevel.yaml \
     --network_csv code/data/network.tsv \
     --study_name multilevel_optimization \
     --output_path $RESULTS \
-    --n_trials $TRIALS
+    --n_trials "$TRIALS"
     
     # Optimize Leiden
     ./code/clustering/optimize.py \
@@ -58,7 +64,7 @@ if [ $OPTIMIZE = true ]; then
     --network_csv code/data/network.tsv \
     --study_name leiden_optimization \
     --output_path $RESULTS \
-    --n_trials $TRIALS
+    --n_trials "$TRIALS"
     
 fi
 

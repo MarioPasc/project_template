@@ -13,7 +13,8 @@ Esta carpeta contiene el código principal del proyecto, organizado en submódul
     ├── 📂 network/              # Scripts para construcción y análisis de la red PPI
     ├── 📂 utils/                # Funciones y herramientas auxiliares
     ├── setup.sh*                # Script para instalación de dependencias
-    └── launch.sh*               # Script principal para ejecutar el pipeline completo
+    ├── launch.sh*               # Ejecución de la imagen Docker
+    └── execute.sh*              # Script principal para ejecutar el pipeline completo
 ```
 
 ---
@@ -39,5 +40,23 @@ Esta carpeta contiene el código principal del proyecto, organizado en submódul
 - **`setup.sh`**  
    Instala todas las dependencias necesarias del proyecto.
 
-- **`launch.sh`**  
+- **`execute.sh`**  
    Script principal para ejecutar el pipeline completo. Gestiona todas las etapas: construcción de la red, clustering, optimización y análisis funcional.
+
+- **`launch.sh`**  
+   Script principal para la ejecución de la DockerImage.
+
+>[!NOTE] 
+> **Construcción de la imagen local**. Se deja documentado el proceso:
+> ```yaml
+> docker build -t biosist_ftd:latest .
+> docker images # Comprobar que se ha creado
+> docker tag biosist_ftd:latest mpascualg/biosist_ftd:latest # Nombre de usuario
+> docker push mpascualg/biosist_ftd:latest # Push a Docker Hub
+> ```
+> Para hacer pruebas locales, se puede ejecutar el docker durante un momento:
+> ```yaml
+> OPTIMIZE=true TRIALS=5 ./code/launch.sh
+> ...
+> docker ps # Mirar el ID de ejecución
+> docker stop {ID}
