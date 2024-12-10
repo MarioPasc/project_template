@@ -11,6 +11,21 @@ En esta sección se exponen las visualizaciones y tablas generadas a partir de l
 
 El proceso de optimización de hiperparámetros mediante el BHO se analizará mostrando el frente de pareto de ambos algoritmos y una visualización del rendimiento marginal de ambas métricas en base al valor de resolución (\(\gamma\)) evaluado.
 
+
+\subsection{Clustering}
+
+Se presentan los resultados de los algoritmos de clustering. Se tiene el baseline, Fast-Greedy, y las soluciones extremas Pareto-Óptimas de Leiden y Louvain.
+
+\subsection{Análisis Funcional}
+
+Se ha realizado un análisis funcional inicial que ha identificado más de 1200 términos GO asociados con el fenotipo de demencia frontotemporal (DFT), utilizando el algoritmo Leiden y optimizando la modularidad máxima. Tras aplicar un filtro de p-valor ajustado \textless{} 0.005, el número de términos se redujo a aproximadamente 25 procesos significativamente enriquecidos. Estos términos incluyen procesos relacionados con el metabolismo del \(\beta\)-amiloide, la inflamación microglial, el procesamiento del receptor Notch y diversas rutas metabólicas y de transporte neuronal.
+
+Para generar las representaciones gráficas, específicamente el diagrama de Venn (Figura~\ref{fig:venn_plot}), fue necesario realizar un análisis funcional adicional empleando el algoritmo Leiden y maximizando el puntaje de enriquecimiento funcional, lo que ha permitido realizar una comparación detallada entre este análisis funcional y el realizado anteriormente, ambos basados en el algoritmo Leiden, pero con diferentes enfoques el primero para optimizar la modularidad máxima y el segundo para optimizar el puntuaje de enrequecimiento máximo.
+
+A continuación, se muestran representaciones gráficas del análisis funcional realizado tras aplicar el filtro de p-valor ajustado. Estas representaciones incluyen un diagrama de Venn (Figura~\ref{fig:venn_plot}), que permite visualizar las intersecciones entre los conjuntos de genes asociados a diferentes procesos; un gráfico de barras (Figura~\ref{fig:bar_plot}), que muestra los términos significativamente enriquecidos y su nivel de significancia; un gráfico de puntos (Figura ~\ref{fig:dot_plot}), que relaciona los términos con su proporción y puntuación de enriquecimiento; y un gráfico de concentración y dispersión (Figura ~\ref{fig:cnet_plot}), que destaca la distribución de genes clave en los procesos identificados. Estas gráficas ilustran los hallazgos, proporcionando una visión integral tanto de la relevancia estadística de los términos identificados como de las conexiones funcionales entre los genes y los procesos biológicos correspondientes.
+
+\newpage
+
 \begin{figure}[htbp!]
 	\centering
 	\includegraphics[width=.96\textwidth]{../results/plots/optimization/pareto_comparison.pdf}
@@ -24,11 +39,6 @@ El proceso de optimización de hiperparámetros mediante el BHO se analizará mo
 	\caption{Valores de resolución (\(\gamma\)) explorados por algoritmo, frente al rendimiento evaluado sobre el clustering obtenido. Leiden obtiene por un margen considerable la mejor modularidad, mientras que Louvain obtiene el mejor valor del FES por una diferencia despreciable.}
 	\label{fig:slice_plot}
 \end{figure}
-
-
-\subsection{Clustering}
-
-Se presentan los resultados de los algoritmos de clustering. Se tiene el baseline, Fast-Greedy, y las soluciones extremas Pareto-Óptimas de Leiden y Louvain.
 
 \begin{figure}[htbp!]
 	\centering
@@ -50,12 +60,6 @@ Se presentan los resultados de los algoritmos de clustering. Se tiene el baselin
 	\caption{Resultados de clustering para el algoritmo Louvain. Se presentan dos resultados, que corresponden a las soluciones Pareto-óptimas extremas (\(max(Q)\) ó \(max(FES)\)).}
 	\label{fig:louvain_clustering}
 \end{figure}
-
-\subsection{Análisis Funcional}
-
-Se realizó un análisis funcional inicial que identificó más de 1200 términos GO asociados con el fenotipo de demencia frontotemporal (DFT). Tras aplicar un filtro de p-valor ajustado \textless{} 0.005, el número de términos se redujo a aproximadamente 25 procesos significativamente enriquecidos. Estos términos incluyen procesos relacionados con el metabolismo del \(\beta\)-amiloide, la inflamación microglial, el procesamiento del receptor Notch y diversas rutas metabólicas y de transporte neuronal.
-
-Se adjuntan las representaciones gráficas que ilustran estos hallazgos, destacando tanto la relevancia estadística de los términos identificados como las conexiones entre los genes implicados y los procesos biológicos correspondientes.
 
 \begin{figure}[htbp!]
 	\centering
